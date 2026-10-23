@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-20",
+  "branch": "feature/beta-guidance",
+  "tests": {
+    "files": 65,
+    "passed": 961,
+    "source": "original project"
+  },
+  "build": {
+    "passed": true,
+    "modules": 97,
+    "warning": "existing Phaser chunk over500kB"
+  },
+  "preview": {
+    "origin": "http://127.0.0.1:5184",
+    "caught": "silver_crucian",
+    "reward": 60,
+    "gold": 560,
+    "energy": 94,
+    "completedAfterReload": true,
+    "journalScrollbar": true,
+    "runtimeErrors": []
+  },
+  "original": {
+    "origin": "http://127.0.0.1:5185",
+    "caught": "silver_crucian",
+    "catches": 2,
+    "fishBeforeDelivery": 2,
+    "fishAfterDelivery": 1,
+    "gold": 560,
+    "energy": 92,
+    "tabToClose": true,
+    "spaceCloseFree": true,
+    "receiptClearedOnDelivery": true,
+    "finalDeliveryVisible": true,
+    "reloadVerification": "Final original page reload initiated; subsequent CUA/CDP input and screenshot timed out, not confirmed. Identical preview reload passed."
+  },
+  "limits": [
+    "Legacy V1-V6 migration and storage faults unit tested; not forced in browser",
+    "No all-season or all-renderer visual acceptance",
+    "No subjective audio acceptance",
+    "No game state injection",
+    "No commit or push"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/screenshots/pond-polish-bank.jpg",
+      "bytes": 27448,
+      "sha256": "85afe7c90e4703e3b58e582ffcd200056562b9c75fbf16bf7105e64987e18007"
+    },
+    {
+      "path": "docs/screenshots/pond-escape-reason.jpg",
+      "bytes": 25065,
+      "sha256": "d60841870764cb33c9b7c35ac3f98abf556903da21628a9fa3c30a0a607d4313"
+    },
+    {
+      "path": "docs/screenshots/pond-first-catch.jpg",
+      "bytes": 25636,
+      "sha256": "4db8c5922dee9dcc16002bd6f1174532f5c7d3f474d3d6b2d8c1c51717b114c5"
+    },
+    {
+      "path": "docs/screenshots/pond-journal-reloaded.jpg",
+      "bytes": 24032,
+      "sha256": "2282fc3439f9332bdaf456824b3cf8f1f0bce3ac48b3fa1c5245943b7984dcaa"
+    },
+    {
+      "path": "docs/screenshots/pond-original-bank.jpg",
+      "bytes": 42082,
+      "sha256": "c7c7ab71ee868035a78bf48476d708172881853ad0068c4320d7defbc34ad8e2"
+    },
+    {
+      "path": "docs/screenshots/pond-original-tab-close.jpg",
+      "bytes": 36228,
+      "sha256": "807bd32340f648f0c9b77cb1025e8dfa34aec6f648900a97b5765b08e15c5a4a"
+    },
+    {
+      "path": "docs/screenshots/pond-original-catch-final.jpg",
+      "bytes": 36494,
+      "sha256": "9657c4773671d56a055378c2c36ebbce7d7b15393b53982af042383b9539b887"
+    },
+    {
+      "path": "docs/screenshots/pond-original-delivered-final.jpg",
+      "bytes": 34623,
+      "sha256": "c91d4699d3b9b4e39699f7737ae1f395a8505cc1e043d0326e60a21827ed97eb"
+    },
+    {
+      "path": "docs/screenshots/pond-original-reward-final.jpg",
+      "bytes": 43147,
+      "sha256": "fba5bfc68f9172e3fb77f9f12be732967f970cbfd4966fc2f54b6ab45b365b17"
+    },
+    {
+      "path": "docs/screenshots/pond-original-inventory-final.jpg",
+      "bytes": 34191,
+      "sha256": "10d6830a63ae9102a852288682b569f0e8dd5dfa5123456d9407c0cecf224d63"
+    }
+  ]
+}

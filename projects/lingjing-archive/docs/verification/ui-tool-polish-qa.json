@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-19",
+  "branch": "feature/beta-guidance",
+  "head": "68da6e0a576d802fc1544cdd940330de176d9630",
+  "scopeSourceSha256": {
+    "tests/wood-panel.test.ts": "C68C61E5DFA55ED8B31A080D6D03903CD606343872E511FC1938321B56C5D790",
+    "tests/tool-shortcut.test.ts": "C026CB4471CD270D2C029AC374B6D277189FFD5176F41FCAB8FB5358DF331900",
+    "src/ui/woodPanel.ts": "07D865EAC45706DC5278281E9A88E091D3F8725C009CB2DB971CEEF00134D00D",
+    "src/game/scenes/ExplorationScene.ts": "AA40C6349021389632A05B61353C85DFC4F9CEA9721BB3A73AB6813E9C281A9D",
+    "src/game/systems/toolShortcut.ts": "0025F683D7663DDCAE2988782CB7C82D6D082C22B134F5E809968650E98BF3D0",
+    "src/game/scenes/FarmScene.ts": "FE2B9C0DAEB8923870AD057F6BC4ACB3050262CFFC7C787B766BA9E83EAE45E9"
+  },
+  "checks": {
+    "testFilesPassed": 55,
+    "testsPassed": 851,
+    "typecheckAndProductionBuildExitCode": 0,
+    "viteModules": 86,
+    "existingWarning": "Phaser dependency chunk exceeds 500kB",
+    "diffCheckBeforeDocs": 0
+  },
+  "browser": {
+    "origin": "http://127.0.0.1:5182/index.html",
+    "source": "original project, independent fresh QA save; no state injection",
+    "steps": [
+      "Enter/WASD, two separate decorated cells tilled, watered, planted with ordinary Space",
+      "E merchant accept 3 gifted seeds, 3 -> 2 -> 1; energy 100 -> 95 -> 90, gold500",
+      "natural farm -> forest -> farm -> town; refresh and Continue retains fields, seeds, energy",
+      "initial integration: watering notice -> L -> W5seconds -> visible Close button -> notice remains",
+      "final scroll fix: untilled watering error -> L -> W5seconds -> Space activates focused Close button -> notice remains, energy90",
+      "final return farm view, L paused"
+    ],
+    "waterPauseMs": 5111,
+    "waterPauseScreensIdentical": true,
+    "finalPauseMs": 5057,
+    "finalPauseScreensIdentical": true,
+    "runtimeErrors": []
+  },
+  "limitations": [
+    "Actual canvas mouse click not executed: AXWebArea cannot hit-test; tool paths tested using new product Space shortcut",
+    "No forced Canvas/WebGL comparison, no pixel-perfect Canvas boundary claim",
+    "No forced background/all-season new smoke tests",
+    "Forest before screenshot is night, after screenshot is morning; not a palette-matching comparison",
+    "Merchant name can obscure nearby soil; north cell validation avoids it"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/screenshots/ui-forest-ui-before.jpg",
+      "bytes": 49484,
+      "sha256": "c167dab61eb64edd707f0d094d83e899412603f48ca9ada2377a75520e10cedf"
+    },
+    {
+      "path": "docs/screenshots/ui-forest-ui-after.jpg",
+      "bytes": 62218,
+      "sha256": "bf0a20280900a80737af02b3d958b74abac9c8d4e5251f427d31b76e7b4bcaad"
+    },
+    {
+      "path": "docs/screenshots/ui-town-ui-after.jpg",
+      "bytes": 54793,
+      "sha256": "bfab2d975d9144c911d368a57421cbbda9cf8d1e7652a3015906c93eb5d0cf16"
+    },
+    {
+      "path": "docs/screenshots/ui-farm-ui-final.jpg",
+      "bytes": 43004,
+      "sha256": "8c5a0905229eb1bcf3a673e91888426113f295afda9c000bb3b5cd2185fd69ad"
+    },
+    {
+      "path": "docs/screenshots/ui-north-flowers-before.jpg",
+      "bytes": 38327,
+      "sha256": "b5066d51f84e8d700a03499f684bed82506d11cefdc66d445d0b54cc69d652c0"
+    },
+    {
+      "path": "docs/screenshots/ui-north-flowers-tilled.jpg",
+      "bytes": 38320,
+      "sha256": "b65974f6d7c899799727f6988dda70da694d1a589c013059cebfa0c585a7ac1a"
+    },
+    {
+      "path": "docs/screenshots/ui-north-flowers-planted.jpg",
+      "bytes": 36992,
+      "sha256": "4c9ab8cf40232a2d905de6685708533f7ab9cfc7a3ae33426f371187fecc6e3d"
+    },
+    {
+      "path": "docs/screenshots/ui-water-notice.jpg",
+      "bytes": 40399,
+      "sha256": "08db57f3fb8bb57371001d81d044b5d0008c4b15564756ee5c5ddc666e08bd32"
+    },
+    {
+      "path": "docs/screenshots/ui-notice-resumed.jpg",
+      "bytes": 40402,
+      "sha256": "82cf025757c779afc9126be65105bb533ee56617caec60dd8ee03dcaa2c4f5ee"
+    },
+    {
+      "path": "docs/screenshots/ui-paused-before.jpg",
+      "bytes": 36144,
+      "sha256": "42c46a9fddb708307b766275f13e50f140dddfa6e26579a3df8c580a840dc2bf"
+    },
+    {
+      "path": "docs/screenshots/ui-paused-five-seconds.jpg",
+      "bytes": 36144,
+      "sha256": "42c46a9fddb708307b766275f13e50f140dddfa6e26579a3df8c580a840dc2bf"
+    },
+    {
+      "path": "docs/screenshots/ui-final-paused-before.jpg",
+      "bytes": 37258,
+      "sha256": "590d9a61eadd39b8a058951d6e75a35b562c463006f6a5025146ee55c1474bb2"
+    },
+    {
+      "path": "docs/screenshots/ui-final-paused-five-seconds.jpg",
+      "bytes": 37258,
+      "sha256": "590d9a61eadd39b8a058951d6e75a35b562c463006f6a5025146ee55c1474bb2"
+    },
+    {
+      "path": "docs/screenshots/ui-final-notice-resumed.jpg",
+      "bytes": 41747,
+      "sha256": "cb27b800067c21e2e7f0f8c4b526a1a2981634b58d259569ad85c76831a99fc8"
+    }
+  ],
+  "git": {
+    "committed": false,
+    "pushed": false,
+    "pr": null,
+    "release": null
+  }
+}

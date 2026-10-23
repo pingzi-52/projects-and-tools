@@ -1,0 +1,766 @@
+{
+ "meta": {
+  "name": "Pixel Top-down Farm Tileset",
+  "tile_size": 16,
+  "image": "spritesheet.png",
+  "count": 108
+ },
+ "frames": {
+  "grass_1": {
+   "x": 0,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_2": {
+   "x": 16,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_3": {
+   "x": 32,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_dark": {
+   "x": 48,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_autumn": {
+   "x": 64,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_flowers_white": {
+   "x": 80,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_flowers_red": {
+   "x": 96,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "grass_flowers_blue": {
+   "x": 112,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "dirt_1": {
+   "x": 128,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "dirt_2": {
+   "x": 144,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "sand": {
+   "x": 160,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "path_gravel": {
+   "x": 176,
+   "y": 0,
+   "w": 16,
+   "h": 16,
+   "category": "ground"
+  },
+  "soil_tilled_dry": {
+   "x": 0,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "soil"
+  },
+  "soil_tilled_wet": {
+   "x": 16,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "soil"
+  },
+  "soil_plain_dry": {
+   "x": 32,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "soil"
+  },
+  "soil_plain_wet": {
+   "x": 48,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "soil"
+  },
+  "water_1": {
+   "x": 64,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "water_2": {
+   "x": 80,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "water_3": {
+   "x": 96,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "water_edge_n": {
+   "x": 112,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "water_edge_s": {
+   "x": 128,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "water_edge_e": {
+   "x": 144,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "water_edge_w": {
+   "x": 160,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "water"
+  },
+  "soil_edge_top": {
+   "x": 176,
+   "y": 16,
+   "w": 16,
+   "h": 16,
+   "category": "soil"
+  },
+  "wheat_stage1": {
+   "x": 0,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "wheat_stage2": {
+   "x": 16,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "wheat_stage3": {
+   "x": 32,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "wheat_stage4": {
+   "x": 48,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "carrot_stage1": {
+   "x": 64,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "carrot_stage2": {
+   "x": 80,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "carrot_stage3": {
+   "x": 96,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "carrot_stage4": {
+   "x": 112,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "tomato_stage1": {
+   "x": 128,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "tomato_stage2": {
+   "x": 144,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "tomato_stage3": {
+   "x": 160,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "tomato_stage4": {
+   "x": 176,
+   "y": 32,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "pumpkin_stage1": {
+   "x": 0,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "pumpkin_stage2": {
+   "x": 16,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "pumpkin_stage3": {
+   "x": 32,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "pumpkin_stage4": {
+   "x": 48,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "corn_stage1": {
+   "x": 64,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "corn_stage2": {
+   "x": 80,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "corn_stage3": {
+   "x": 96,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "corn_stage4": {
+   "x": 112,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "strawberry_stage1": {
+   "x": 128,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "strawberry_stage2": {
+   "x": 144,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "strawberry_stage3": {
+   "x": 160,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "strawberry_stage4": {
+   "x": 176,
+   "y": 48,
+   "w": 16,
+   "h": 16,
+   "category": "crops"
+  },
+  "fence_horizontal": {
+   "x": 0,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "fence_vertical": {
+   "x": 16,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "fence_post": {
+   "x": 32,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "fence_end_left": {
+   "x": 48,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "fence_end_right": {
+   "x": 64,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "gate_closed": {
+   "x": 80,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "gate_open": {
+   "x": 96,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "fences"
+  },
+  "hay_bale": {
+   "x": 112,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "haystack": {
+   "x": 128,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "barrel": {
+   "x": 144,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "crate": {
+   "x": 160,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "scarecrow": {
+   "x": 176,
+   "y": 64,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "signpost": {
+   "x": 0,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "well": {
+   "x": 16,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "bucket": {
+   "x": 32,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "mailbox": {
+   "x": 48,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "wheelbarrow": {
+   "x": 64,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "trough": {
+   "x": 80,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "props"
+  },
+  "bush": {
+   "x": 96,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "berry_bush": {
+   "x": 112,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "rock": {
+   "x": 128,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "stump": {
+   "x": 144,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "log": {
+   "x": 160,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "mushroom": {
+   "x": 176,
+   "y": 80,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "lily_pad": {
+   "x": 0,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "tree_oak": {
+   "x": 16,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "tree_apple": {
+   "x": 32,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "tree_orange": {
+   "x": 48,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "tree_autumn": {
+   "x": 64,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "flower_red": {
+   "x": 80,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "flower_yellow": {
+   "x": 96,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "flower_blue": {
+   "x": 112,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "flower_pink": {
+   "x": 128,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "nature"
+  },
+  "hoe": {
+   "x": 144,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "tools"
+  },
+  "watering_can": {
+   "x": 160,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "tools"
+  },
+  "shovel": {
+   "x": 176,
+   "y": 96,
+   "w": 16,
+   "h": 16,
+   "category": "tools"
+  },
+  "axe": {
+   "x": 0,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "tools"
+  },
+  "scythe": {
+   "x": 16,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "tools"
+  },
+  "seeds_wheat": {
+   "x": 32,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "harvest_wheat": {
+   "x": 48,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "seeds_carrot": {
+   "x": 64,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "harvest_carrot": {
+   "x": 80,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "seeds_tomato": {
+   "x": 96,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "harvest_tomato": {
+   "x": 112,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "seeds_pumpkin": {
+   "x": 128,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "harvest_pumpkin": {
+   "x": 144,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "seeds_corn": {
+   "x": 160,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "harvest_corn": {
+   "x": 176,
+   "y": 112,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "seeds_strawberry": {
+   "x": 0,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "harvest_strawberry": {
+   "x": 16,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "egg_basket": {
+   "x": 32,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "milk_bottle": {
+   "x": 48,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "items"
+  },
+  "chicken_1": {
+   "x": 64,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "chicken_2": {
+   "x": 80,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "cow_1": {
+   "x": 96,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "cow_2": {
+   "x": 112,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "pig_1": {
+   "x": 128,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "pig_2": {
+   "x": 144,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "sheep_1": {
+   "x": 160,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  },
+  "sheep_2": {
+   "x": 176,
+   "y": 128,
+   "w": 16,
+   "h": 16,
+   "category": "animals"
+  }
+ }
+}

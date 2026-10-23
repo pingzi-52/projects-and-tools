@@ -1,0 +1,137 @@
+{
+  "clock_fixture": "07:10 for a same-lighting before/after comparison, not elapsed-time evidence.",
+  "four_approaches": [
+    {
+      "facing": "right",
+      "target": {
+        "tileId": "8_13",
+        "row": 8,
+        "col": 13,
+        "key": "soil"
+      },
+      "bounds": {
+        "type": 5,
+        "x": 417,
+        "y": 257,
+        "width": 30,
+        "height": 30
+      },
+      "visible": true
+    },
+    {
+      "facing": "down",
+      "target": {
+        "tileId": "8_13",
+        "row": 8,
+        "col": 13,
+        "key": "soil"
+      },
+      "bounds": {
+        "type": 5,
+        "x": 417,
+        "y": 257,
+        "width": 30,
+        "height": 30
+      },
+      "visible": true
+    },
+    {
+      "facing": "left",
+      "target": {
+        "tileId": "8_13",
+        "row": 8,
+        "col": 13,
+        "key": "soil"
+      },
+      "bounds": {
+        "type": 5,
+        "x": 417,
+        "y": 257,
+        "width": 30,
+        "height": 30
+      },
+      "visible": true
+    },
+    {
+      "facing": "up",
+      "target": {
+        "tileId": "8_13",
+        "row": 8,
+        "col": 13,
+        "key": "soil"
+      },
+      "bounds": {
+        "type": 5,
+        "x": 417,
+        "y": 257,
+        "width": 30,
+        "height": 30
+      },
+      "visible": true
+    }
+  ],
+  "tool_hit": {
+    "farm": {
+      "8_13": {
+        "id": "8_13",
+        "tilled": true,
+        "watered": true
+      }
+    },
+    "highlight": {
+      "type": 5,
+      "x": 417,
+      "y": 257,
+      "width": 30,
+      "height": 30
+    },
+    "soil": [
+      {
+        "x": 416,
+        "y": 256,
+        "frame": "wet_0_1_0_0",
+        "cropW": 91
+      },
+      {
+        "x": 432,
+        "y": 256,
+        "frame": "wet_1_1_1_0",
+        "cropW": 91
+      },
+      {
+        "x": 416,
+        "y": 272,
+        "frame": "wet_0_1_0_1",
+        "cropW": 91
+      },
+      {
+        "x": 432,
+        "y": 272,
+        "frame": "wet_1_1_1_1",
+        "cropW": 91
+      }
+    ]
+  },
+  "moving_alignment": {
+    "samples": 93,
+    "all_zero_offset": true
+  },
+  "npc": {
+    "sx": 0.040145985401459854,
+    "sy": 0.040145985401459854,
+    "width": 23.124087591240876,
+    "height": 44,
+    "sourceWidth": 576,
+    "sourceHeight": 1096,
+    "bodyWidth": 32,
+    "bodyHeight": 28
+  },
+  "reentry": {
+    "post": 3,
+    "e": 1,
+    "bodyCount": 1
+  },
+  "menu_hides_target": true,
+  "reload_preserves_farm": true,
+  "version": 5
+}

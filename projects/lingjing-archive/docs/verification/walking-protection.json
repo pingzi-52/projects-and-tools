@@ -1,0 +1,16 @@
+{
+  "oldCropsProtected": true,
+  "newTillHidesPath": true,
+  "originalFenceNotFarmable": true,
+  "homeJournalReadOnly": true,
+  "fadeMinutes": [
+    1210,
+    1210,
+    1210,
+    1210,
+    1210,
+    1210,
+    1210
+  ],
+  "hiddenTestVerified": true
+}

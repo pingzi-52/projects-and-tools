@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-19",
+  "source": "original-project-after-guarded-sync",
+  "origin": "http://127.0.0.1:5178/index.html",
+  "inputs": "normal Enter/WASD/E/L and visible close button",
+  "stateInjection": false,
+  "personal5175StorageAccessed": false,
+  "harvestOrder": [
+    "stone_c",
+    "wood_c",
+    "stone_a",
+    "mushroom_b",
+    "stone_b"
+  ],
+  "finalVisibleState": {
+    "branch": 1,
+    "stone": 3,
+    "wild_mushroom": 1,
+    "picked": "5/9",
+    "energy": 90,
+    "gold": 500
+  },
+  "checks": {
+    "fivePreviouslyCoveredResources": "reachable-and-collected",
+    "canopyFadeAndRestore": "observed-near-restored-screenshots",
+    "journalMovementPause": "W held 1.2 seconds, full screenshot buffers byte-identical",
+    "forestFarmForestCrossing": "passed-with-materials-picked-energy-retained"
+  },
+  "runtimeErrors": [],
+  "screenshots": [
+    {
+      "path": "docs/screenshots/forest-canopy-faded.jpg",
+      "bytes": 62136,
+      "sha256": "4d48aa265ed3958c15f1d1958d61f67917fcca3c8197a8ac5a3c92c4d8798f5d"
+    },
+    {
+      "path": "docs/screenshots/forest-canopy-near.jpg",
+      "bytes": 63402,
+      "sha256": "10d330806f0a288b0c54327c7501bb12dcff484fc4fc8d97acd2a11b33d8980e"
+    },
+    {
+      "path": "docs/screenshots/forest-canopy-restored.jpg",
+      "bytes": 63741,
+      "sha256": "6db25042437f6eb364e2b62314cabd54677db9e3c1fe366dd5f905d0f50b4b04"
+    },
+    {
+      "path": "docs/screenshots/forest-entry.jpg",
+      "bytes": 64469,
+      "sha256": "751d3dc48a0855e8b1281261a2c01e84a66d6d86525022499e8f2b23f0b85477"
+    },
+    {
+      "path": "docs/screenshots/forest-journal-paused.jpg",
+      "bytes": 37025,
+      "sha256": "189024f8c3f91b20df8d9872bfcbabd335ca14f081a1df05d13d352a711e9c7d"
+    },
+    {
+      "path": "docs/screenshots/forest-mushroom-b-after.jpg",
+      "bytes": 64320,
+      "sha256": "fc0090965f6acba88c88c331f392a7db0f0321c8f8ffd6c9f025d608451f346c"
+    },
+    {
+      "path": "docs/screenshots/forest-mushroom-b-before.jpg",
+      "bytes": 63988,
+      "sha256": "15a41a7d609d18bca18c0bd52e2d1cb6c2c5375d771ee251cf852a971bbb7bc5"
+    },
+    {
+      "path": "docs/screenshots/forest-reentry-journal.jpg",
+      "bytes": 36917,
+      "sha256": "a1374ec78525235679f9c91663357e13f278c272b972b9d27910a586232753ea"
+    },
+    {
+      "path": "docs/screenshots/forest-return-farm.jpg",
+      "bytes": 43992,
+      "sha256": "15e01a75794ddfc247da9f899d9dada90195a5529b619e8a850239c89f0c1076"
+    },
+    {
+      "path": "docs/screenshots/forest-stone-a-after.jpg",
+      "bytes": 64060,
+      "sha256": "a667b7e68075daff208de1d4639d890586042cf77287f2d0510ff991b40c78a3"
+    },
+    {
+      "path": "docs/screenshots/forest-stone-a-before.jpg",
+      "bytes": 64060,
+      "sha256": "a667b7e68075daff208de1d4639d890586042cf77287f2d0510ff991b40c78a3"
+    },
+    {
+      "path": "docs/screenshots/forest-stone-b-after.jpg",
+      "bytes": 63784,
+      "sha256": "9a7d349c94ec0254e2b28c36cf083cb6a9de6368091b938f63075e9cc5cf4e36"
+    },
+    {
+      "path": "docs/screenshots/forest-stone-b-before.jpg",
+      "bytes": 63201,
+      "sha256": "1bd39da525871beaef7df9129f50c9a2da3063f3597af6eb747f68680fa5cc34"
+    },
+    {
+      "path": "docs/screenshots/forest-stone-c-after.jpg",
+      "bytes": 63991,
+      "sha256": "19b868de3b071fda57fec34c55542dd7539c53cc8cdf1857124d536d2cb5d188"
+    },
+    {
+      "path": "docs/screenshots/forest-stone-c-before.jpg",
+      "bytes": 64019,
+      "sha256": "77615eb923c7e78028b648132ed10f1db29113d30aa90b2abe1a43757384f877"
+    },
+    {
+      "path": "docs/screenshots/forest-wood-c-after.jpg",
+      "bytes": 65261,
+      "sha256": "7ac892eb720757b32e91eecb20040bb988d903f2e129bdbe6fce37837255cce8"
+    },
+    {
+      "path": "docs/screenshots/forest-wood-c-before.jpg",
+      "bytes": 64861,
+      "sha256": "8a2a34c9b3286db0c019d1437ed06e6f3c79b7a78e3f57848ba89019b0abf2a0"
+    }
+  ],
+  "limits": [
+    "no forced background test",
+    "no reload persistence test this round",
+    "no internal listener or object counts",
+    "precise fade alpha and duration unit-tested, not read from live game",
+    "immediate post-key screenshots may precede next render; final HUD/journal confirms collection"
+  ],
+  "git": "uncommitted-unpushed-no-release"
+}

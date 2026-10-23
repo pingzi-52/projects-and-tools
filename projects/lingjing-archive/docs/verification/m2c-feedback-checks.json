@@ -1,0 +1,347 @@
+{
+  "unlock": {
+    "before": {
+      "contextBeforeGesture": false,
+      "settings": {
+        "version": 1,
+        "muted": false,
+        "sfxVolume": 0.5,
+        "ambienceVolume": 0.16
+      },
+      "noPhaserAudio": true
+    },
+    "after": {
+      "context": "running",
+      "paused": true,
+      "voices": 0,
+      "ambience": 0,
+      "settings": true
+    },
+    "headless_focus_fixture": true
+  },
+  "listening_note": "Real WebAudio output measured via a processing-tap diagnostic branch in headless Chrome; not subjective human listening. Probe branch outputs silence and does not duplicate sound.",
+  "test_sound_output": {
+    "peak": 0.0406772755086422,
+    "rms": 0.004176622904249049,
+    "samples": 33792
+  },
+  "native_slider": {
+    "settings": {
+      "version": 1,
+      "muted": false,
+      "sfxVolume": 0.49,
+      "ambienceVolume": 0.16
+    },
+    "stored": {
+      "version": 1,
+      "muted": false,
+      "sfxVolume": 0.49,
+      "ambienceVolume": 0.16
+    },
+    "focused": "sfx"
+  },
+  "mute_output": {
+    "peak": 0,
+    "rms": 0,
+    "samples": 38912
+  },
+  "settings_reload": {
+    "version": 1,
+    "muted": true,
+    "sfxVolume": 0.49,
+    "ambienceVolume": 0.16
+  },
+  "old_v5_preserved": true,
+  "initial_hotbar": [
+    {
+      "index": 0,
+      "texture": "farm-icons-v1",
+      "frame": "hoe",
+      "visible": true,
+      "x": 130,
+      "w": 24,
+      "count": ""
+    },
+    {
+      "index": 1,
+      "texture": "farm-icons-v1",
+      "frame": "watering_can",
+      "visible": true,
+      "x": 166,
+      "w": 24,
+      "count": ""
+    },
+    {
+      "index": 2,
+      "texture": "farm-icons-v1",
+      "frame": "dew_radish",
+      "visible": true,
+      "x": 202,
+      "w": 24,
+      "count": "2"
+    },
+    {
+      "index": 3,
+      "texture": "icon_empty",
+      "frame": "__BASE",
+      "visible": false,
+      "x": 238,
+      "w": 24,
+      "count": ""
+    },
+    {
+      "index": 4,
+      "texture": "icon_empty",
+      "frame": "__BASE",
+      "visible": false,
+      "x": 274,
+      "w": 24,
+      "count": ""
+    },
+    {
+      "index": 5,
+      "texture": "icon_empty",
+      "frame": "__BASE",
+      "visible": false,
+      "x": 310,
+      "w": 24,
+      "count": ""
+    },
+    {
+      "index": 6,
+      "texture": "icon_empty",
+      "frame": "__BASE",
+      "visible": false,
+      "x": 346,
+      "w": 24,
+      "count": ""
+    },
+    {
+      "index": 7,
+      "texture": "icon_empty",
+      "frame": "__BASE",
+      "visible": false,
+      "x": 382,
+      "w": 24,
+      "count": ""
+    }
+  ],
+  "settings_pause_and_keys": {
+    "unchanged_game_save": true,
+    "position": {
+      "x": 400,
+      "y": 432
+    },
+    "daily": {
+      "minute": 360,
+      "energy": 100
+    }
+  },
+  "preferences_failure": {
+    "muted_in_session": true,
+    "status": "当前会话生效，刷新后可能丢失",
+    "game_save_unchanged": true
+  },
+  "footsteps": [
+    {
+      "cue": "step",
+      "emitted": true,
+      "paused": false,
+      "at": 11253.5
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11302.699999988079
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11352.400000035763
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11402.699999988079
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11452.699999988079
+    },
+    {
+      "cue": "step",
+      "emitted": true,
+      "paused": false,
+      "at": 11503.5
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11553
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11603
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11653
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11702.5
+    },
+    {
+      "cue": "step",
+      "emitted": true,
+      "paused": false,
+      "at": 11753.100000023842
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11802.5
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11852.699999988079
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11902.5
+    },
+    {
+      "cue": "step",
+      "emitted": false,
+      "paused": false,
+      "at": 11952.600000023842
+    },
+    {
+      "cue": "step",
+      "emitted": true,
+      "paused": false,
+      "at": 12002.699999988079
+    }
+  ],
+  "purchase": {
+    "gold": 570,
+    "seeds": 5,
+    "image": {
+      "w": 197,
+      "h": 221,
+      "srcLength": 103646
+    },
+    "sound": [
+      {
+        "cue": "coin",
+        "emitted": true,
+        "paused": true,
+        "at": 12427.5
+      }
+    ]
+  },
+  "actions": {
+    "hoe": [
+      {
+        "cue": "hoe",
+        "emitted": true,
+        "paused": false,
+        "at": 12977.699999988079
+      }
+    ],
+    "plant": [
+      {
+        "cue": "plant",
+        "emitted": true,
+        "paused": false,
+        "at": 13350.900000035763
+      }
+    ],
+    "water": [
+      {
+        "cue": "water",
+        "emitted": true,
+        "paused": false,
+        "at": 13567.699999988079
+      }
+    ],
+    "remaining_seeds": 4,
+    "hotbar_count": "4"
+  },
+  "grown_harvest": {
+    "day": 9,
+    "crop_count": 3,
+    "harvest": [
+      {
+        "cue": "harvest",
+        "emitted": true,
+        "paused": false,
+        "at": 20041
+      }
+    ],
+    "door_count": 8,
+    "sleep_count": 4
+  },
+  "hidden_fixture": {
+    "muted_immediately": true,
+    "state_unchanged": true,
+    "ambience_resumed": 1
+  },
+  "cleanup": {
+    "voices": 0,
+    "ambience": 1,
+    "mListeners": 1,
+    "post": 2,
+    "settingsOverlays": 0,
+    "errors": []
+  },
+  "title_cleanup": {
+    "ambience": 0,
+    "voices": 0,
+    "context": "running"
+  },
+  "rain_transition_fixture": {
+    "note": "Explicit day6 fixture after the actual 4-night farming test; no extra crop growth injected.",
+    "farm": {
+      "mode": "farm",
+      "weather": "rain",
+      "ambience": 2,
+      "context": "running"
+    },
+    "home": {
+      "mode": "home",
+      "weather": "rain",
+      "ambience": 1
+    },
+    "after3roundtrips": {
+      "sameContext": true,
+      "voices": 0,
+      "ambience": 2,
+      "m": 1,
+      "post": 2,
+      "errors": []
+    }
+  },
+  "settings_bounds": {
+    "width": 420,
+    "height": 294.5,
+    "fits": true
+  }
+}

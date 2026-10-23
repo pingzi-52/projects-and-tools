@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "scale": "1",
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "image": "forage-v1.png"
+  },
+  "frames": {
+    "branch": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "y": 71,
+        "h": 355,
+        "x": 88,
+        "w": 370
+      },
+      "spriteSourceSize": {
+        "y": 7,
+        "h": 355,
+        "x": 0,
+        "w": 370
+      },
+      "sourceSize": {
+        "w": 370,
+        "h": 370
+      }
+    },
+    "stone": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "y": 140,
+        "h": 257,
+        "x": 597,
+        "w": 344
+      },
+      "spriteSourceSize": {
+        "y": 43,
+        "h": 257,
+        "x": 0,
+        "w": 344
+      },
+      "sourceSize": {
+        "w": 344,
+        "h": 344
+      }
+    },
+    "wild_mushroom": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "y": 113,
+        "h": 303,
+        "x": 1120,
+        "w": 317
+      },
+      "spriteSourceSize": {
+        "y": 7,
+        "h": 303,
+        "x": 0,
+        "w": 317
+      },
+      "sourceSize": {
+        "w": 317,
+        "h": 317
+      }
+    },
+    "mushroom_meal": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "y": 558,
+        "h": 364,
+        "x": 70,
+        "w": 420
+      },
+      "spriteSourceSize": {
+        "y": 28,
+        "h": 364,
+        "x": 0,
+        "w": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "farm_lantern": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "y": 458,
+        "h": 511,
+        "x": 644,
+        "w": 226
+      },
+      "spriteSourceSize": {
+        "y": 0,
+        "h": 511,
+        "x": 142,
+        "w": 226
+      },
+      "sourceSize": {
+        "w": 511,
+        "h": 511
+      }
+    },
+    "workbench": {
+      "trimmed": true,
+      "rotated": false,
+      "frame": {
+        "y": 575,
+        "h": 359,
+        "x": 1017,
+        "w": 492
+      },
+      "spriteSourceSize": {
+        "y": 66,
+        "h": 359,
+        "x": 0,
+        "w": 492
+      },
+      "sourceSize": {
+        "w": 492,
+        "h": 492
+      }
+    }
+  }
+}

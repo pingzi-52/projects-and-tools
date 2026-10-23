@@ -1,0 +1,526 @@
+{
+  "migration-check": {
+    "data": {
+      "version": 4,
+      "gold": 777,
+      "day": 1,
+      "inventory": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "hoe",
+            "amount": 1
+          },
+          {
+            "itemId": "watering_can",
+            "amount": 1
+          },
+          {
+            "itemId": "dew_radish_seed",
+            "amount": 3
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "chest": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "morning_bean_seed",
+            "amount": 5
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "farming": [
+        {
+          "id": "8_13",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      ],
+      "daily": {
+        "minute": 360,
+        "energy": 100
+      }
+    },
+    "backup": {
+      "version": 3,
+      "gold": 777,
+      "day": 1,
+      "inventory": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "hoe",
+            "amount": 1
+          },
+          {
+            "itemId": "watering_can",
+            "amount": 1
+          },
+          {
+            "itemId": "dew_radish_seed",
+            "amount": 3
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "chest": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "morning_bean_seed",
+            "amount": 5
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "farming": [
+        {
+          "id": "8_13",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      ]
+    },
+    "life": {
+      "minute": 360,
+      "energy": 100
+    },
+    "hud": "春 · 1日　777 金 · 晴",
+    "lifeHud": "06:00　体力 100/100",
+    "body": [
+      32,
+      28
+    ],
+    "menu": true
+  },
+  "clock-pause-checks": {
+    "realClockStep": {
+      "realElapsedMs": 7488,
+      "minute": 370,
+      "saved": {
+        "minute": 370,
+        "energy": 100
+      }
+    },
+    "menuBefore": {
+      "minute": 370,
+      "energy": 100,
+      "x": 400,
+      "y": 304,
+      "fields": {
+        "8_13": {
+          "id": "8_13",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      }
+    },
+    "menuAfter": {
+      "minute": 370,
+      "energy": 100,
+      "x": 400,
+      "y": 304,
+      "fields": {
+        "8_13": {
+          "id": "8_13",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      }
+    },
+    "controlledVisibilityPause": {
+      "minute": 370,
+      "hidden": false,
+      "energy": 100,
+      "errors": []
+    }
+  },
+  "energy-rest-checks": {
+    "energySteps": [
+      98,
+      98,
+      96,
+      96,
+      95,
+      95
+    ],
+    "seedsLeft": 2,
+    "zeroEnergyUnchanged": {
+      "fields": {
+        "8_13": {
+          "id": "8_13",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        },
+        "14_12": {
+          "id": "14_12",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 0,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "bag": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "hoe",
+            "amount": 1
+          },
+          {
+            "itemId": "watering_can",
+            "amount": 1
+          },
+          {
+            "itemId": "dew_radish_seed",
+            "amount": 2
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "energy": 0
+    },
+    "fatigueToast": "体力不足，回小屋床边休息",
+    "zeroEnergyMovement": {
+      "from": 432,
+      "to": 461.33333333333354
+    },
+    "rest": {
+      "day": 2,
+      "daily": {
+        "minute": 360,
+        "energy": 100
+      },
+      "weather": {
+        "type": "cloudy",
+        "autoWater": false
+      },
+      "crop": {
+        "cropId": "dew_radish",
+        "growthDay": 1,
+        "harvestedCount": 0
+      },
+      "body": [
+        32,
+        28
+      ],
+      "hud": "林缘小屋　春 2日 · 阴　06:00　体力 100　777 金",
+      "indoorRain": 0
+    },
+    "sceneCounts": [
+      {
+        "E": 1,
+        "post": 2,
+        "ambient": 1,
+        "rainGraphics": 1
+      },
+      {
+        "E": 1,
+        "post": 2,
+        "ambient": 1,
+        "rainGraphics": 1
+      },
+      {
+        "E": 1,
+        "post": 2,
+        "ambient": 1,
+        "rainGraphics": 1
+      }
+    ]
+  },
+  "night-rain-checks": {
+    "clockAndEnergyFixtures": "Evening18:50 and late21:50 are controlled fixtures; 21:50->22:00 and following idle/title waits use real elapsed time.",
+    "night": {
+      "day": 2,
+      "daily": {
+        "minute": 1320,
+        "energy": 80
+      },
+      "late": true,
+      "hint": "夜深了 · 回小屋床边按 E 休息",
+      "ambient": 0.35
+    },
+    "rainMorning": {
+      "day": 3,
+      "daily": {
+        "minute": 360,
+        "energy": 100
+      },
+      "weather": {
+        "type": "rain",
+        "autoWater": true
+      },
+      "fields": {
+        "8_13": {
+          "id": "8_13",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 2,
+            "harvestedCount": 0
+          }
+        },
+        "14_12": {
+          "id": "14_12",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "indoorRain": 0
+    },
+    "rainEnergy": [
+      98,
+      98,
+      97
+    ],
+    "rainVisual": {
+      "drops": 36,
+      "commands": 292,
+      "hud": "春 · 3日　777 金 · 雨",
+      "lifeHud": "06:00　体力 97/100"
+    },
+    "sunnyFollowingRain": {
+      "day": 4,
+      "daily": {
+        "minute": 360,
+        "energy": 100
+      },
+      "weather": {
+        "type": "sunny",
+        "autoWater": false
+      },
+      "fields": {
+        "8_13": {
+          "id": "8_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 3,
+            "harvestedCount": 0
+          }
+        },
+        "14_12": {
+          "id": "14_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 2,
+            "harvestedCount": 0
+          }
+        },
+        "14_13": {
+          "id": "14_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "commands": 0
+    }
+  },
+  "save-failure-ui-check": {
+    "warning": "保存失败，请勿关闭页面；检查浏览器存储空间",
+    "warningBottom": 81,
+    "toastTop": 92.78571428571429,
+    "toast": "浇水完成",
+    "energy": 98,
+    "savedStillSame": true,
+    "titleBlockedOnSaveFailure": true
+  },
+  "future-save-check": {
+    "version": 4,
+    "rejected": 5,
+    "day": 4,
+    "gold": 777,
+    "fields": {
+      "8_13": {
+        "id": "8_13",
+        "tilled": true,
+        "watered": false,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 3,
+          "harvestedCount": 0
+        }
+      },
+      "14_12": {
+        "id": "14_12",
+        "tilled": true,
+        "watered": false,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 2,
+          "harvestedCount": 0
+        }
+      },
+      "14_13": {
+        "id": "14_13",
+        "tilled": true,
+        "watered": true,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 1,
+          "harvestedCount": 0
+        }
+      }
+    },
+    "daily": {
+      "minute": 570,
+      "energy": 98
+    }
+  },
+  "validation": {
+    "tests": 360,
+    "testFiles": 26,
+    "build": "TypeScript and Vite53modules pass",
+    "date": "2026-10-15",
+    "fixtures": "LegacyV3 migration, manual clock/energy starts, visibility and storage/future-version failure scenarios are controlled fixtures; farming/bed/menu/recovery actions and specified waits use real CDP input/time."
+  }
+}

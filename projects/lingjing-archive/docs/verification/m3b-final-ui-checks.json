@@ -1,0 +1,18 @@
+{
+  "panel": {
+    "x": 392,
+    "y": 347.703125,
+    "w": 480,
+    "h": 284.796875
+  },
+  "fits": true,
+  "buttons": [
+    "close",
+    "market"
+  ],
+  "quest": {
+    "status": "completed",
+    "cropId": "dew_radish"
+  },
+  "gold": 620
+}

@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-19",
+  "originalProjectUpdated": true,
+  "origin": "http://127.0.0.1:5178/index.html",
+  "tests": {
+    "files": 49,
+    "passed": 795,
+    "new": 44
+  },
+  "build": {
+    "typecheck": "passed",
+    "modules": 81,
+    "warning": "existing-phaser-large-chunk"
+  },
+  "pause": {
+    "elapsedMs": 5335,
+    "input": "W held 5 seconds while L journal open",
+    "screenshotsByteIdentical": true,
+    "noticeAfterClose": "拾得野蘑菇 · 已保存"
+  },
+  "visibleFinalState": {
+    "wild_mushroom": 1,
+    "energy": 98,
+    "gold": 500
+  },
+  "checks": [
+    "compact card visible away from resident",
+    "card hidden near current resident",
+    "guide and carpenter dialogue",
+    "notice preserved through pause then expires during play",
+    "forest-farm-town natural walking",
+    "workshop forecourt lateral walking",
+    "both frontage hints"
+  ],
+  "runtimeErrors": [],
+  "stateInjection": false,
+  "personal5175StorageAccessed": false,
+  "screenshots": [
+    {
+      "path": "docs/screenshots/polish-carpenter-focus.jpg",
+      "bytes": 49377,
+      "sha256": "f6815b7af81ef8ddfa3a56ddf9339d00b7f99c783fe63c0b1fdc351a24bfb18f"
+    },
+    {
+      "path": "docs/screenshots/polish-forest-hud.jpg",
+      "bytes": 61326,
+      "sha256": "7ef6120dc8253283d3267404895b7e58513a583392cb05450c686748e76f9e7e"
+    },
+    {
+      "path": "docs/screenshots/polish-notice-after-pause.jpg",
+      "bytes": 60288,
+      "sha256": "2a4500733e6942d5cefc2f1b6e22a29e0f4e897995c856c7f551be18a705726d"
+    },
+    {
+      "path": "docs/screenshots/polish-paused-before.jpg",
+      "bytes": 37047,
+      "sha256": "1855db816c7e395674367f128361e6e2d6040878e23980dc5a35bb5e83926d8d"
+    },
+    {
+      "path": "docs/screenshots/polish-paused-five-seconds.jpg",
+      "bytes": 37047,
+      "sha256": "1855db816c7e395674367f128361e6e2d6040878e23980dc5a35bb5e83926d8d"
+    },
+    {
+      "path": "docs/screenshots/polish-resident-focus.jpg",
+      "bytes": 59724,
+      "sha256": "64fb26f244b350cc0e9062d6bb6651cbe4b74e911a247980d57848c8179b1f7f"
+    },
+    {
+      "path": "docs/screenshots/polish-return-farm.jpg",
+      "bytes": 29768,
+      "sha256": "3212e5a13fd9f67a6510497c137879825957b9b1fe851125e1864baee4aa85aa"
+    },
+    {
+      "path": "docs/screenshots/polish-town-before.jpg",
+      "bytes": 56135,
+      "sha256": "ec744815589ad4181a2f9b5079556ae4487ffe0be43cc7b28e3143758088404c"
+    },
+    {
+      "path": "docs/screenshots/polish-town-hall-after.jpg",
+      "bytes": 53682,
+      "sha256": "08c0d1eeb561a9e90d8e08e0863bb555861a41f660a2f70bc58ce7787a0ffa32"
+    },
+    {
+      "path": "docs/screenshots/polish-town-workshop-after.jpg",
+      "bytes": 53318,
+      "sha256": "855b8edda1282ad70333d79753ad182c6e051ce201d429e0ee680c285bddd0d5"
+    }
+  ],
+  "limits": [
+    "no forced background test",
+    "no full night live test",
+    "no live enumeration of all quest statuses",
+    "farm toast tween not changed"
+  ],
+  "git": {
+    "branch": "feature/beta-guidance",
+    "committed": false,
+    "pushed": false,
+    "released": false
+  }
+}

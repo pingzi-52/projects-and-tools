@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "format": "RGBA8888",
+    "image": "residents-v1.png",
+    "scale": "1",
+    "size": {
+      "w": 1774,
+      "h": 887
+    }
+  },
+  "frames": {
+    "guide": {
+      "trimmed": false,
+      "spriteSourceSize": {
+        "y": 0,
+        "w": 334,
+        "x": 0,
+        "h": 830
+      },
+      "rotated": false,
+      "sourceSize": {
+        "w": 334,
+        "h": 830
+      },
+      "frame": {
+        "y": 34,
+        "w": 334,
+        "x": 272,
+        "h": 830
+      }
+    },
+    "carpenter": {
+      "trimmed": false,
+      "spriteSourceSize": {
+        "y": 0,
+        "w": 383,
+        "x": 0,
+        "h": 847
+      },
+      "rotated": false,
+      "sourceSize": {
+        "w": 383,
+        "h": 847
+      },
+      "frame": {
+        "y": 16,
+        "w": 383,
+        "x": 1128,
+        "h": 847
+      }
+    }
+  }
+}

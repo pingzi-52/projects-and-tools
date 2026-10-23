@@ -1,0 +1,82 @@
+{
+  "frames": {
+    "workshop": {
+      "frame": {
+        "x": 11,
+        "y": 203,
+        "w": 790,
+        "h": 679
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 790,
+        "h": 679
+      },
+      "sourceSize": {
+        "w": 790,
+        "h": 679
+      }
+    },
+    "hall": {
+      "frame": {
+        "x": 808,
+        "y": 152,
+        "w": 717,
+        "h": 746
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 717,
+        "h": 746
+      },
+      "sourceSize": {
+        "w": 717,
+        "h": 746
+      }
+    }
+  },
+  "meta": {
+    "app": "Lingjing Archives original town architecture",
+    "version": "1",
+    "image": "town-buildings-v1.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "scale": "1",
+    "imageSha256": "f0d25138b2f429c5d6dea6fc7fad0566775066136951dd3289a85531ad60dde7",
+    "measurements": {
+      "workshop": {
+        "alphaThreshold": 20,
+        "crop": [
+          11,
+          203,
+          790,
+          679
+        ]
+      },
+      "hall": {
+        "alphaThreshold": 20,
+        "crop": [
+          808,
+          152,
+          717,
+          746
+        ]
+      }
+    },
+    "alpha": {
+      "min": 0,
+      "max": 254,
+      "fullyTransparent": 725127,
+      "partiallyTransparent": 847737
+    }
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "frames": {
+    "TX Shadow Tree T3": {
+      "frame": {
+        "x": 48,
+        "y": 100,
+        "w": 86,
+        "h": 52
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 86,
+        "h": 52
+      },
+      "sourceSize": {
+        "w": 86,
+        "h": 52
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Bush T6": {
+      "frame": {
+        "x": 348,
+        "y": 198,
+        "w": 41,
+        "h": 29
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 41,
+        "h": 29
+      },
+      "sourceSize": {
+        "w": 41,
+        "h": 29
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Tree T1": {
+      "frame": {
+        "x": 304,
+        "y": 111,
+        "w": 74,
+        "h": 40
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 74,
+        "h": 40
+      },
+      "sourceSize": {
+        "w": 74,
+        "h": 40
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Tree T2": {
+      "frame": {
+        "x": 172,
+        "y": 105,
+        "w": 83,
+        "h": 46
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 83,
+        "h": 46
+      },
+      "sourceSize": {
+        "w": 83,
+        "h": 46
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Bush T1": {
+      "frame": {
+        "x": 39,
+        "y": 207,
+        "w": 22,
+        "h": 12
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 12
+      },
+      "sourceSize": {
+        "w": 22,
+        "h": 12
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Bush T5": {
+      "frame": {
+        "x": 285,
+        "y": 209,
+        "w": 38,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 38,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Bush T2": {
+      "frame": {
+        "x": 99,
+        "y": 205,
+        "w": 28,
+        "h": 17
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 28,
+        "h": 17
+      },
+      "sourceSize": {
+        "w": 28,
+        "h": 17
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Bush T4": {
+      "frame": {
+        "x": 220,
+        "y": 205,
+        "w": 48,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    },
+    "TX Shadow Bush T3": {
+      "frame": {
+        "x": 160,
+        "y": 206,
+        "w": 37,
+        "h": 17
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 37,
+        "h": 17
+      },
+      "sourceSize": {
+        "w": 37,
+        "h": 17
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 1.0
+      }
+    }
+  },
+  "meta": {
+    "image": "TX Shadow Plant.png",
+    "size": {
+      "w": 512,
+      "h": 512
+    },
+    "scale": "1"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "milestone": "local small playable beta",
+  "date": "2026-10-15",
+  "build": {"command": "npm run build", "passed": true, "modules": 70, "warning": "Phaser vendor chunk exceeds 500kB; not a build error"},
+  "tests": {"command": "npm test -- --run", "passed": 644, "files": 38, "failed": 0},
+  "browser": {"isolatedProfile": true, "origin": "http://127.0.0.1:5175", "focusEmulation": true, "runtimeErrorsObserved": [], "missingGameResourcesObserved": [], "userBrowserStorageTouched": false},
+  "journey": {
+    "gameDays": [1, 2, 3, 4, 5],
+    "realInputs": ["plant", "water", "sleep", "harvest", "quest acceptance and delivery", "gather", "craft", "eat", "sell", "travel", "title continue", "page reload"],
+    "positionFixtures": "Some long-route checks reset the physics body before real E/mouse actions; one forest walk to guide used actual WASD from entry.",
+    "visualClockFixture": "21:30 used only to inspect lighting and permanent lantern, then restored to 07:00.",
+    "noInjectedProgress": ["crop growth", "forage inventory", "quest completion", "gold rewards"],
+    "startingGold": 500,
+    "afterForestQuest": 580,
+    "afterCarpenterQuest": 720,
+    "afterIntroQuest": 840,
+    "afterSellingTwoBranches": 848,
+    "crop": "dew_radish at 8_13: growthDay0 through growthDay4 after four watered nights; actual E harvest and delivery",
+    "allThreeQuestsCompleted": true,
+    "mealCraftedAndEaten": true,
+    "lanternBuiltAndPersisted": true,
+    "dailyNodesGathered": 9,
+    "duplicateGatherRefusedWithoutEnergyOrItemsChange": true,
+    "sleepResetsAllNodes": true
+  },
+  "failureFixtures": {
+    "saveWriteFailure": "Storage.prototype.setItem threw only for the game save key in the isolated profile; restored immediately after assertions.",
+    "gatherRollback": true,
+    "craftRollback": true,
+    "travelStaysInCurrentArea": true,
+    "zeroEnergyMealRestores25": true,
+    "modalBlocksMovementAndTime": true,
+    "nestedModalBlocked": true
+  },
+  "saveCompatibility": {
+    "realV5ReloadMigration": true,
+    "oldFieldsCompared": ["gold", "day", "daily", "inventory", "nonempty chest", "farming", "introQuest"],
+    "rawV5BackupPreserved": true,
+    "futureV7EnterDoesNotOverwrite": true,
+    "explicitRRecoveryPreservesRejectedRaw": true,
+    "earnedV6StateSurvivesActualReload": true,
+    "maxLegalDaySleepDoesNotMutateState": "Covered by new regression in exploration-session.test.ts"
+  },
+  "sceneLifecycle": {
+    "roundTrips": 3,
+    "EListenersPerActiveArea": 1,
+    "LListenersPerActiveArea": 1,
+    "dynamicBodiesPerArea": 1,
+    "postUpdateListeners": {"farm": 3, "forest": 2, "town": 2},
+    "staticBodies": {"farm": 146, "forest": 495, "town": 250},
+    "allCountsStableAcrossRoundTrips": true,
+    "realForestWalk": {"from": [496, 656], "to": [464, 533.3333333333351], "residentDialogOpenedByE": true}
+  },
+  "protectedFiles": {"farm01TsGitDiffEmpty": true, "placeholderAssetsTsGitDiffEmpty": true, "soilAlignmentFixRetained": true},
+  "art": {"sourcePngBytesUnmodified": true, "rgbaTransparentCorners": true, "atlasCropsWithinBounds": true, "forageFrames": 6, "residentFrames": 2, "uniformNpcDisplayHeight": 44, "lanternHeight": 46, "nightGlowAlpha": 0.18, "nightGlowFillAlpha": 1, "nativePixelGridCertified": false},
+  "release": {"committed": false, "pushed": false, "published": false},
+  "limits": ["Local desktop Chrome verification only", "No independent player playtime or economy balancing study", "Static new residents; no schedules or relationship system", "Town buildings are exterior only", "Forest composition and seasonal art still need polish"]
+}

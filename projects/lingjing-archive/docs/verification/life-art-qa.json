@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-19",
+  "method": "Real keyboard and DOM UI, independent 5176 save; no game-state/coordinate/inventory injection",
+  "merchantPortrait": {
+    "naturalHeight": 364,
+    "naturalWidth": 206,
+    "srcIsData": true
+  },
+  "screenshots": [
+    "life-merchant-greet.jpg",
+    "life-merchant-idle.jpg"
+  ],
+  "carpenterPortrait": {
+    "naturalHeight": 380,
+    "naturalWidth": 199,
+    "srcIsData": true
+  },
+  "dialoguePauseImageIdentical": true,
+  "guidePortrait": {
+    "naturalHeight": 392,
+    "naturalWidth": 210,
+    "srcIsData": true
+  },
+  "errors": [],
+  "portraitsAllNewAtlas": true,
+  "route": "farm -> town -> farm -> forest -> farm",
+  "observed": [
+    "Three original NPC idle/greeting poses rendered at existing feet positions",
+    "Workshop red open frontage and hall green stone frontage observed independently",
+    "Original workshop side collision blocks leftward traversal",
+    "Town dialogue pause remained byte-identical during 1.2 seconds W input"
+  ],
+  "limits": [
+    "Blink timing and invalid-atlas fallback verified by unit tests; no runtime frame-counter injection",
+    "No forced background visibility or repeated internal object-count sampling",
+    "This phase adds no NPC walking schedule or building interior"
+  ],
+  "dialoguesAfterReturn": 1
+}

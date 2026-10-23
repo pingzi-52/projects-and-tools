@@ -1,0 +1,241 @@
+{
+  "operation-checks": [
+    {
+      "id": "7_13",
+      "data": {
+        "id": "7_13",
+        "tilled": true,
+        "watered": true
+      },
+      "frames": [
+        "wet_0_0_0_0",
+        "wet_1_0_1_0",
+        "wet_0_1_0_1",
+        "wet_1_1_1_1"
+      ]
+    },
+    {
+      "id": "7_14",
+      "data": {
+        "id": "7_14",
+        "tilled": true,
+        "watered": false
+      },
+      "frames": [
+        "dry_1_0_0_0",
+        "dry_1_0_1_0",
+        "dry_1_1_0_1",
+        "dry_1_1_1_1"
+      ]
+    },
+    {
+      "id": "7_15",
+      "data": {
+        "id": "7_15",
+        "tilled": true,
+        "watered": false
+      },
+      "frames": [
+        "dry_1_0_0_0",
+        "dry_1_0_1_0",
+        "dry_1_1_0_1",
+        "dry_1_1_1_1"
+      ]
+    },
+    {
+      "id": "8_13",
+      "data": {
+        "id": "8_13",
+        "tilled": true,
+        "watered": true,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 0,
+          "harvestedCount": 0
+        }
+      },
+      "frames": [
+        "wet_0_1_0_0",
+        "wet_1_1_1_0",
+        "wet_0_1_0_1",
+        "wet_1_1_1_1"
+      ]
+    },
+    {
+      "id": "8_14",
+      "data": {
+        "id": "8_14",
+        "tilled": true,
+        "watered": false,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 0,
+          "harvestedCount": 0
+        }
+      },
+      "frames": [
+        "dry_1_1_0_0",
+        "dry_1_1_1_0",
+        "dry_1_1_0_1",
+        "dry_1_1_1_1"
+      ]
+    },
+    {
+      "id": "8_15",
+      "data": {
+        "id": "8_15",
+        "tilled": true,
+        "watered": false,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 0,
+          "harvestedCount": 0
+        }
+      },
+      "frames": [
+        "dry_1_1_0_0",
+        "dry_1_1_1_0",
+        "dry_1_1_0_1",
+        "dry_1_1_1_1"
+      ]
+    },
+    {
+      "id": "12_10",
+      "data": {
+        "id": "12_10",
+        "tilled": true,
+        "watered": false
+      },
+      "frames": [
+        "dry_0_0_0_0",
+        "dry_2_0_1_0",
+        "dry_0_2_0_1",
+        "dry_2_2_1_1"
+      ]
+    },
+    {
+      "id": "6_13",
+      "data": {
+        "id": "6_13",
+        "tilled": true,
+        "watered": false
+      },
+      "frames": [
+        "dry_0_0_0_0",
+        "dry_2_0_1_0",
+        "dry_0_1_0_1",
+        "dry_2_1_1_1"
+      ]
+    }
+  ],
+  "persistence-checks": {
+    "restoredUnchangedV3": {
+      "gold": 450,
+      "day": 1,
+      "count": 34,
+      "frames": [
+        "wet_0_1_0_0",
+        "wet_1_1_1_0",
+        "wet_0_1_0_1",
+        "wet_1_1_1_1"
+      ],
+      "crop": "dew_radish_seed"
+    },
+    "night": {
+      "day": 2,
+      "tiles": {
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false
+        },
+        "7_15": {
+          "id": "7_15",
+          "tilled": true,
+          "watered": false
+        },
+        "8_13": {
+          "id": "8_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        },
+        "8_14": {
+          "id": "8_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 0,
+            "harvestedCount": 0
+          }
+        },
+        "8_15": {
+          "id": "8_15",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 0,
+            "harvestedCount": 0
+          }
+        },
+        "12_10": {
+          "id": "12_10",
+          "tilled": true,
+          "watered": false
+        },
+        "6_13": {
+          "id": "6_13",
+          "tilled": true,
+          "watered": false
+        }
+      },
+      "soil": [
+        "dry_0_1_0_0",
+        "dry_1_1_1_0",
+        "dry_0_1_0_1",
+        "dry_1_1_1_1"
+      ],
+      "crop": "dew_radish_sprout"
+    },
+    "counts": [
+      {
+        "cells": 34,
+        "quarters": 136,
+        "E": 1,
+        "post": 2
+      },
+      {
+        "cells": 34,
+        "quarters": 136,
+        "E": 1,
+        "post": 2
+      },
+      {
+        "cells": 34,
+        "quarters": 136,
+        "E": 1,
+        "post": 2
+      }
+    ]
+  },
+  "fallback-check": {
+    "ready": false,
+    "legacyOverlays": 8,
+    "cells": 0,
+    "gold": 450,
+    "day": 2,
+    "cropCount": 3,
+    "version": 3
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "height": 1024,
+    "asset": "forage-v1",
+    "frames": 6,
+    "sha256": "79A9B32E8E019E0D8D1DBF1F7B98E704EC5711AFC7A0E2CEF85B4E988134F86C",
+    "width": 1536,
+    "cornerAlpha": 0,
+    "format": "Format32bppArgb"
+  },
+  {
+    "height": 887,
+    "asset": "residents-v1",
+    "frames": 2,
+    "sha256": "D150F45E1FF433A31104122CA1A8164C04DB4248759ABAF6B658E336FD5269FA",
+    "width": 1774,
+    "cornerAlpha": 0,
+    "format": "Format32bppArgb"
+  }
+]

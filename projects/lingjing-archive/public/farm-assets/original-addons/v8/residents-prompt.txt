@@ -1,0 +1,23 @@
+INITIAL GENERATION (identity/style draft)
+
+Use case: stylized-concept.
+Asset type: original transparent animated NPC sprite atlas for the cozy farming game Lingjing Archives.
+Input reference 1 is the existing female woodland guide (left) and male carpenter (right): preserve their identity, clothes and colors. Input reference 2 is the existing merchant: preserve green floppy cap, brown beard, ochre vest, rusty red scarf, cream sleeves, brown boots and satchel. References are identity references only: redraw all three into one CONSISTENT compact pixel-game sprite style, around 2.5 to 3 heads tall, neither long portrait proportions nor realistic anatomy.
+Deliver ONE genuine transparent RGBA PNG sprite sheet, exactly 3 columns by 3 rows in a square canvas. Equal invisible square cells, no grid lines, no text, no labels, no checkerboard painted into image. Each sprite centered in its cell with equal comfortable transparent margins. The three sprites in EACH ROW are the exact same character at exactly the same position, scale, front-facing angle, head/body coordinates, and shoe baseline. Character visible height equal across all nine cells. Crisp clean pixel clusters, small dark warm outline, limited harmonious warm palette, no noisy over-rendering, readable when displayed 44px tall.
+ROW 1: merchant from reference 2 repeated three times.
+ROW 2: female guide from LEFT reference 1, short brown bob hair, olive green shoulder cape, cream puff-sleeve shirt, green trousers, brown boots and mushroom satchel.
+ROW 3: carpenter from RIGHT reference 1, tousled brown hair and short brown beard, cream rolled-up sleeves, blue-gray apron, brown trousers, work boots and tool belt.
+COLUMN 1: neutral relaxed standing, both eyes open, both arms down.
+COLUMN 2: SAME neutral standing, only change eyes to CLOSED blink; absolutely no face/head/body/feet motion.
+COLUMN 3: SAME standing position and face and feet, eyes open, only raise ONE forearm gently at side in a friendly small greeting. Do not wave above head, keep cap/hair unchanged. No tools held in hand.
+Very important animation registration: do not move, turn, rotate, tilt, bounce, resize, lean or shift any head/body/feet between columns. Feet planted, aligned bottom baseline per row, no walking, no jumping. ALL background pixels truly alpha zero. No ground, contact shadow, ambient shadow, glow, particles, scenery, frames, emblems, watermark or lettering.
+
+TARGETED CORRECTION (selected final output)
+
+Use case: identity-preserve. Edit target: reference image 1 (the nine-character animation sheet). Supporting identity references: reference 2 female woodland guide and carpenter; reference 3 green-hat merchant.
+Produce a corrected 3x3 nine-sprite transparent game animation sheet. Preserve the charming pixel sprites and three identities from image 1 and preserve their clothing/face/hair colors from supporting references. FIX ONLY proportions and alignment:
+All nine sprites should be equally compact 2.5 to 3 heads tall, with the same visual standing height. In particular shorten the guide's body/legs to the same compact proportions as the merchant. These are little map game sprites displayed 44px tall, not portraits. Enlarge the carpenter head modestly for consistency.
+STRICT equal 3 columns x 3 rows layout. Canvas 1536x1536 if possible. Each invisible square cell 512x512. The standing body center for each column is exactly x=256,768,1280. The foot baseline for each row exactly y=480,992,1504. All cells have same transparent top and bottom margin. Character standing height exactly 410 pixels. No character overlaps a neighboring cell. The left column must be centered in its own cell, not pushed toward the middle of the page.
+Row 1 merchant, row 2 guide, row 3 carpenter. Column 1 idle with open eyes and arms down; column 2 same exact idle pose with eyes closed; column 3 same exact idle pose with one forearm slightly raised in a friendly hello. For each row, head/body/legs/feet/hat positions are LOCKED identically across all 3 columns; only eyelids and forearm can change. No bouncing, leaning, perspective change, walking, turn or resized frames. The feet remain planted and level.
+Keep green floppy cap/ochre vest/rust scarf/brown beard on merchant; green cape/short brown bob/cream sleeves/olive trousers/mushroom satchel on guide; brown hair/beard/blue-gray work apron/toolbelt on carpenter. Crisp warm pixel-game clusters, no soft painterly noise.
+Genuine transparent RGBA background, alpha zero outside sprites, no checkerboard, no ground shadow, no glow, no grid/labels/text/watermark. Output image pixels as a sprite sheet with exactly the requested 9 sprites.

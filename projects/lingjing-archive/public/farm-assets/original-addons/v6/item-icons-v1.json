@@ -1,0 +1,514 @@
+{
+  "frames": {
+    "hoe": {
+      "frame": {
+        "y": 38,
+        "w": 225,
+        "x": 36,
+        "h": 238
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 225,
+        "x": 6.0,
+        "h": 238
+      },
+      "sourceSize": {
+        "h": 238,
+        "w": 238
+      }
+    },
+    "watering_can": {
+      "frame": {
+        "y": 49,
+        "w": 267,
+        "x": 289,
+        "h": 200
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 33.0,
+        "w": 267,
+        "x": 0.0,
+        "h": 200
+      },
+      "sourceSize": {
+        "h": 267,
+        "w": 267
+      }
+    },
+    "gold": {
+      "frame": {
+        "y": 78,
+        "w": 167,
+        "x": 568,
+        "h": 172
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 167,
+        "x": 2.0,
+        "h": 172
+      },
+      "sourceSize": {
+        "h": 172,
+        "w": 172
+      }
+    },
+    "dew_radish_seed": {
+      "frame": {
+        "y": 46,
+        "w": 197,
+        "x": 782,
+        "h": 221
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 197,
+        "x": 12.0,
+        "h": 221
+      },
+      "sourceSize": {
+        "h": 221,
+        "w": 221
+      }
+    },
+    "dew_radish": {
+      "frame": {
+        "y": 34,
+        "w": 211,
+        "x": 1027,
+        "h": 240
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 211,
+        "x": 14.0,
+        "h": 240
+      },
+      "sourceSize": {
+        "h": 240,
+        "w": 240
+      }
+    },
+    "morning_bean_seed": {
+      "frame": {
+        "y": 292,
+        "w": 199,
+        "x": 44,
+        "h": 222
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 199,
+        "x": 11.0,
+        "h": 222
+      },
+      "sourceSize": {
+        "h": 222,
+        "w": 222
+      }
+    },
+    "morning_bean": {
+      "frame": {
+        "y": 292,
+        "w": 224,
+        "x": 279,
+        "h": 217
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 3.0,
+        "w": 224,
+        "x": 0.0,
+        "h": 217
+      },
+      "sourceSize": {
+        "h": 224,
+        "w": 224
+      }
+    },
+    "starberry_seed": {
+      "frame": {
+        "y": 292,
+        "w": 200,
+        "x": 530,
+        "h": 222
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 200,
+        "x": 11.0,
+        "h": 222
+      },
+      "sourceSize": {
+        "h": 222,
+        "w": 222
+      }
+    },
+    "starberry": {
+      "frame": {
+        "y": 304,
+        "w": 214,
+        "x": 768,
+        "h": 211
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 1.0,
+        "w": 214,
+        "x": 0.0,
+        "h": 211
+      },
+      "sourceSize": {
+        "h": 214,
+        "w": 214
+      }
+    },
+    "ember_tomato_seed": {
+      "frame": {
+        "y": 292,
+        "w": 199,
+        "x": 1025,
+        "h": 222
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 199,
+        "x": 11.0,
+        "h": 222
+      },
+      "sourceSize": {
+        "h": 222,
+        "w": 222
+      }
+    },
+    "ember_tomato": {
+      "frame": {
+        "y": 553,
+        "w": 196,
+        "x": 40,
+        "h": 193
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 1.0,
+        "w": 196,
+        "x": 0.0,
+        "h": 193
+      },
+      "sourceSize": {
+        "h": 196,
+        "w": 196
+      }
+    },
+    "blue_melon_seed": {
+      "frame": {
+        "y": 535,
+        "w": 201,
+        "x": 287,
+        "h": 224
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 201,
+        "x": 11.0,
+        "h": 224
+      },
+      "sourceSize": {
+        "h": 224,
+        "w": 224
+      }
+    },
+    "blue_melon": {
+      "frame": {
+        "y": 532,
+        "w": 200,
+        "x": 532,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 200,
+        "x": 8.0,
+        "h": 216
+      },
+      "sourceSize": {
+        "h": 216,
+        "w": 216
+      }
+    },
+    "gold_corn_seed": {
+      "frame": {
+        "y": 535,
+        "w": 200,
+        "x": 781,
+        "h": 223
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 200,
+        "x": 11.0,
+        "h": 223
+      },
+      "sourceSize": {
+        "h": 223,
+        "w": 223
+      }
+    },
+    "gold_corn": {
+      "frame": {
+        "y": 529,
+        "w": 203,
+        "x": 1033,
+        "h": 232
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 203,
+        "x": 14.0,
+        "h": 232
+      },
+      "sourceSize": {
+        "h": 232,
+        "w": 232
+      }
+    },
+    "amber_pumpkin_seed": {
+      "frame": {
+        "y": 772,
+        "w": 202,
+        "x": 44,
+        "h": 218
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 202,
+        "x": 8.0,
+        "h": 218
+      },
+      "sourceSize": {
+        "h": 218,
+        "w": 218
+      }
+    },
+    "amber_pumpkin": {
+      "frame": {
+        "y": 778,
+        "w": 215,
+        "x": 283,
+        "h": 207
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 4.0,
+        "w": 215,
+        "x": 0.0,
+        "h": 207
+      },
+      "sourceSize": {
+        "h": 215,
+        "w": 215
+      }
+    },
+    "leaf_cabbage_seed": {
+      "frame": {
+        "y": 771,
+        "w": 202,
+        "x": 534,
+        "h": 219
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 202,
+        "x": 8.0,
+        "h": 219
+      },
+      "sourceSize": {
+        "h": 219,
+        "w": 219
+      }
+    },
+    "leaf_cabbage": {
+      "frame": {
+        "y": 794,
+        "w": 207,
+        "x": 777,
+        "h": 191
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 8.0,
+        "w": 207,
+        "x": 0.0,
+        "h": 191
+      },
+      "sourceSize": {
+        "h": 207,
+        "w": 207
+      }
+    },
+    "moon_grape_seed": {
+      "frame": {
+        "y": 772,
+        "w": 200,
+        "x": 1027,
+        "h": 219
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 200,
+        "x": 9.0,
+        "h": 219
+      },
+      "sourceSize": {
+        "h": 219,
+        "w": 219
+      }
+    },
+    "moon_grape": {
+      "frame": {
+        "y": 1007,
+        "w": 209,
+        "x": 55,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 209,
+        "x": 3.0,
+        "h": 216
+      },
+      "sourceSize": {
+        "h": 216,
+        "w": 216
+      }
+    },
+    "snow_flower_seed": {
+      "frame": {
+        "y": 1005,
+        "w": 202,
+        "x": 286,
+        "h": 221
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 202,
+        "x": 9.0,
+        "h": 221
+      },
+      "sourceSize": {
+        "h": 221,
+        "w": 221
+      }
+    },
+    "snow_flower": {
+      "frame": {
+        "y": 1006,
+        "w": 226,
+        "x": 524,
+        "h": 221
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 2.0,
+        "w": 226,
+        "x": 0.0,
+        "h": 221
+      },
+      "sourceSize": {
+        "h": 226,
+        "w": 226
+      }
+    },
+    "ice_grass_seed": {
+      "frame": {
+        "y": 1005,
+        "w": 204,
+        "x": 786,
+        "h": 222
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 0.0,
+        "w": 204,
+        "x": 9.0,
+        "h": 222
+      },
+      "sourceSize": {
+        "h": 222,
+        "w": 222
+      }
+    },
+    "ice_grass": {
+      "frame": {
+        "y": 1011,
+        "w": 214,
+        "x": 1029,
+        "h": 210
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "y": 2.0,
+        "w": 214,
+        "x": 0.0,
+        "h": 210
+      },
+      "sourceSize": {
+        "h": 214,
+        "w": 214
+      }
+    }
+  },
+  "meta": {
+    "size": {
+      "h": 1241,
+      "w": 1268
+    },
+    "image": "item-icons-v1.png",
+    "format": "RGBA8888",
+    "app": "Lingjing Archives original art",
+    "scale": "1"
+  }
+}

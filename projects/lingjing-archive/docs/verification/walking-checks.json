@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-15",
+  "scope": "Replace menu teleports with physical two-tile road crossings: forest <-> farm <-> town",
+  "build": {"passed": true, "modules": 72},
+  "tests": {"files": 39, "passed": 657, "failed": 0},
+  "journal": {"readOnly": true, "buttons": 1, "travelCallbacks": false, "homeRequiresNormalDoorExit": true},
+  "naturalWalk": {"fromInitialFarmSpawn": true, "allFourDirections": true, "arrivalPositions": {"forestFromFarm": [944,576], "farmFromForest": [80,448], "townFromFarm": [80,448], "farmFromTown": [1072,448]}, "noGoldItemsEnergyDateOrQuestMutation": true},
+  "protection": {"heldKeyDoesNotBounce": true, "saveFailureStaysInArea": true, "nonExitFenceBlocks": true, "menuBlocksMovementAndCrossing": true, "hiddenTabBlocksCrossingAndClock": true, "fadeClockMinutes": [1210,1210,1210,1210,1210,1210,1210], "oldCropAndTilledPlotPathsHidden": true, "newTillingHidesRoad": true, "originalFenceCellCannotBeFarmed": true},
+  "continuedPlay": {"realMushroomPickup": true, "pickedNodeAndEnergyPersistAcrossRoads": true, "realCarpenterQuestAcceptancePersistsAcrossRoads": true, "saveSchemaChanged": false, "sourceFarm01Changed": false},
+  "forestMouth": {"boundaryWidthTiles": 2, "extraInteriorClearing": {"rows": [19,20], "cols": [27,28,29,30]}, "boundaryTreesPreserved": true, "playerVisibleOnArrivalScreenshot": true},
+  "sceneCycles": {"roundTrips": 3, "EListeners": 1, "LListeners": 1, "dynamicBodies": 1, "stablePostUpdate": {"farm": 3, "forest": 2, "town": 2}, "stableStaticBodies": {"farm": 142, "forest": 481, "town": 246}},
+  "browserFixtures": ["Isolated Chrome profile, no user browser storage touched", "First four crossings use real walking from farm spawn without position changes", "Additional regression cycles use position fixtures followed by real direction keys", "Old save crop at 13_2 and tilled plot at 14_3 are explicit fixtures using existing optional crop schema", "Visibility uses official focus emulation; production visibility behavior is not patched"],
+  "preview": {"url": "http://127.0.0.1:5175/index.html", "pid": 78964, "staleDevCacheRemovedByIdentityCheckedRestart": true, "freshSourceHasNoTravelCallback": true},
+  "release": {"committed": false, "pushed": false, "published": false},
+  "limitations": ["Short fade transitions between separate Phaser scenes; not one streaming world", "Read-only region journal has no graphical world map", "Chrome desktop validation; external player feedback pending"]
+}

@@ -1,0 +1,109 @@
+"""识图工具 - 支持 Agnes / Kimi
+用法: python see.py <图片路径> [提示词] [--kimi] [--agnes] [--dir ...]
+"""
+import io, sys, os
+
+import requests
+import base64
+import json
+from pathlib import Path
+
+# 强制 UTF-8 输出（兼容 GBK 终端）
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except:
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+# 从统一配置加载
+from config import BACKENDS as _CONFIG_BACKENDS
+
+BACKENDS = {}
+for _name, _cfg in _CONFIG_BACKENDS.items():
+    if _name in ("agnes", "kimi", "zhipu"):
+        BACKENDS[_name] = {
+            "url": _cfg["url"],
+            "key": _cfg["api_key"],
+            "model": _cfg["model"],
+            "free": _name != "kimi",
+        }
+
+
+def identify(image_path, prompt="", backend="agnes"):
+    cfg = BACKENDS[backend]
+
+    path = Path(image_path)
+    if not path.exists():
+        print(f"文件不存在: {image_path}")
+        return
+
+    with open(path, "rb") as f:
+        raw = f.read()
+
+    # 超过 500KB 缩图
+    if len(raw) > 500 * 1024:
+        try:
+            from PIL import Image
+            img = Image.open(io.BytesIO(raw))
+            w, h = img.size
+            if w > 1024 or h > 1024:
+                scale = min(1024/w, 1024/h)
+                img = img.resize((int(w*scale), int(h*scale)), Image.LANCZOS)
+                buf = io.BytesIO()
+                img.save(buf, format='PNG')
+                raw = buf.getvalue()
+        except:
+            pass
+
+    ext = path.suffix.lower()
+    mime = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+            ".gif": "image/gif", ".webp": "image/webp"}
+    mime_type = mime.get(ext, "image/png")
+    b64 = base64.b64encode(raw).decode()
+
+    final_prompt = prompt or "请用中文描述这张图片"
+
+    resp = requests.post(cfg["url"], headers={
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {cfg['key']}"
+    }, json={
+        "model": cfg["model"],
+        "messages": [{"role": "user", "content": [
+            {"type": "text", "text": final_prompt},
+            {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{b64}"}}
+        ]}],
+        "max_tokens": 512
+    }, timeout=60)
+
+    if resp.status_code != 200:
+        print(f"错误({backend}): {resp.status_code} {resp.text[:200]}")
+        return
+
+    data = resp.json()
+    reply = data["choices"][0]["message"]["content"]
+    print(reply)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("用法: python see.py <图片路径> [提示词] [--kimi] [--agnes] [--dir ...]")
+        sys.exit(1)
+
+    img = sys.argv[1]
+    prompt = ""
+    backend = "agnes"  # 默认使用 Agnes
+
+    args = sys.argv[2:]
+    for i, a in enumerate(args):
+        if a == "--kimi":
+            backend = "kimi"
+        elif a == "--agnes":
+            backend = "agnes"
+        elif not a.startswith("--"):
+            prompt = a
+        # 其他以 -- 开头的参数（如 --dir）会被忽略，不会影响提示词
+
+    name = BACKENDS[backend]["model"]
+    free = BACKENDS[backend]["free"]
+    print(f"[{name}] {'免费' if free else '¥收费'}")
+    identify(img, prompt, backend)

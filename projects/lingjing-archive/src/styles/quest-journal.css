@@ -1,0 +1,33 @@
+.farm-menu-panel.quest-journal {
+  width: calc(100% - 32px);
+  max-width: 480px;
+  max-height: min(360px, calc(100% - 24px));
+  padding: 8px;
+  gap: 6px;
+}
+.quest-journal .farm-menu-header { flex: 0 0 auto; gap: 8px; }
+.quest-journal .farm-menu-header h2 { font-size: 16px; letter-spacing: 1px; }
+.quest-journal .farm-menu-header button { flex: 0 0 auto; padding: 3px 7px; }
+.quest-journal-body { display: flex; flex-direction: column; gap: 5px; overflow-y:auto; min-height:0; }
+.quest-journal-route {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  flex: 0 0 auto; padding: 2px 0 4px; border-bottom: 1px solid #bda57d;
+}
+.quest-journal-area { font-size: 11px; color: #796448; text-align: center; }
+.quest-journal-area small { display: block; margin-top: 1px; font-size: 9px; }
+.quest-journal-area.is-current { color: #38522e; font-weight: bold; }
+.quest-journal-arrow { font-size: 14px; color: #856339; }
+.quest-journal-home { margin: 0; font-size: 10px; line-height: 1.5; color: #665331; }
+.quest-journal-card { flex: 0 0 auto; padding: 5px 7px; background: #f4e8cb; border: 1px solid #c2aa7e; }
+.quest-journal-card-heading { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.quest-journal-card h3 { margin: 0; font-size: 12px; line-height: 1.5; }
+.quest-journal-resident { flex: 1; min-width: 0; font-size: 9px; color: #796448; }
+.quest-journal-badge { flex: 0 0 auto; padding: 1px 4px; background: #e7d8b7; font-size: 9px; color: #69573c; }
+.quest-journal-card.is-ready .quest-journal-badge { background: #dbe4b9; color: #40542d; }
+.quest-journal-card.is-completed .quest-journal-badge { background: #d9e0ca; color: #546440; }
+.quest-journal-materials { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 10px; line-height: 1.5; color: #795b33; }
+.quest-journal-materials .is-enough { color: #476138; }
+.quest-journal-progress, .quest-journal-next, .quest-journal-forage { margin: 0; font-size: 10px; line-height: 1.5; }
+.quest-journal-progress, .quest-journal-forage { color: #796448; }
+.quest-journal-next { color: #443323; }
+.quest-journal-footer { flex: 0 0 auto; margin: 0; padding-top: 3px; border-top: 1px solid #bda57d; font-size: 9px; line-height: 1.5; color: #76654b; }

@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-19",
+  "originalProjectUpdated": true,
+  "tests": {
+    "files": 53,
+    "passed": 814,
+    "new": 19
+  },
+  "build": {
+    "typecheck": "passed",
+    "modules": 84,
+    "warning": "existing-phaser-large-chunk"
+  },
+  "source": "original-project-after-sha-guard",
+  "origins": {
+    "before": "http://127.0.0.1:5178/index.html",
+    "after": "http://127.0.0.1:5181/index.html"
+  },
+  "checks": [
+    "farm road/flower grouping screenshots",
+    "pond bank screenshot",
+    "entered meadow through south original path",
+    "entered stone clearing around retained rock",
+    "entered mushroom glade and gathered original mushroom_a",
+    "returned forest to farm with mushroom and energy retained"
+  ],
+  "visibleFinalState": {
+    "wild_mushroom": 1,
+    "energy": 98,
+    "gold": 500
+  },
+  "runtimeErrors": [],
+  "stateInjection": false,
+  "existingSavesReset": false,
+  "pending": [
+    "real mouse tilling and decoration hiding"
+  ],
+  "limits": [
+    "canvas click interface did not execute",
+    "before/after lighting and exact camera not frame-matched",
+    "no forced background/all seasons/all nine nodes live test",
+    "existing art reused; no full palette or pixel-density unification"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/screenshots/composition-farm-after.jpg",
+      "bytes": 41219,
+      "sha256": "df1d3ccbc13412c023423e92526a4c5021eb10ecadb734ec12a70207b33acc8b"
+    },
+    {
+      "path": "docs/screenshots/composition-farm-before.jpg",
+      "bytes": 45327,
+      "sha256": "33102d4feb20ebc552fef03d83137a533d6ef0d92b9854278423d4c7718eb5df"
+    },
+    {
+      "path": "docs/screenshots/composition-meadow-after.jpg",
+      "bytes": 59454,
+      "sha256": "f85f9a9f0b705193673fff6b94917ce080dedfe554e3242e96141eefbd94a6f0"
+    },
+    {
+      "path": "docs/screenshots/composition-meadow-before.jpg",
+      "bytes": 60837,
+      "sha256": "c98e56e679de20084fd9771cf13d004c30d01786c3b2bb02621c1d88498186fc"
+    },
+    {
+      "path": "docs/screenshots/composition-meadow-inside.jpg",
+      "bytes": 58520,
+      "sha256": "44d19e3c0a83dae735d94de9bd2f5699ab7558aadec4d555270d3e2447041d3c"
+    },
+    {
+      "path": "docs/screenshots/composition-mushroom-after.jpg",
+      "bytes": 59606,
+      "sha256": "9f0f0953dcedd8f663dc088a52b1347f8b338b004d89687e3157adca11f7507f"
+    },
+    {
+      "path": "docs/screenshots/composition-mushroom-collected.jpg",
+      "bytes": 58365,
+      "sha256": "6adf8ab6077dd611153c2150414ee12327fa947dbf45dd6bfca3883c45de160e"
+    },
+    {
+      "path": "docs/screenshots/composition-pond-after.jpg",
+      "bytes": 41522,
+      "sha256": "c92249ab6856f3d612d02ac823e60494f5552913e71a1f54aa747bb0fd7af359"
+    },
+    {
+      "path": "docs/screenshots/composition-stone-clearing.jpg",
+      "bytes": 56955,
+      "sha256": "2388dacbd2787e383b4622951162bd1cbeb8f4b0694cfd80ab0ba438d863ecec"
+    },
+    {
+      "path": "docs/screenshots/composition-till-before.jpg",
+      "bytes": 36978,
+      "sha256": "7e93401da80bf448abad910e3d09f523d62e039b91c2c2fa363b83e0128f7997"
+    }
+  ],
+  "git": {
+    "branch": "feature/beta-guidance",
+    "committed": false,
+    "pushed": false,
+    "released": false
+  }
+}

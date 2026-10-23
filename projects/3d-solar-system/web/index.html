@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>POINT · CLICK · REACT — 可点击的 3D 场景</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: #03040c; color: #fff;
+    font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  #scene { position: fixed; inset: 0; display: block; cursor: none; }
+  .mono { font-family: "Courier New", ui-monospace, monospace; letter-spacing: 2px; }
+
+  /* --- HUD ------------------------------------------------------------- */
+  #hud { position: fixed; inset: 0; pointer-events: none; }
+  .corner {
+    position: absolute; width: 38px; height: 38px;
+    border: 0 solid #00e5ff; opacity: .45;
+  }
+  .corner.tl { top: 34px; left: 34px; border-top-width: 2px; border-left-width: 2px; }
+  .corner.tr { top: 34px; right: 34px; border-top-width: 2px; border-right-width: 2px; }
+  .corner.bl { bottom: 34px; left: 34px; border-bottom-width: 2px; border-left-width: 2px; }
+  .corner.br { bottom: 34px; right: 34px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  #scan {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: #fff; opacity: .08;
+    animation: scan 3.4s linear infinite;
+  }
+  @keyframes scan { from { top: 0; } to { top: 100%; } }
+
+  #log { position: absolute; left: 78px; top: 96px; font-size: 17px; color: #00e5ff; }
+  #log div { opacity: .95; transition: translate .25s ease, opacity .3s ease; }
+  #log div.active { translate: 14px 0; }
+  #log div.dim { opacity: .35; }
+
+  #readout { position: absolute; right: 78px; top: 96px; text-align: right; font-size: 15px; }
+  #readout .k { opacity: .45; }
+  #readout .v { margin-top: 8px; opacity: .85; }
+
+  #headline {
+    position: absolute; left: 96px; right: 96px; bottom: 96px;
+  }
+  #headline .kicker { font-size: 17px; color: #00e5ff; }
+  #headline h1 {
+    margin: 12px 0 0; font-size: 84px; line-height: 1.04;
+    font-family: "Arial Black", Impact, sans-serif; letter-spacing: -.5px;
+  }
+  #headline p { margin: 16px 0 0; font-size: 25px; color: #bcd2f0; }
+
+  /* --- click response --------------------------------------------------- */
+  #flash {
+    position: absolute; left: 0; right: 0; top: 34%; text-align: center;
+    opacity: 0; pointer-events: none;
+  }
+  #flash .word {
+    font-family: "Arial Black", Impact, sans-serif;
+    font-size: 108px; line-height: 1;
+  }
+  #flash .meta { margin-top: 14px; font-size: 19px; opacity: .75; }
+
+  /* --- hint ------------------------------------------------------------- */
+  #hint {
+    position: fixed; left: 50%; bottom: 34px; translate: -50% 0;
+    font-size: 14px; color: #7f9ac0; opacity: .9;
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: .35; } 50% { opacity: .95; } }
+
+  #loading {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    background: #03040c; z-index: 10; transition: opacity .6s ease;
+  }
+  #loading.gone { opacity: 0; pointer-events: none; }
+  #loading .box { text-align: center; }
+  #loading .bar {
+    width: 260px; height: 2px; background: #10203c; margin: 18px auto 0;
+    overflow: hidden;
+  }
+  #loading .bar i {
+    display: block; height: 100%; width: 40%; background: #00e5ff;
+    animation: slide 1.1s ease-in-out infinite;
+  }
+  @keyframes slide {
+    0% { translate: -100% 0; } 100% { translate: 260% 0; }
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<div id="hud">
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+  <div id="scan"></div>
+  <div id="log" class="mono"></div>
+  <div id="readout" class="mono">
+    <div class="k">CLICK STREAM</div>
+    <div class="v"><span id="clicks">0</span> HITS · <span id="fps">60</span> FPS</div>
+  </div>
+  <div id="headline">
+    <div class="kicker mono">INTERACTIVE 3D · CLICK STREAM</div>
+    <h1>POINT · CLICK · REACT</h1>
+    <p>鼠标移到目标上会高亮，点一下就会引爆 — 内核、环绕体与粒子场同步响应</p>
+  </div>
+  <div id="flash"><div class="word"></div><div class="meta mono"></div></div>
+  <div id="hint" class="mono">点击任意目标 · 拖拽旋转视角 · 滚轮缩放</div>
+</div>
+
+<div id="loading"><div class="box">
+  <div class="mono" style="font-size:13px;color:#5f7ea8">INITIALISING RENDERER</div>
+  <div class="bar"><i></i></div>
+</div></div>
+
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from "three";
+
+// ---------------------------------------------------------------------------
+// Setup
+// ---------------------------------------------------------------------------
+const canvas = document.getElementById("scene");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight, false);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color("#03040c");
+scene.fog = new THREE.Fog("#03040c", 18, 46);
+
+const camera = new THREE.PerspectiveCamera(46, innerWidth / innerHeight, 0.1, 200);
+const camState = { yaw: -0.5, pitch: 1.3, radius: 16, targetYaw: -0.5, targetPitch: 1.3, targetRadius: 16 };
+const pointer = new THREE.Vector2(-10, -10);
+const raycaster = new THREE.Raycaster();
+
+// ---------------------------------------------------------------------------
+// Shared glow texture (radial gradient, additive) — same trick as the video
+// ---------------------------------------------------------------------------
+function radialTexture(stops) {
+  const s = 256;
+  const c = document.createElement("canvas");
+  c.width = c.height = s;
+  const ctx = c.getContext("2d");
+  const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+  for (const [at, col] of stops) g.addColorStop(at, col);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, s, s);
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+const GLOW = radialTexture([
+  [0, "rgba(255,255,255,1)"], [0.16, "rgba(255,255,255,0.6)"],
+  [0.36, "rgba(255,255,255,0.22)"], [0.62, "rgba(255,255,255,0.06)"],
+  [1, "rgba(255,255,255,0)"],
+]);
+
+function glowSprite(color, size, opacity, order = 8) {
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: GLOW, color, transparent: true, opacity,
+    blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false,
+  }));
+  sp.scale.set(size, size, 1);
+  sp.renderOrder = order;
+  return sp;
+}
+
+// ---------------------------------------------------------------------------
+// Lighting
+// ---------------------------------------------------------------------------
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const dir = new THREE.DirectionalLight(0xcfe4ff, 1.5);
+dir.position.set(6, 8, 6);
+scene.add(dir);
+const pinkLight = new THREE.PointLight(0xff2e97, 60, 32);
+const cyanLight = new THREE.PointLight(0x00e5ff, 60, 32);
+const cursorLight = new THREE.PointLight(0xffffff, 22, 16);
+scene.add(pinkLight, cyanLight, cursorLight);
+
+// ---------------------------------------------------------------------------
+// Floor grid
+// ---------------------------------------------------------------------------
+const grid = new THREE.GridHelper(46, 46, 0x1d47ff, 0x0a1a42);
+grid.position.y = -5.5;
+scene.add(grid);
+
+const ringMat = () => new THREE.MeshBasicMaterial({
+  color: 0xffffff, transparent: true, opacity: 0,
+  blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+});
+const rings = [0, 1, 2].map((i) => {
+  const m = new THREE.Mesh(new THREE.RingGeometry(0.95, 1, 96, 1), ringMat());
+  m.rotation.x = -Math.PI / 2;
+  m.position.set(0, -5.47 + i * 0.01, 0);
+  m.visible = false;
+  scene.add(m);
+  return { mesh: m, offset: i * 0.12 };
+});
+
+// ---------------------------------------------------------------------------
+// Particle field
+// ---------------------------------------------------------------------------
+const PALETTE = [0x00e5ff, 0xff2e97, 0xffd166, 0x7c4dff, 0x00ffa3, 0xff6b3d];
+const rand = (s) => { const x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+const P_COUNT = 900;
+const pBase = new Float32Array(P_COUNT * 3);
+const pPos = new Float32Array(P_COUNT * 3);
+const pCol = new Float32Array(P_COUNT * 3);
+const c = new THREE.Color();
+for (let i = 0; i < P_COUNT; i++) {
+  const r = 8 + rand(i * 3.1) * 23;
+  const theta = rand(i * 1.7) * Math.PI * 2;
+  const phi = Math.acos(2 * rand(i * 5.3) - 1);
+  pBase[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+  pBase[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.6;
+  pBase[i * 3 + 2] = r * Math.cos(phi);
+  c.setHex(PALETTE[Math.floor(rand(i * 9.7) * PALETTE.length)]);
+  pCol[i * 3] = c.r; pCol[i * 3 + 1] = c.g; pCol[i * 3 + 2] = c.b;
+}
+const pGeom = new THREE.BufferGeometry();
+pGeom.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
+pGeom.setAttribute("color", new THREE.BufferAttribute(pCol, 3));
+const particles = new THREE.Points(pGeom, new THREE.PointsMaterial({
+  map: GLOW, size: 0.16, vertexColors: true, transparent: true, opacity: 0.9,
+  sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending,
+}));
+particles.frustumCulled = false;
+scene.add(particles);
+
+// ---------------------------------------------------------------------------
+// Core
+// ---------------------------------------------------------------------------
+const core = new THREE.Group();
+const coreShell = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(1.25, 1),
+  new THREE.MeshStandardMaterial({
+    color: 0x050a1c, emissive: 0x1626a8, emissiveIntensity: 0.55,
+    metalness: 0.92, roughness: 0.22, flatShading: true,
+  }),
+);
+const coreInner = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(1.25, 1),
+  new THREE.MeshBasicMaterial({ color: 0x2a5cff, wireframe: true, transparent: true, opacity: 0.5 }),
+);
+coreInner.scale.setScalar(0.72);
+const coreWire = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(1.25, 1),
+  new THREE.MeshBasicMaterial({ color: 0x00e5ff, wireframe: true, transparent: true, opacity: 0.28 }),
+);
+coreWire.scale.setScalar(1.42);
+const coreGlow1 = glowSprite(0x1834ff, 13, 0.5, 1);
+coreGlow1.material.depthTest = true;
+const coreGlow2 = glowSprite(0x7aa8ff, 5.4, 0.34, 2);
+coreGlow2.material.depthTest = true;
+core.add(coreShell, coreInner, coreWire, coreGlow1, coreGlow2);
+
+const shards = [];
+for (let i = 0; i < 26; i++) {
+  const m = new THREE.Mesh(
+    new THREE.TetrahedronGeometry(0.055 + rand(i * 6.2) * 0.08, 0),
+    new THREE.MeshBasicMaterial({ color: PALETTE[i % PALETTE.length], transparent: true, opacity: 0.9 }),
+  );
+  m.userData = { a: rand(i * 4.7) * Math.PI * 2, b: Math.acos(2 * rand(i * 8.1) - 1), ph: rand(i * 3.9) };
+  core.add(m);
+  shards.push(m);
+}
+scene.add(core);
+
+// ---------------------------------------------------------------------------
+// Orbiting clickable satellites
+// ---------------------------------------------------------------------------
+const orbDefs = [0, 1, 2, 3].map((i) => {
+  const color = PALETTE[i % PALETTE.length];
+  const group = new THREE.Group();
+  const body = new THREE.Mesh(
+    new THREE.OctahedronGeometry(1, 0),
+    new THREE.MeshStandardMaterial({
+      color, emissive: color, emissiveIntensity: 0.9,
+      metalness: 0.35, roughness: 0.22, flatShading: true,
+    }),
+  );
+  const box = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color, wireframe: true, transparent: true, opacity: 0.16 }),
+  );
+  const halo = glowSprite(color, 2.4, 0.42, 8);
+  const flash = glowSprite(0xffffff, 1.6, 0, 9);
+  flash.material.depthTest = false;
+  // Invisible, deliberately generous hit volume: the visible octahedron is only
+  // ~20px across on screen and it is always orbiting, so clicking the mesh
+  // itself would be a frustrating pixel-hunt. Raycasting targets this instead.
+  const hit = new THREE.Mesh(
+    new THREE.SphereGeometry(0.72, 10, 8),
+    new THREE.MeshBasicMaterial({ visible: false }),
+  );
+  group.add(halo, body, box, flash, hit);
+  scene.add(group);
+  return {
+    index: i, group, body, box, halo, flash, hit, color,
+    baseScale: 0.25 + i * 0.045,
+    hitAt: -10,
+  };
+});
+
+// ---------------------------------------------------------------------------
+// Core target registration (index 4)
+// ---------------------------------------------------------------------------
+const CORE_TARGET = { index: 4, object: coreShell, hitAt: -10 };
+
+// ---------------------------------------------------------------------------
+// Cursor reticle (drawn in 3D, follows the raycast hit point)
+// ---------------------------------------------------------------------------
+const reticle = new THREE.Group();
+const reticleRing = new THREE.Mesh(
+  new THREE.TorusGeometry(0.34, 0.014, 8, 64),
+  new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, depthTest: false }),
+);
+reticleRing.rotation.x = Math.PI / 2;
+reticleRing.renderOrder = 14;
+const ticks = [0, 1, 2, 3].map((i) => {
+  const m = new THREE.Mesh(
+    new THREE.TorusGeometry(0.5, 0.012, 6, 10, Math.PI / 7),
+    new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.85, depthTest: false }),
+  );
+  m.rotation.x = Math.PI / 2;
+  m.rotation.z = (i * Math.PI) / 2;
+  m.renderOrder = 14;
+  reticle.add(m);
+  return m;
+});
+const reticleGlow = glowSprite(0x00e5ff, 2.6, 0.22, 11);
+const shock = new THREE.Mesh(
+  new THREE.RingGeometry(0.84, 1, 72),
+  new THREE.MeshBasicMaterial({
+    color: 0xffffff, transparent: true, opacity: 0,
+    blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, side: THREE.DoubleSide,
+  }),
+);
+shock.renderOrder = 16;
+reticle.add(reticleRing, reticleGlow, shock);
+reticle.visible = false;
+scene.add(reticle);
+
+// ---------------------------------------------------------------------------
+// Interaction
+// ---------------------------------------------------------------------------
+const targets = [];
+for (const o of orbDefs) { o.hit.userData.orb = o; targets.push(o.hit); }
+coreShell.userData.orb = CORE_TARGET;
+targets.push(coreShell);
+
+let hovered = null;
+let clickCount = 0;
+let shockAge = 99;
+let lastPointerDown = null;
+
+const CLICK_LABELS = ["ORBIT", "ARRAY", "CORE", "FIELD", "LOCK"];
+const ACCENTS = ["#ff2e97", "#ffd166", "#7c4dff", "#00ffa3", "#00e5ff"];
+
+function setPointer(e) {
+  pointer.x = (e.clientX / innerWidth) * 2 - 1;
+  pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+  pointer.screenX = e.clientX;
+  pointer.screenY = e.clientY;
+}
+addEventListener("pointermove", setPointer);
+
+// Drag to orbit, click to fire — distinguished by travel distance.
+let dragging = false;
+let dragStart = { x: 0, y: 0, yaw: 0, pitch: 0 };
+addEventListener("pointerdown", (e) => {
+  setPointer(e);
+  dragging = true;
+  dragStart = { x: e.clientX, y: e.clientY, yaw: camState.targetYaw, pitch: camState.targetPitch };
+  lastPointerDown = { x: e.clientX, y: e.clientY, t: performance.now() };
+});
+addEventListener("pointerup", (e) => {
+  dragging = false;
+  if (!lastPointerDown) return;
+  const moved = Math.hypot(e.clientX - lastPointerDown.x, e.clientY - lastPointerDown.y);
+  const dt = performance.now() - lastPointerDown.t;
+  lastPointerDown = null;
+  if (moved < 6 && dt < 600) fire();
+});
+addEventListener("pointercancel", () => { dragging = false; lastPointerDown = null; });
+
+addEventListener("pointermove", (e) => {
+  if (!dragging) return;
+  camState.targetYaw = dragStart.yaw + (e.clientX - dragStart.x) * 0.006;
+  camState.targetPitch = THREE.MathUtils.clamp(
+    dragStart.pitch - (e.clientY - dragStart.y) * 0.005, 0.35, 2.4,
+  );
+});
+
+addEventListener("wheel", (e) => {
+  camState.targetRadius = THREE.MathUtils.clamp(camState.targetRadius + e.deltaY * 0.012, 9, 30);
+}, { passive: true });
+
+function fire() {
+  if (!hovered) return;
+  clickCount++;
+  hovered.hitAt = clockTime;
+  shockAge = 0;
+  document.getElementById("clicks").textContent = String(clickCount);
+
+  // HUD log
+  const log = document.getElementById("log");
+  const row = document.createElement("div");
+  row.className = "mono active";
+  row.textContent = `${String(clickCount - 1).padStart(2, "0")} · ${CLICK_LABELS[hovered.index]} ▸`;
+  log.appendChild(row);
+  [...log.children].forEach((el, i, arr) => {
+    if (i < arr.length - 1) { el.classList.remove("active"); el.classList.add("dim"); }
+  });
+  while (log.children.length > 5) log.firstChild.remove();
+
+  // centre flash
+  const flash = document.getElementById("flash");
+  flash.querySelector(".word").textContent = CLICK_LABELS[hovered.index];
+  flash.querySelector(".word").style.color = ACCENTS[hovered.index];
+  flash.querySelector(".meta").textContent = `TARGET ${String(hovered.index).padStart(2, "0")} ONLINE`;
+  flash.style.transition = "none";
+  flash.style.opacity = "1";
+  flash.style.transform = "scale(1.05)";
+  requestAnimationFrame(() => {
+    flash.style.transition = "opacity 1.1s ease, transform 1.1s cubic-bezier(.16,1,.3,1)";
+    flash.style.opacity = "0";
+    flash.style.transform = "scale(1)";
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Loop
+// ---------------------------------------------------------------------------
+const clock = new THREE.Clock();
+let clockTime = 0;
+let fpsAcc = 0, fpsFrames = 0;
+
+function orbPosition(index, t) {
+  const r = 3.55 + index * 0.7;
+  const speed = 0.52 - index * 0.05;
+  const a = index * 1.9 + t * speed;
+  const tilt = 0.18 + index * 0.22;
+  return new THREE.Vector3(
+    Math.cos(a) * r,
+    Math.sin(a * 1.7 + index) * tilt * r * 0.45,
+    Math.sin(a) * r,
+  );
+}
+
+function tick() {
+  const dt = Math.min(clock.getDelta(), 0.05);
+  clockTime += dt;
+  const t = clockTime;
+
+  // smooth camera
+  camState.yaw += (camState.targetYaw - camState.yaw) * 0.08;
+  camState.pitch += (camState.targetPitch - camState.pitch) * 0.08;
+  camState.radius += (camState.targetRadius - camState.radius) * 0.08;
+  const yaw = camState.yaw + Math.sin(t * 0.45) * 0.07;
+  camera.position.set(
+    camState.radius * Math.sin(camState.pitch) * Math.sin(yaw),
+    camState.radius * Math.cos(camState.pitch),
+    camState.radius * Math.sin(camState.pitch) * Math.cos(yaw),
+  );
+  camera.lookAt(0, 0, 0);
+
+  // lights
+  pinkLight.position.set(Math.cos(t * 0.8) * 9, 5, Math.sin(t * 0.8) * 9);
+  cyanLight.position.set(Math.cos(t * 0.8 + Math.PI) * 9, -4, Math.sin(t * 0.8 + Math.PI) * 9);
+
+  // pick
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(targets, false);
+  hovered = hits.length ? hits[0].object.userData.orb : null;
+
+  // reticle
+  if (hovered) {
+    const p = hits[0].point;
+    reticle.visible = true;
+    reticle.position.copy(p);
+    reticle.lookAt(camera.position);
+    reticleGlow.material.color.set(ACCENTS[hovered.index]);
+    reticleRing.material.color.set(ACCENTS[hovered.index]);
+  } else {
+    reticle.visible = false;
+  }
+
+  // shockwave
+  shockAge += dt;
+  if (shockAge < 0.5) {
+    const k = shockAge / 0.5;
+    shock.scale.setScalar(0.25 + k * 3.4);
+    shock.material.opacity = (1 - k) ** 1.6 * 0.9;
+  } else {
+    shock.material.opacity = 0;
+  }
+
+  // floor rings
+  for (const r of rings) {
+    const k = (shockAge - r.offset) / 0.5;
+    if (k > 0 && k < 1) {
+      r.mesh.visible = true;
+      r.mesh.scale.setScalar(0.6 + k * 13);
+      r.mesh.material.opacity = (1 - k) ** 2 * 0.28;
+      r.mesh.material.color.setHex(r.offset === 0 ? 0xffffff : PALETTE[Math.round(r.offset * 10) % PALETTE.length]);
+    } else {
+      r.mesh.visible = false;
+    }
+  }
+
+  // core
+  const coreHit = CORE_TARGET.hitAt;
+  const coreAge = t - coreHit;
+  const coreBurst = coreAge >= 0 && coreAge < 0.6 ? (1 - coreAge / 0.6) ** 2 : 0;
+  const coreHover = hovered && hovered.index === 4 ? 1 : 0;
+  const coreScale = 1 + coreBurst * 0.3 + coreHover * 0.1;
+  coreShell.scale.setScalar(coreScale);
+  coreShell.rotation.set(t * 0.26, t * 0.4, 0);
+  coreShell.material.emissiveIntensity = 0.55 + coreBurst * 4 + coreHover * 0.8;
+  coreInner.scale.setScalar(coreScale * 0.72);
+  coreInner.rotation.set(-t * 0.3, t * 0.2, 0);
+  coreWire.scale.setScalar(coreScale * 1.42);
+  coreWire.rotation.set(-t * 0.2, -t * 0.33, t * 0.1);
+  coreGlow1.scale.setScalar(13 + coreBurst * 10);
+  coreGlow1.material.opacity = 0.5;
+  coreGlow2.scale.setScalar(5.4 + coreBurst * 4);
+
+  for (const s of shards) {
+    const d = s.userData;
+    const rr = 3.05 + Math.sin(t * 0.9 + d.ph * 6) * 0.45 + coreBurst * 1.7;
+    const ang = d.a + t * (0.5 + d.ph * 0.6);
+    s.position.set(
+      Math.cos(ang) * Math.sin(d.b) * rr,
+      Math.cos(d.b) * rr * 0.75,
+      Math.sin(ang) * Math.sin(d.b) * rr,
+    );
+    s.rotation.set(t * 2 + d.a, t * 1.3, 0);
+  }
+
+  // orbs
+  for (const o of orbDefs) {
+    o.group.position.copy(orbPosition(o.index, t));
+    const age = t - o.hitAt;
+    const burst = age >= 0 && age < 0.6 ? (1 - age / 0.6) ** 2 : 0;
+    const isHover = hovered && hovered.index === o.index;
+    const s = o.baseScale * (1 + burst * 0.9 + (isHover ? 0.22 : 0));
+    o.body.scale.setScalar(s);
+    o.body.rotation.set(t * 0.8 + o.index, t * 1.1, 0);
+    o.body.material.emissiveIntensity = 0.9 + burst * 1.2 + (isHover ? 1.4 : 0);
+    o.box.scale.setScalar(s * (2.3 + burst * 1.6));
+    o.box.rotation.set(t * 0.6, t * 0.4, 0);
+    o.box.material.opacity = (isHover ? 0.5 : 0.16) + burst * 0.6;
+    o.halo.scale.setScalar(2.4 + burst * 7 + (isHover ? 1.4 : 0));
+    o.halo.material.opacity = 0.42 + burst * 0.3;
+    o.flash.scale.setScalar(1.6 + (1 - age / 0.6) * 5);
+    o.flash.material.opacity = burst * 0.3;
+  }
+
+  // particles
+  const push = shockAge < 0.45 ? (1 - shockAge / 0.45) ** 2 * 9 : 0;
+  const cx = reticle.position.x, cy = reticle.position.y, cz = reticle.position.z;
+  const arr = pGeom.attributes.position.array;
+  for (let i = 0; i < P_COUNT; i++) {
+    const ph = rand(i * 2.3) * Math.PI * 2;
+    const spin = t * (0.3 + rand(i * 4.1) * 0.7) + ph;
+    const bx = pBase[i * 3], by = pBase[i * 3 + 1], bz = pBase[i * 3 + 2];
+    const cos = Math.cos(spin), sin = Math.sin(spin);
+    let x = bx * cos - bz * sin;
+    let z = bx * sin + bz * cos;
+    let y = by + Math.sin(t * 1.3 + ph) * 1.1;
+    if (push > 0) {
+      const dx = x - cx, dy = y - cy, dz = z - cz;
+      const d = Math.sqrt(dx * dx + dy * dy + dz * dz) + 0.001;
+      const f = push / (1 + d * d * 0.3);
+      x += (dx / d) * f; y += (dy / d) * f; z += (dz / d) * f;
+    }
+    arr[i * 3] = x; arr[i * 3 + 1] = y; arr[i * 3 + 2] = z;
+  }
+  pGeom.attributes.position.needsUpdate = true;
+
+  cursorLight.position.copy(reticle.position).add(new THREE.Vector3(0, 0, 1.5));
+
+  // cursor style feedback
+  canvas.style.cursor = "none";
+
+  // fps
+  fpsAcc += dt; fpsFrames++;
+  if (fpsAcc > 0.5) {
+    document.getElementById("fps").textContent = String(Math.round(fpsFrames / fpsAcc));
+    fpsAcc = 0; fpsFrames = 0;
+  }
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+
+addEventListener("resize", () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight, false);
+});
+
+document.getElementById("loading").classList.add("gone");
+tick();
+
+// Small inspection hook so the scene can be driven from an automated test
+// (and poked at from the devtools console). Not used by the render loop.
+window.__DEMO__ = {
+  scene, camera, renderer,
+  orbs: orbDefs,
+  core: CORE_TARGET,
+  get clickCount() { return clickCount; },
+  get hovered() { return hovered ? hovered.index : null; },
+  /** Screen-space centre of a target, for driving synthetic mouse events. */
+  screenOf(index) {
+    const obj = index === 4 ? coreShell : orbDefs[index].body;
+    const p = new THREE.Vector3();
+    obj.getWorldPosition(p);
+    p.project(camera);
+    return {
+      x: (p.x * 0.5 + 0.5) * innerWidth,
+      y: (-p.y * 0.5 + 0.5) * innerHeight,
+    };
+  },
+};
+</script>
+</body>
+</html>

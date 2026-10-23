@@ -1,0 +1,345 @@
+{
+  "fixture_note": "All storage faults, full bags, legacy/future saves, and occupied lawns below are explicit fixtures in the isolated browser profile. The real grown and delivered crop flow is in quest-flow-checks.json.",
+  "collision_and_till_protection": {
+    "x": 560,
+    "y": 400,
+    "npcX": 592,
+    "npcY": 400
+  },
+  "v4_migration": {
+    "original": {
+      "version": 4,
+      "gold": 777,
+      "day": 2,
+      "daily": {
+        "minute": 680,
+        "energy": 17
+      },
+      "inventory": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "hoe",
+            "amount": 1
+          },
+          {
+            "itemId": "watering_can",
+            "amount": 1
+          },
+          {
+            "itemId": "dew_radish_seed",
+            "amount": 4
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "chest": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "morning_bean_seed",
+            "amount": 2
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "farming": [
+        {
+          "id": "8_12",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      ]
+    },
+    "migrated": {
+      "version": 5,
+      "gold": 777,
+      "day": 2,
+      "inventory": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "hoe",
+            "amount": 1
+          },
+          {
+            "itemId": "watering_can",
+            "amount": 1
+          },
+          {
+            "itemId": "dew_radish_seed",
+            "amount": 4
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "chest": {
+        "capacity": 24,
+        "slots": [
+          {
+            "itemId": "morning_bean_seed",
+            "amount": 2
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "farming": [
+        {
+          "id": "8_12",
+          "tilled": true,
+          "watered": true,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      ],
+      "daily": {
+        "minute": 680,
+        "energy": 17
+      },
+      "introQuest": {
+        "status": "available",
+        "cropId": null
+      }
+    },
+    "raw_backup_equal": true
+  },
+  "full_bag": {
+    "accept_disabled": true,
+    "quest": {
+      "status": "available",
+      "cropId": null
+    }
+  },
+  "gift_storage_failure": {
+    "rolled_back": true,
+    "quest": {
+      "status": "available",
+      "cropId": null
+    },
+    "message": "保存失败，这次领取或交付已撤回。请检查浏览器存储空间。"
+  },
+  "delivery_storage_failure": {
+    "rolled_back": true,
+    "gold": 777,
+    "crop_count": 2,
+    "quest": {
+      "status": "active",
+      "cropId": "dew_radish"
+    }
+  },
+  "occupied_lawns_letter": {
+    "npc": false,
+    "preserved_tile_ids": [
+      "10_18",
+      "11_20",
+      "12_18",
+      "13_20",
+      "13_8",
+      "14_10",
+      "14_18",
+      "15_16"
+    ],
+    "quest": {
+      "status": "active",
+      "cropId": "dew_radish"
+    }
+  },
+  "future_version_protection": {
+    "version": 6,
+    "enter_preserved": true,
+    "r_restored_quest": {
+      "status": "completed",
+      "cropId": "dew_radish"
+    },
+    "gold": 620,
+    "rejected_preserved": true
+  },
+  "final": {
+    "quest": {
+      "status": "completed",
+      "cropId": "dew_radish"
+    },
+    "gold": 620,
+    "day": 5,
+    "daily": {
+      "minute": 360,
+      "energy": 100
+    },
+    "bag": {
+      "capacity": 24,
+      "slots": [
+        {
+          "itemId": "hoe",
+          "amount": 1
+        },
+        {
+          "itemId": "watering_can",
+          "amount": 1
+        },
+        {
+          "itemId": "dew_radish",
+          "amount": 2
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "chest": {
+      "capacity": 24,
+      "slots": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "farm": {
+      "9_8": {
+        "id": "9_8",
+        "tilled": true,
+        "watered": false
+      },
+      "9_9": {
+        "id": "9_9",
+        "tilled": true,
+        "watered": false
+      },
+      "9_10": {
+        "id": "9_10",
+        "tilled": true,
+        "watered": false
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "frames": {
+    "silver_crucian": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 887,
+        "h": 887
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 887,
+        "h": 887
+      },
+      "sourceSize": {
+        "w": 887,
+        "h": 887
+      }
+    },
+    "sun_carp": {
+      "frame": {
+        "x": 887,
+        "y": 0,
+        "w": 887,
+        "h": 887
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 887,
+        "h": 887
+      },
+      "sourceSize": {
+        "w": 887,
+        "h": 887
+      }
+    }
+  },
+  "meta": {
+    "image": "fish-icons-v1.png",
+    "size": {
+      "w": 1774,
+      "h": 887
+    },
+    "scale": "1"
+  }
+}

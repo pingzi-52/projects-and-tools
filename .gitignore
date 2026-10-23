@@ -1,0 +1,31 @@
+# 依赖与构建产物
+node_modules/
+dist/
+out/
+.tmp/
+build/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# 环境变量与密钥（本仓库所有 key 都从环境变量读取）
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 日志与系统文件
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/

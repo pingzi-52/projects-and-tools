@@ -1,0 +1,507 @@
+{
+  "journal_pause_and_keys": {
+    "before": {
+      "minute": 380,
+      "energy": 100
+    },
+    "after": {
+      "minute": 380,
+      "energy": 100
+    },
+    "position": {
+      "x": 400,
+      "y": 432
+    },
+    "far_accept_disabled": true
+  },
+  "accepted": {
+    "quest": {
+      "status": "active",
+      "cropId": "dew_radish"
+    },
+    "gold": 500,
+    "day": 1,
+    "daily": {
+      "minute": 380,
+      "energy": 100
+    },
+    "bag": {
+      "capacity": 24,
+      "slots": [
+        {
+          "itemId": "hoe",
+          "amount": 1
+        },
+        {
+          "itemId": "watering_can",
+          "amount": 1
+        },
+        {
+          "itemId": "dew_radish_seed",
+          "amount": 3
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "chest": {
+      "capacity": 24,
+      "slots": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "farm": {}
+  },
+  "reload_active": {
+    "quest": {
+      "status": "active",
+      "cropId": "dew_radish"
+    },
+    "seeds": 3
+  },
+  "planted": {
+    "quest": {
+      "status": "active",
+      "cropId": "dew_radish"
+    },
+    "gold": 500,
+    "day": 1,
+    "daily": {
+      "minute": 380,
+      "energy": 85
+    },
+    "bag": {
+      "capacity": 24,
+      "slots": [
+        {
+          "itemId": "hoe",
+          "amount": 1
+        },
+        {
+          "itemId": "watering_can",
+          "amount": 1
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "chest": {
+      "capacity": 24,
+      "slots": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "farm": {
+      "9_8": {
+        "id": "9_8",
+        "tilled": true,
+        "watered": true,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 0,
+          "harvestedCount": 0
+        }
+      },
+      "9_9": {
+        "id": "9_9",
+        "tilled": true,
+        "watered": true,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 0,
+          "harvestedCount": 0
+        }
+      },
+      "9_10": {
+        "id": "9_10",
+        "tilled": true,
+        "watered": true,
+        "crop": {
+          "cropId": "dew_radish",
+          "growthDay": 0,
+          "harvestedCount": 0
+        }
+      }
+    }
+  },
+  "harvested": {
+    "quest": {
+      "status": "active",
+      "cropId": "dew_radish"
+    },
+    "gold": 500,
+    "day": 5,
+    "daily": {
+      "minute": 360,
+      "energy": 100
+    },
+    "bag": {
+      "capacity": 24,
+      "slots": [
+        {
+          "itemId": "hoe",
+          "amount": 1
+        },
+        {
+          "itemId": "watering_can",
+          "amount": 1
+        },
+        {
+          "itemId": "dew_radish",
+          "amount": 3
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "chest": {
+      "capacity": 24,
+      "slots": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "farm": {
+      "9_8": {
+        "id": "9_8",
+        "tilled": true,
+        "watered": false
+      },
+      "9_9": {
+        "id": "9_9",
+        "tilled": true,
+        "watered": false
+      },
+      "9_10": {
+        "id": "9_10",
+        "tilled": true,
+        "watered": false
+      }
+    }
+  },
+  "completed": {
+    "quest": {
+      "status": "completed",
+      "cropId": "dew_radish"
+    },
+    "gold": 620,
+    "day": 5,
+    "daily": {
+      "minute": 360,
+      "energy": 100
+    },
+    "bag": {
+      "capacity": 24,
+      "slots": [
+        {
+          "itemId": "hoe",
+          "amount": 1
+        },
+        {
+          "itemId": "watering_can",
+          "amount": 1
+        },
+        {
+          "itemId": "dew_radish",
+          "amount": 2
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "chest": {
+      "capacity": 24,
+      "slots": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "farm": {
+      "9_8": {
+        "id": "9_8",
+        "tilled": true,
+        "watered": false
+      },
+      "9_9": {
+        "id": "9_9",
+        "tilled": true,
+        "watered": false
+      },
+      "9_10": {
+        "id": "9_10",
+        "tilled": true,
+        "watered": false
+      }
+    }
+  },
+  "reload_completed": {
+    "quest": {
+      "status": "completed",
+      "cropId": "dew_radish"
+    },
+    "gold": 620,
+    "day": 5,
+    "daily": {
+      "minute": 360,
+      "energy": 100
+    },
+    "bag": {
+      "capacity": 24,
+      "slots": [
+        {
+          "itemId": "hoe",
+          "amount": 1
+        },
+        {
+          "itemId": "watering_can",
+          "amount": 1
+        },
+        {
+          "itemId": "dew_radish",
+          "amount": 2
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "chest": {
+      "capacity": 24,
+      "slots": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "farm": {
+      "9_8": {
+        "id": "9_8",
+        "tilled": true,
+        "watered": false
+      },
+      "9_9": {
+        "id": "9_9",
+        "tilled": true,
+        "watered": false
+      },
+      "9_10": {
+        "id": "9_10",
+        "tilled": true,
+        "watered": false
+      }
+    }
+  },
+  "cleanup": {
+    "e": 1,
+    "q": 1,
+    "post": 2,
+    "merchantBodies": 1,
+    "overlay": 0
+  }
+}

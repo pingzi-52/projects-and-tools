@@ -1,0 +1,96 @@
+{
+  "frames": {
+    "horizontal": {
+      "frame": {
+        "y": 92,
+        "x": 41,
+        "h": 163,
+        "w": 269
+      }
+    },
+    "vertical": {
+      "frame": {
+        "y": 14,
+        "x": 438,
+        "h": 287,
+        "w": 69
+      }
+    },
+    "post": {
+      "frame": {
+        "y": 59,
+        "x": 745,
+        "h": 215,
+        "w": 78
+      }
+    },
+    "nw": {
+      "frame": {
+        "y": 373,
+        "x": 40,
+        "h": 223,
+        "w": 198
+      }
+    },
+    "ne": {
+      "frame": {
+        "y": 372,
+        "x": 395,
+        "h": 224,
+        "w": 192
+      }
+    },
+    "sw": {
+      "frame": {
+        "y": 365,
+        "x": 668,
+        "h": 230,
+        "w": 191
+      }
+    },
+    "se": {
+      "frame": {
+        "y": 365,
+        "x": 1021,
+        "h": 229,
+        "w": 191
+      }
+    },
+    "gate-closed": {
+      "frame": {
+        "y": 662,
+        "x": 42,
+        "h": 237,
+        "w": 546
+      }
+    },
+    "gate-open": {
+      "frame": {
+        "y": 662,
+        "x": 665,
+        "h": 237,
+        "w": 548
+      }
+    },
+    "end-left": {
+      "frame": {
+        "y": 993,
+        "x": 48,
+        "h": 184,
+        "w": 216
+      }
+    },
+    "end-right": {
+      "frame": {
+        "y": 993,
+        "x": 364,
+        "h": 184,
+        "w": 217
+      }
+    }
+  },
+  "meta": {
+    "image": "wood-fence-v1.png",
+    "note": "Generated source; alpha bounds define rendering frames"
+  }
+}

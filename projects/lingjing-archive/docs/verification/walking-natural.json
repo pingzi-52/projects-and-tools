@@ -1,0 +1,34 @@
+[
+  {
+    "scene": "forest",
+    "x": 944,
+    "y": 576,
+    "from": "farm",
+    "lastStepX": 944,
+    "lastStepY": 576
+  },
+  {
+    "scene": "farm",
+    "x": 80,
+    "y": 448,
+    "from": "forest",
+    "lastStepX": 80,
+    "lastStepY": 448
+  },
+  {
+    "scene": "town",
+    "x": 80,
+    "y": 448,
+    "from": "farm",
+    "lastStepX": 80,
+    "lastStepY": 448
+  },
+  {
+    "scene": "farm",
+    "x": 1072,
+    "y": 448,
+    "from": "town",
+    "lastStepX": 1072,
+    "lastStepY": 448
+  }
+]

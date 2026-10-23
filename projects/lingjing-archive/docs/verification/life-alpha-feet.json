@@ -1,0 +1,56 @@
+[
+  {
+    "frame": "merchant_idle",
+    "visibleFoot": 362,
+    "canvasHeight": 364,
+    "heightAt44": 43.5165
+  },
+  {
+    "frame": "merchant_blink",
+    "visibleFoot": 362,
+    "canvasHeight": 364,
+    "heightAt44": 43.5165
+  },
+  {
+    "frame": "merchant_greet",
+    "visibleFoot": 362,
+    "canvasHeight": 364,
+    "heightAt44": 43.5165
+  },
+  {
+    "frame": "guide_idle",
+    "visibleFoot": 390,
+    "canvasHeight": 392,
+    "heightAt44": 43.551
+  },
+  {
+    "frame": "guide_blink",
+    "visibleFoot": 390,
+    "canvasHeight": 392,
+    "heightAt44": 43.551
+  },
+  {
+    "frame": "guide_greet",
+    "visibleFoot": 390,
+    "canvasHeight": 392,
+    "heightAt44": 43.551
+  },
+  {
+    "frame": "carpenter_idle",
+    "visibleFoot": 379,
+    "canvasHeight": 381,
+    "heightAt44": 43.4226
+  },
+  {
+    "frame": "carpenter_blink",
+    "visibleFoot": 379,
+    "canvasHeight": 381,
+    "heightAt44": 43.5381
+  },
+  {
+    "frame": "carpenter_greet",
+    "visibleFoot": 379,
+    "canvasHeight": 381,
+    "heightAt44": 43.4226
+  }
+]

@@ -1,0 +1,881 @@
+{
+  "direction-checks": [
+    {
+      "moving": {
+        "facing": "up",
+        "frame": "up_walk2",
+        "body": [
+          32,
+          28
+        ],
+        "x": 400,
+        "y": 391.9999999999997
+      },
+      "idle": "up_idle"
+    },
+    {
+      "moving": {
+        "facing": "left",
+        "frame": "left_walk2",
+        "body": [
+          32,
+          28
+        ],
+        "x": 359.9999999999997,
+        "y": 432
+      },
+      "idle": "left_idle"
+    },
+    {
+      "moving": {
+        "facing": "down",
+        "frame": "down_walk2",
+        "body": [
+          32,
+          28
+        ],
+        "x": 400,
+        "y": 469.3333333333336
+      },
+      "idle": "down_idle"
+    },
+    {
+      "moving": {
+        "facing": "right",
+        "frame": "right_walk2",
+        "body": [
+          32,
+          28
+        ],
+        "x": 437.3333333333336,
+        "y": 432
+      },
+      "idle": "right_idle"
+    }
+  ],
+  "postupdate-check": {
+    "count": 22,
+    "maxDx": 0,
+    "maxDy": 0
+  },
+  "growth-checks": [
+    {
+      "day": 2,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_sprout",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_sprout",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_sprout",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 1,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 3,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_sprout",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_sprout",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 2,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 2,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 2,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 4,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_sprout",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 3,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 3,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 3,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 5,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 6,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 5,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 5,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 7,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 6,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 6,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 8,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_young",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 6,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 7,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    },
+    {
+      "day": 9,
+      "frames": [
+        {
+          "id": "7_12",
+          "frame": "dew_radish_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_13",
+          "frame": "morning_bean_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        },
+        {
+          "id": "7_14",
+          "frame": "starberry_mature",
+          "w": 32,
+          "h": 32,
+          "y": 256,
+          "originY": 1
+        }
+      ],
+      "soil": [
+        {
+          "id": "7_12",
+          "frame": "dry"
+        },
+        {
+          "id": "7_13",
+          "frame": "dry"
+        },
+        {
+          "id": "7_14",
+          "frame": "dry"
+        }
+      ],
+      "fields": {
+        "7_12": {
+          "id": "7_12",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "dew_radish",
+            "growthDay": 4,
+            "harvestedCount": 0
+          }
+        },
+        "7_13": {
+          "id": "7_13",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "morning_bean",
+            "growthDay": 6,
+            "harvestedCount": 0
+          }
+        },
+        "7_14": {
+          "id": "7_14",
+          "tilled": true,
+          "watered": false,
+          "crop": {
+            "cropId": "starberry",
+            "growthDay": 8,
+            "harvestedCount": 0
+          }
+        }
+      },
+      "body": [
+        32,
+        28
+      ],
+      "farmArtCount": 1,
+      "EListeners": 1,
+      "postListeners": 2,
+      "version": 3
+    }
+  ],
+  "harvest-checks": [
+    {
+      "tile": "7_12",
+      "crop": null,
+      "frame": null,
+      "inventory": [
+        "hoe",
+        "watering_can",
+        "dew_radish",
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tile": "7_13",
+      "crop": null,
+      "frame": null,
+      "inventory": [
+        "hoe",
+        "watering_can",
+        "dew_radish",
+        "morning_bean",
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "tile": "7_14",
+      "crop": {
+        "cropId": "starberry",
+        "growthDay": 0,
+        "harvestedCount": 1
+      },
+      "frame": "starberry_seed",
+      "inventory": [
+        "hoe",
+        "watering_can",
+        "dew_radish",
+        "morning_bean",
+        "starberry",
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "collision-checks": {
+    "wall": {
+      "x": 304,
+      "target": null
+    },
+    "water": {
+      "y": 497.99999999999994,
+      "body": [
+        32,
+        28
+      ]
+    }
+  },
+  "fallback-checks": {
+    "cropFallback": {
+      "key": "crop_seed",
+      "frame": "__BASE"
+    },
+    "soilFallback": "tile_tilled",
+    "farmerFallback": {
+      "enabled": false,
+      "visible": true,
+      "body": [
+        32,
+        28
+      ],
+      "art": 0,
+      "postListeners": 1,
+      "day": 9
+    }
+  },
+  "refresh-checks": {
+    "active": [
+      "farm"
+    ],
+    "day": 9,
+    "gold": 571,
+    "fields": {
+      "7_12": {
+        "id": "7_12",
+        "tilled": true,
+        "watered": false
+      },
+      "7_13": {
+        "id": "7_13",
+        "tilled": true,
+        "watered": false
+      },
+      "7_14": {
+        "id": "7_14",
+        "tilled": true,
+        "watered": true,
+        "crop": {
+          "cropId": "starberry",
+          "growthDay": 0,
+          "harvestedCount": 1
+        }
+      }
+    },
+    "farmer": {
+      "enabled": true,
+      "visible": false,
+      "art": 1,
+      "postListeners": 2
+    },
+    "crop": "starberry_seed",
+    "soil": "wet",
+    "resources": [
+      {
+        "file": "farmer-v1.png",
+        "status": 200
+      },
+      {
+        "file": "farmer-v1.json",
+        "status": 200
+      },
+      {
+        "file": "spring-crops-v1.png",
+        "status": 200
+      },
+      {
+        "file": "spring-crops-v1.json",
+        "status": 200
+      },
+      {
+        "file": "soil-v1.png",
+        "status": 200
+      },
+      {
+        "file": "soil-v1.json",
+        "status": 200
+      }
+    ],
+    "version": 3
+  },
+  "validation": {
+    "date": "2026-10-14",
+    "tests": 296,
+    "testFiles": 20,
+    "positionSetup": "body.reset only; progression and actions use real CDP inputs",
+    "build": "pass",
+    "browser": "isolated Chrome via browser-harness"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-20",
+  "branch": "feature/beta-guidance",
+  "head": "68da6e0a576d802fc1544cdd940330de176d9630",
+  "sourceSha256": {
+    "public/farm-assets/original-addons/v9/fish-icons-v1.png": "FE5EDFA6FF7A9B0BCDE22FDECA716D540320898899AAA4EC7936C1E8E1733F67",
+    "tests/fishing-art.test.js": "16C29376273B66BF076382940D7720381FF0978C7CEE4846D00956CA4046ACEE",
+    "src/game/systems/itemVisual.ts": "9F39EBE72F2868CB1DAC76B65BA1769296D7D43B3B0F6E5FAFCEA935563B1121",
+    "tests/fishing-session.test.ts": "16A61C0038DA480B7311DDB71C7E102FFB1B1990AD5943520171953CD46DCB34",
+    "src/game/scenes/FarmScene.ts": "4056F87461D66B1DD10E1C2B2E20FB7F527450449150FC56BB576E90CE2E2EB7",
+    "src/data/items.ts": "6A15CFCB4D4BBF29223B79B192A09BC1B24090EF249A36D611EEF10D85AC5A7B",
+    "src/data/fishing.ts": "F69F335281681984819E30CABB203D63F8D2240271D5489053DDDA0D2C2373F0",
+    "public/farm-assets/original-addons/v9/fish-icons-v1.json": "098A422605F752609C542BB650D47669E3642598BE2994564D18158AE19902FB",
+    "tests/fishing-spot.test.ts": "0F11505E6637572D53D7E8CD8DAEF12EC2D36C7A3C47E6B8484F8F74E58504F0",
+    "tests/fishing-round.test.ts": "92F6C4E48C5109595A1F1BC2A7632F0D997F0032718A635A2A3A7DD51458F899",
+    "public/farm-assets/original-addons/v9/prompt.txt": "770612034D50F3419ED670E76C53B3D12AC584CA269831428F421A5FEBAFB2CB",
+    "public/farm-assets/original-addons/v9/SOURCE.md": "52103910EB65C12E8C55387373566194947558BEFBD2D4B9A82248736331C8B7",
+    "src/styles/fishing.css": "44D811603AAB082094B135E4110C89F6F1D87D0FB9E07D84DA75F3115F89E6DB",
+    "src/game/systems/fishingSpot.ts": "5B0EB6D34116043723558DB2C87EDFE8EFD1DA9E480E6FBAF784151EA094ED6C",
+    "src/ui/FishingPanel.ts": "AEBAB4684B100A71E25A75B4A5BADF8424DBDE80E5B4BE3E2DA6BF8F05141D7A",
+    "src/game/systems/GameSession.ts": "103A21EF0DD4172E754C5DA1B43939A48D1F0669AFE6D76A37BE1CD82EAB1516",
+    "src/game/systems/pondLife.ts": "8019EF93FDDB270CA0C67A4526D17145FF69BC3721486308E37527E1874EDBF0",
+    "src/domain/services/FishingRound.ts": "315E9B9DE5D239D1B85BBD9847E13031A9C970672C4A3158F95C4E0FD7052DFE",
+    "src/styles/main.css": "F5A57A6499D5AA112B9A263723F01E379CDA727A8A439D1FBE6EA878BE730C95",
+    "tests/inventory.test.ts": "8A90709381EBAECBC773CCE3378F8AFD0DA83FCC48A765FA491264A109791925"
+  },
+  "checks": {
+    "testFiles": 59,
+    "testsPassed": 916,
+    "productionBuildModules": 92,
+    "strictTypecheck": true,
+    "existingWarning": "Phaser vendor chunk exceeds 500 kB"
+  },
+  "browser": {
+    "url": "http://127.0.0.1:5183/index.html",
+    "effectiveBrowser": "IAB",
+    "nativeScreenshots": true,
+    "normalInputOnly": true,
+    "inventoryOrPositionInjection": false,
+    "steps": [
+      "mouse hoe 100->98",
+      "missed bite free",
+      "bite -> timing reel -> sun_carp1 -> land/save -> energy94 gold500",
+      "new cast -> ShiftTab Close -> Space cancellation free",
+      "reload: sun_carp1 energy94 gold500",
+      "sell fish: sun_carp0 gold540",
+      "title/reentry: fish0 gold540",
+      "second real sun_carp caught -> save -> energy90 gold540 fish1"
+    ],
+    "runtimeErrors": [],
+    "viewports": {
+      "default": [
+        424,
+        612
+      ],
+      "temporaryBreakpointTest": [
+        600,
+        480
+      ],
+      "overrideReset": true
+    },
+    "inputSyncNote": "Sustained keys required screenshot observations during hold; Edge had similar sync symptoms. Final effective game tests used IAB."
+  },
+  "art": {
+    "method": "built-in imagegen",
+    "source": "public/farm-assets/original-addons/v9/fish-icons-v1.png",
+    "prompt": "public/farm-assets/original-addons/v9/prompt.txt",
+    "mode": "RGBA",
+    "width": 1774,
+    "height": 887,
+    "alphaMin": 0,
+    "alphaMax": 255,
+    "native32pxCertified": false
+  },
+  "limitations": [
+    "Silver crucian tested with real pure round/session; two physical catches were sun carp",
+    "Storage failures, full bag, low energy and chest covered by unit/session tests, not forced in browser",
+    "No forced background/all-season/all-renderer new smoke test",
+    "Temporary fishing rounds intentionally not saved; claimed fish use V6 containers",
+    "Balance remains beta; no bait/rod upgrades/weather fish table/catalog/quest yet",
+    "Old binary does not recognize fish item IDs; use current source on other devices"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/screenshots/fishing-bite.jpg",
+      "sha256": "0b5bfe3dac75eec98f9c8ad45af8069e8fdc7a28982a6fb0be76293dd4457479",
+      "bytes": 23608
+    },
+    {
+      "path": "docs/screenshots/fishing-cancelled.jpg",
+      "sha256": "47f7033cc5ae8f40499eb5bcc3a460c6f75c088dfb23f645a78644378edfa5d2",
+      "bytes": 27621
+    },
+    {
+      "path": "docs/screenshots/fishing-caught.jpg",
+      "sha256": "b73ae1268d85e266d8c86c44521fa6add3f3feb8b787608d9a1ebb67d248874a",
+      "bytes": 24450
+    },
+    {
+      "path": "docs/screenshots/fishing-desktop-catch.jpg",
+      "sha256": "f7489da7f8298370214511e10ab7b7a89e6f8a508e166b1d0b2435fbd9d961d2",
+      "bytes": 26345
+    },
+    {
+      "path": "docs/screenshots/fishing-energy-after.jpg",
+      "sha256": "a408e5c20f5137c13eb3df4b71fc5afbf735ac1bd515dba3d67d996232321fd6",
+      "bytes": 27639
+    },
+    {
+      "path": "docs/screenshots/fishing-final-catch.jpg",
+      "sha256": "4c0711956cfb8a5b35b339c1833a9eeb70aa5ea201ef75cce0d471c42dd6ff50",
+      "bytes": 24158
+    },
+    {
+      "path": "docs/screenshots/fishing-final-energy.jpg",
+      "sha256": "5b5b38cde2a5ab82fee0ceb23bb5c5a13dc6aa53178e01748f8761c155e59ea1",
+      "bytes": 26595
+    },
+    {
+      "path": "docs/screenshots/fishing-inventory.jpg",
+      "sha256": "dd0805cc5b1882b0bbdbc1d7866aaeda4f54ac4a040b4ff2d72b68bf5f3d8eb4",
+      "bytes": 23125
+    },
+    {
+      "path": "docs/screenshots/fishing-landed.jpg",
+      "sha256": "5e85bd1a03106425d6eb39515f5926c9464e3cdd8c8e774fa54b191963e4c7f4",
+      "bytes": 25019
+    },
+    {
+      "path": "docs/screenshots/fishing-reeling.jpg",
+      "sha256": "6c8d4a7e6da55514426f84b4fa01ac9172053eecd17419d8e0eaf00942ed7573",
+      "bytes": 25000
+    },
+    {
+      "path": "docs/screenshots/fishing-reentry.jpg",
+      "sha256": "a8d03c9d8cb19449f9c9417b51b1be4ca06f40859c87aeb36e8d4e138eea0d55",
+      "bytes": 22565
+    },
+    {
+      "path": "docs/screenshots/fishing-reloaded.jpg",
+      "sha256": "e616e80ae6deb5562c57fe9970717a1d07891d0dde9560521b5b47fee62bce01",
+      "bytes": 22946
+    },
+    {
+      "path": "docs/screenshots/fishing-sold.jpg",
+      "sha256": "79820999e39227e6b750060fd563ccd7f2f6b18893fd71b55014c8a70a6bbd0a",
+      "bytes": 21795
+    },
+    {
+      "path": "docs/screenshots/fishing-escaped.jpg",
+      "sha256": "dc0dd2ccb74bc1e8b6a13a9d765d7bd7b570d3f07d6ea94235b673b9d89bd0d7",
+      "bytes": 23813
+    },
+    {
+      "path": "docs/screenshots/fishing-pond-bank.jpg",
+      "sha256": "c4d5eddc98d963638ef665d879b5501857853eac7df4d58a3892cdbd46ceddb1",
+      "bytes": 27568
+    }
+  ],
+  "git": {
+    "committed": false,
+    "pushed": false,
+    "pr": null,
+    "release": null
+  }
+}

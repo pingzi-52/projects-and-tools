@@ -1,0 +1,74 @@
+[
+  {
+    "scene": "farm",
+    "E": 1,
+    "L": 1,
+    "post": 3,
+    "dynamic": 1,
+    "statics": 142
+  },
+  {
+    "scene": "town",
+    "E": 1,
+    "L": 1,
+    "post": 2,
+    "dynamic": 1,
+    "statics": 246
+  },
+  {
+    "scene": "forest",
+    "E": 1,
+    "L": 1,
+    "post": 2,
+    "dynamic": 1,
+    "statics": 481
+  },
+  {
+    "scene": "farm",
+    "E": 1,
+    "L": 1,
+    "post": 3,
+    "dynamic": 1,
+    "statics": 142
+  },
+  {
+    "scene": "town",
+    "E": 1,
+    "L": 1,
+    "post": 2,
+    "dynamic": 1,
+    "statics": 246
+  },
+  {
+    "scene": "forest",
+    "E": 1,
+    "L": 1,
+    "post": 2,
+    "dynamic": 1,
+    "statics": 481
+  },
+  {
+    "scene": "farm",
+    "E": 1,
+    "L": 1,
+    "post": 3,
+    "dynamic": 1,
+    "statics": 142
+  },
+  {
+    "scene": "town",
+    "E": 1,
+    "L": 1,
+    "post": 2,
+    "dynamic": 1,
+    "statics": 246
+  },
+  {
+    "scene": "forest",
+    "E": 1,
+    "L": 1,
+    "post": 2,
+    "dynamic": 1,
+    "statics": 481
+  }
+]

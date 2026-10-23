@@ -1,0 +1,20 @@
+.audio-settings-panel {
+  width: min(420px, calc(100% - 32px));
+  max-height: calc(100% - 24px);
+  padding: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.audio-settings-panel > * { flex-shrink: 0; }
+.audio-settings-panel .farm-menu-header h2 { font-size: 17px; }
+.audio-settings-note { margin: 7px 0 10px; font-size: 11px; line-height: 1.5; color: #786246; }
+.audio-settings-mute { display: flex; align-items: center; gap: 8px; min-height: 25px; font-size: 12px; }
+.audio-settings-panel input { accent-color: #7b8751; }
+.audio-settings-panel input:focus-visible { outline: 2px solid #4f7438; outline-offset: 3px; }
+.audio-settings-mute input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
+.audio-settings-volume { display: grid; grid-template-columns: 1fr auto; gap: 3px 12px; margin-top: 11px; }
+.audio-settings-volume label { font-size: 12px; color: #57452e; }
+.audio-settings-volume output { font-size: 11px; color: #786246; min-width: 34px; text-align: right; }
+.audio-settings-volume input { grid-column: 1 / -1; box-sizing: border-box; width: 100%; height: 22px; margin: 0; cursor: pointer; }
+.audio-settings-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.audio-settings-panel .audio-settings-status { min-height: 18px; margin-top: 10px; line-height: 1.5; }
