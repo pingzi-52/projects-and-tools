@@ -29,8 +29,11 @@
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
+    "build:solar": "node scripts/build-standalone.cjs",
+    "test:solar": "node --test scripts/solar-motion.test.mjs scripts/build-standalone.test.cjs scripts/solar-surfaces.test.mjs",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "test:solar:browser": "node scripts/verify-solar.cjs"
   },
   "allowScripts": {
     "esbuild": false

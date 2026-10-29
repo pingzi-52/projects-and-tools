@@ -1,1549 +1,2890 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SOLAR SYSTEM — 太阳系交互模型</title>
-<style>
-  :root { color-scheme: dark; }
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0; height: 100%; overflow: hidden;
-    background: #01020a; color: #fff;
-    font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  #scene { position: fixed; inset: 0; display: block; cursor: crosshair; }
-  .mono { font-family: "Courier New", ui-monospace, monospace; letter-spacing: 2px; }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOLAR SYSTEM — 太阳系交互模型</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #e8e2d8;
+        --muted: #90a0ad;
+        --accent: #c5aa80;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #03060a;
+        color: var(--ink);
+        font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      #scene {
+        position: fixed;
+        inset: 0;
+        display: block;
+        touch-action: none;
+        cursor: grab;
+      }
+      #scene:active {
+        cursor: grabbing;
+      }
+      .mono {
+        font-family: Consolas, "Courier New", monospace;
+        letter-spacing: 1.5px;
+      }
+      #hud {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+      .corner {
+        display: none;
+      }
+      #title {
+        position: absolute;
+        left: 40px;
+        top: 30px;
+        max-width: calc(100% - 260px);
+      }
+      #title .k {
+        font-size: 10px;
+        color: var(--accent);
+        letter-spacing: 2.3px;
+      }
+      #title h1 {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 12px 0 0;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 7px;
+        color: #a8b3bc;
+      }
+      #title h1 em {
+        font:
+          normal 38px/1 Georgia,
+          "Times New Roman",
+          serif;
+        letter-spacing: 2.2px;
+        color: var(--ink);
+      }
+      #readout {
+        position: absolute;
+        right: 40px;
+        top: 32px;
+        text-align: right;
+        font-size: 10px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      #readout .k {
+        font-size: 9px;
+        color: #697d8c;
+        margin-bottom: 5px;
+      }
+      #readout .v {
+        margin-top: 3px;
+      }
+      #readout .v span {
+        color: #c5aa80;
+      }
+      #navigator {
+        position: absolute;
+        left: 40px;
+        top: 148px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        pointer-events: auto;
+      }
+      #navigator label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: #8e9aa4;
+      }
+      #bodySelect {
+        width: 166px;
+        min-height: 38px;
+        padding: 7px 30px 7px 12px;
+        background: #0b1420e8;
+        border: 1px solid #33404a;
+        border-radius: 2px;
+        color: var(--ink);
+        font: 12px inherit;
+        cursor: pointer;
+      }
+      #bodySelect option {
+        background: #0b1420;
+      }
+      :focus-visible {
+        outline: 2px solid #c5aa80;
+        outline-offset: 4px;
+      }
+      #labels {
+        position: absolute;
+        inset: 0;
+      }
+      .plabel {
+        position: absolute;
+        translate: -50% -50%;
+        pointer-events: none;
+        font-size: 11px;
+        letter-spacing: 2px;
+        white-space: nowrap;
+        color: #a6b3bd !important;
+        padding: 4px 8px;
+        border-left: 1px solid #647381;
+        transition: opacity 0.2s;
+        will-change: transform;
+        text-shadow: 0 2px 8px #000;
+      }
+      .plabel.sel {
+        color: #e8e2d8 !important;
+        border-color: #c5aa80;
+        background: #0b142088;
+      }
+      .plabel .en {
+        opacity: 0.5;
+        margin-left: 6px;
+        font-size: 9px;
+        letter-spacing: 1px;
+      }
+      #info {
+        position: absolute;
+        right: 40px;
+        top: 158px;
+        width: 290px;
+        max-height: calc(100% - 275px);
+        overflow: auto;
+        overscroll-behavior: contain;
+        padding: 25px 24px 23px;
+        background: linear-gradient(145deg, #0b1420e8, #090f17ed);
+        border: 1px solid #53616b50;
+        border-top: 1px solid #c5aa8099;
+        backdrop-filter: blur(14px);
+        opacity: 0;
+        visibility: hidden;
+        translate: 16px 0;
+        pointer-events: none;
+        transition:
+          opacity 0.3s,
+          translate 0.3s,
+          visibility 0.3s;
+        scrollbar-width: thin;
+        scrollbar-color: #455361 transparent;
+      }
+      #info.on {
+        opacity: 1;
+        visibility: visible;
+        translate: 0 0;
+        pointer-events: auto;
+      }
+      #info .cn {
+        margin: 0;
+        font-size: 29px;
+        font-weight: 400;
+        letter-spacing: 5px;
+        color: #e8e2d8 !important;
+      }
+      #info .en {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: #c5aa80;
+        margin-top: 9px;
+      }
+      #info .desc {
+        margin-top: 23px;
+        font-size: 12px;
+        line-height: 1.95;
+        color: #9eafb9;
+      }
+      #info .rows {
+        margin-top: 22px;
+        border-top: 1px solid #5c6b753d;
+        padding-top: 13px;
+      }
+      #info .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 11px;
+        line-height: 1.7;
+        padding: 5px 0;
+        color: #7e939f;
+      }
+      #info .row b {
+        color: #d4d6d2;
+        font-weight: 400;
+        text-align: right;
+      }
+      #info .close {
+        position: absolute;
+        right: 10px;
+        top: 9px;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        background: transparent;
+        color: #9cabb3;
+        font-size: 22px;
+        cursor: pointer;
+      }
+      #info .close:hover {
+        color: #e8e2d8;
+      }
+      #controls {
+        position: absolute;
+        left: 40px;
+        bottom: 46px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        pointer-events: auto;
+        padding: 6px;
+        background: #0b1420d9;
+        border: 1px solid #3e4e5b70;
+        border-radius: 3px;
+      }
+      .btn {
+        min-height: 36px;
+        padding: 7px 14px;
+        border: 1px solid transparent;
+        border-radius: 2px;
+        background: transparent;
+        color: #aebac1;
+        font:
+          11px Consolas,
+          "Microsoft YaHei",
+          monospace;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .btn:hover {
+        color: #eee7dc;
+        background: #293540;
+      }
+      .btn.on {
+        background: #c5aa80;
+        color: #10171e;
+      }
+      #btnPause {
+        border-right: 1px solid #3e4e5b70;
+        margin-right: 3px;
+      }
+      #btnReset {
+        margin-left: 3px;
+        border-left: 1px solid #3e4e5b70;
+      }
+      #speed {
+        padding: 0 12px;
+        font-size: 10px;
+        color: #7e939f;
+      }
+      #speed b {
+        color: #c5aa80;
+        font-weight: 400;
+      }
+      #hint {
+        position: absolute;
+        bottom: 18px;
+        left: 40px;
+        font-size: 9px;
+        letter-spacing: 1px;
+        color: #70828e;
+      }
+      #flash {
+        display: none;
+      }
+      #loading {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #03060a;
+        z-index: 10;
+        transition: opacity 0.7s;
+      }
+      #loading.gone {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #loading .box {
+        text-align: center;
+        max-width: 90vw;
+      }
+      #loading .t {
+        font-size: 12px;
+        color: #b8ad9a;
+        line-height: 1.8;
+      }
+      #loading .bar {
+        width: 220px;
+        height: 1px;
+        background: #24313b;
+        margin: 20px auto;
+        overflow: hidden;
+      }
+      #loading .bar i {
+        display: block;
+        height: 100%;
+        width: 40%;
+        background: #c5aa80;
+        animation: slide 1.2s ease-in-out infinite;
+      }
+      #loading.error .bar {
+        display: none;
+      }
+      @keyframes slide {
+        from {
+          translate: -100% 0;
+        }
+        to {
+          translate: 260% 0;
+        }
+      }
+      @media (max-width: 767px) {
+        #title {
+          left: 22px;
+          top: 24px;
+          max-width: calc(100% - 35px);
+        }
+        #title .k {
+          font-size: 8px;
+          letter-spacing: 1.5px;
+        }
+        #title h1 {
+          font-size: 10px;
+          letter-spacing: 5px;
+          gap: 9px;
+          margin-top: 12px;
+        }
+        #title h1 em {
+          font-size: 30px;
+          letter-spacing: 1.5px;
+        }
+        #readout {
+          display: none;
+        }
+        #navigator {
+          left: 22px;
+          top: 128px;
+          gap: 12px;
+        }
+        #bodySelect {
+          min-height: 38px;
+        }
+        #info {
+          top: auto;
+          right: 16px;
+          left: 16px;
+          bottom: 128px;
+          width: auto;
+          max-height: min(282px, 36vh);
+          padding: 19px 21px;
+          translate: 0 12px;
+        }
+        #info .cn {
+          font-size: 24px;
+          letter-spacing: 4px;
+        }
+        #info .en {
+          font-size: 9px;
+          margin-top: 6px;
+        }
+        #info .desc {
+          margin-top: 14px;
+          font-size: 11px;
+          line-height: 1.8;
+        }
+        #info .rows {
+          margin-top: 12px;
+          padding-top: 8px;
+        }
+        #info .row {
+          font-size: 10px;
+          padding: 3px 0;
+        }
+        #controls {
+          left: 16px;
+          right: 16px;
+          bottom: 48px;
+          justify-content: space-between;
+          gap: 2px;
+          padding: 5px;
+        }
+        .btn {
+          padding: 7px 10px;
+          min-height: 38px;
+        }
+        #speed {
+          display: none;
+        }
+        #hint {
+          left: 16px;
+          right: 16px;
+          bottom: 19px;
+          text-align: center;
+          font-size: 8px;
+          line-height: 1.7;
+          letter-spacing: 0.2px;
+        }
+      }
+      @media (min-width: 680px) and (max-height: 760px) {
+        #info {
+          top: 145px;
+          left: auto;
+          right: 24px;
+          bottom: auto;
+          width: 260px;
+          max-height: calc(100% - 265px);
+          padding: 20px;
+        }
+      }
+      @media (min-width: 480px) and (max-height: 560px) {
+        #title {
+          left: 20px;
+          top: 16px;
+        }
+        #title .k {
+          font-size: 8px;
+        }
+        #title h1 {
+          margin-top: 7px;
+          gap: 6px;
+          font-size: 9px;
+        }
+        #title h1 em {
+          font-size: 25px;
+        }
+        #navigator {
+          left: 20px;
+          top: 94px;
+        }
+        #navigator label {
+          font-size: 10px;
+        }
+        #bodySelect {
+          width: 140px;
+          min-height: 32px;
+          font-size: 11px;
+        }
+        #readout {
+          display: none;
+        }
+        #info {
+          top: 90px;
+          bottom: 92px;
+          left: auto;
+          right: 16px;
+          width: min(260px, 42vw);
+          max-height: none;
+          padding: 15px;
+        }
+        #info .cn {
+          font-size: 23px;
+        }
+        #info .desc {
+          margin-top: 12px;
+        }
+        #info .rows {
+          margin-top: 12px;
+        }
+        #controls {
+          left: 20px;
+          right: auto;
+          bottom: 31px;
+          padding: 3px;
+          gap: 2px;
+        }
+        .btn {
+          min-height: 32px;
+          padding: 5px 10px;
+        }
+        #speed {
+          display: none;
+        }
+        #hint {
+          left: 20px;
+          right: auto;
+          bottom: 9px;
+          font-size: 8px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      id="scene"
+      aria-label="太阳系交互场景，可使用天体选择菜单浏览"
+    ></canvas>
 
-  #hud { position: fixed; inset: 0; pointer-events: none; }
+    <div id="hud">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
 
-  .corner { position: absolute; width: 34px; height: 34px; border: 0 solid #00e5ff; opacity: .38; }
-  .corner.tl { top: 30px; left: 30px; border-top-width: 2px; border-left-width: 2px; }
-  .corner.tr { top: 30px; right: 30px; border-top-width: 2px; border-right-width: 2px; }
-  .corner.bl { bottom: 30px; left: 30px; border-bottom-width: 2px; border-left-width: 2px; }
-  .corner.br { bottom: 30px; right: 30px; border-bottom-width: 2px; border-right-width: 2px; }
+      <div id="title">
+        <div class="k mono">AN OBSERVATIONAL ATLAS · 01</div>
+        <h1>太阳系<em>SOLAR SYSTEM</em></h1>
+      </div>
 
-  #title { position: absolute; left: 74px; top: 84px; }
-  #title .k { font-size: 13px; color: #00e5ff; opacity: .8; }
-  #title h1 {
-    margin: 10px 0 0; font-size: 44px; line-height: 1;
-    font-family: "Arial Black", Impact, sans-serif; letter-spacing: 1px;
-  }
-  #title h1 em { font-style: normal; color: #ffd166; }
+      <div id="readout" class="mono">
+        <div class="k">LIVE OBSERVATION</div>
+        <div class="v">
+          <span id="fps">60</span> FPS · <span id="bodies">9</span> BODIES
+        </div>
+        <div class="v" id="clockv">T+ 0.0 YR</div>
+      </div>
 
-  #readout { position: absolute; right: 74px; top: 84px; text-align: right; font-size: 13px; }
-  #readout .k { opacity: .4; }
-  #readout .v { margin-top: 7px; opacity: .88; }
-  #readout .v span { color: #00e5ff; }
+      <div id="navigator">
+        <label for="bodySelect">探索天体</label
+        ><select id="bodySelect" aria-label="选择天体">
+          <option value="overview">太阳系全景</option>
+        </select>
+      </div>
+      <div id="labels" aria-hidden="true"></div>
 
-  /* --- planet labels ---------------------------------------------------- */
-  #labels { position: absolute; inset: 0; }
-  .plabel {
-    position: absolute; translate: -50% -50%;
-    /* decorative only: the label sits exactly over the planet, so it must not
-       swallow the click that is meant for the canvas underneath */
-    pointer-events: none;
-    font-size: 12px; letter-spacing: 1px; white-space: nowrap;
-    color: #cfe3ff; opacity: .72;
-    padding: 3px 7px; border-radius: 2px;
-    border-left: 2px solid currentColor;
-    transition: opacity .2s, background .2s;
-    will-change: transform;
-  }
-  .plabel.sel { opacity: 1; background: rgba(0, 229, 255, .22); box-shadow: 0 0 18px rgba(0,229,255,.35); }
-  .plabel .en { opacity: .45; margin-left: 6px; font-size: 10px; }
+      <section id="info" aria-labelledby="info-name" aria-hidden="true">
+        <button
+          class="close"
+          id="closeInfo"
+          aria-label="关闭天体资料"
+          type="button"
+        >
+          ×
+        </button>
+        <h2 class="cn" id="info-name"></h2>
+        <div class="en mono"></div>
+        <div class="desc"></div>
+        <div class="rows"></div>
+      </section>
 
-  /* --- info panel ------------------------------------------------------- */
-  #info {
-    position: absolute; right: 74px; top: 190px; width: 306px;
-    padding: 20px 22px 22px;
-    background: linear-gradient(160deg, rgba(4, 12, 30, .86), rgba(2, 5, 14, .72));
-    border: 1px solid rgba(0, 229, 255, .22);
-    border-left: 2px solid #00e5ff;
-    backdrop-filter: blur(6px);
-    opacity: 0; translate: 24px 0; pointer-events: none;
-    transition: opacity .4s ease, translate .4s cubic-bezier(.16,1,.3,1);
-  }
-  #info.on { opacity: 1; translate: 0 0; }
-  #info .cn { font-size: 30px; font-weight: 700; letter-spacing: 2px; }
-  #info .en { font-size: 12px; letter-spacing: 4px; opacity: .45; margin-top: 5px; }
-  #info .desc { margin-top: 15px; font-size: 13px; line-height: 1.75; color: #a9c2e0; }
-  #info .rows { margin-top: 16px; border-top: 1px solid rgba(120,160,220,.16); padding-top: 12px; }
-  #info .row {
-    display: flex; justify-content: space-between; font-size: 12px;
-    padding: 5px 0; color: #8fa9c9;
-  }
-  #info .row b { color: #e6f0ff; font-weight: 500; }
-  #info .close { position: absolute; top: 14px; right: 16px; font-size: 11px; opacity: .35; }
+      <div id="controls">
+        <button type="button" class="btn" id="btnPause" aria-pressed="false">
+          暂停
+        </button>
+        <button
+          type="button"
+          class="btn on"
+          data-sp="1"
+          aria-pressed="true"
+          aria-label="1 倍速"
+        >
+          1×
+        </button>
+        <button
+          type="button"
+          class="btn"
+          data-sp="4"
+          aria-pressed="false"
+          aria-label="4 倍速"
+        >
+          4×
+        </button>
+        <button
+          type="button"
+          class="btn"
+          data-sp="16"
+          aria-pressed="false"
+          aria-label="16 倍速"
+        >
+          16×
+        </button>
+        <button type="button" class="btn" id="btnReset">全景复位</button>
+        <div id="speed">时间流速 <b>1.0×</b></div>
+      </div>
 
-  /* --- timeline / speed ------------------------------------------------- */
-  #controls {
-    position: absolute; left: 74px; bottom: 78px;
-    display: flex; align-items: center; gap: 10px; pointer-events: auto;
-  }
-  .btn {
-    pointer-events: auto; cursor: pointer;
-    font-family: "Courier New", monospace; font-size: 12px; letter-spacing: 1px;
-    color: #9fc4ea; background: rgba(8, 20, 44, .6);
-    border: 1px solid rgba(0, 229, 255, .22);
-    padding: 8px 13px; border-radius: 2px;
-    transition: all .18s;
-  }
-  .btn:hover { color: #fff; border-color: rgba(0, 229, 255, .7); background: rgba(0, 229, 255, .12); }
-  .btn.on { color: #04121c; background: #00e5ff; border-color: #00e5ff; font-weight: 700; }
-  #speed { font-size: 12px; color: #7f9ac0; min-width: 92px; }
-  #speed b { color: #ffd166; }
+      <div id="flash"><div class="w mono"></div></div>
+      <div id="hint" class="mono">
+        选择天体或点击行星 · 拖拽旋转 · 滚轮缩放 · 空格暂停
+      </div>
+    </div>
 
-  #hint {
-    position: absolute; left: 50%; bottom: 32px; translate: -50% 0;
-    font-size: 12px; color: #7f9ac0; opacity: .8;
-    animation: pulse 2.8s ease-in-out infinite; text-align: center;
-  }
-  @keyframes pulse { 0%,100% { opacity: .3; } 50% { opacity: .85; } }
+    <div id="loading">
+      <div class="box">
+        <div class="t mono">正在生成太阳系与行星表面</div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
 
-  #loading {
-    position: fixed; inset: 0; display: grid; place-items: center;
-    background: #01020a; z-index: 10; transition: opacity .8s ease;
-  }
-  #loading.gone { opacity: 0; pointer-events: none; }
-  #loading .box { text-align: center; }
-  #loading .t { font-size: 12px; color: #5f7ea8; letter-spacing: 3px; }
-  #loading .bar { width: 240px; height: 2px; background: #0d1b33; margin: 16px auto 0; overflow: hidden; }
-  #loading .bar i { display: block; height: 100%; width: 40%; background: #00e5ff; animation: slide 1.2s ease-in-out infinite; }
-  @keyframes slide { 0% { translate: -100% 0; } 100% { translate: 260% 0; } }
+    <script>
+      window.showSolarError = function () {
+        const loading = document.getElementById("loading");
+        if (loading.classList.contains("error")) return;
+        loading.classList.remove("gone");
+        loading.classList.add("error");
+        loading.querySelector(".t").textContent =
+          "3D 场景无法启动。请启用浏览器图形加速，或换用新版浏览器后重试。";
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "btn";
+        retry.textContent = "重新加载";
+        retry.addEventListener("click", () => location.reload());
+        loading.querySelector(".box").appendChild(retry);
+      };
+      addEventListener("error", () => {
+        if (!window.__SOLAR_READY__) window.showSolarError();
+      });
+      addEventListener("unhandledrejection", () => {
+        if (!window.__SOLAR_READY__) window.showSolarError();
+      });
+    </script>
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three.module.js" } }
+    </script>
 
-  /* flash word when selecting */
-  #flash { position: absolute; left: 0; right: 0; top: 30%; text-align: center; opacity: 0; }
-  #flash .w { font-family: "Arial Black", Impact, sans-serif; font-size: 92px; line-height: 1; letter-spacing: 4px; }
-</style>
-</head>
-<body>
-<canvas id="scene"></canvas>
+    <script type="module">
+      import * as THREE from "three";
+      import { createSurfaceData } from "./solar-surfaces.mjs";
+      import {
+        dampingFactor,
+        frameDistance,
+        spinDelta,
+        moonLocalSpin,
+        computeFps,
+        pickScreenTarget,
+      } from "./solar-motion.mjs";
 
-<div id="hud">
-  <div class="corner tl"></div><div class="corner tr"></div>
-  <div class="corner bl"></div><div class="corner br"></div>
-
-  <div id="title">
-    <div class="k mono">INTERACTIVE 3D · SOLAR SYSTEM</div>
-    <h1>太阳系<em>·</em>SOLAR SYSTEM</h1>
-  </div>
-
-  <div id="readout" class="mono">
-    <div class="k">SYSTEM STATUS</div>
-    <div class="v"><span id="fps">60</span> FPS · <span id="bodies">9</span> BODIES</div>
-    <div class="v" id="clockv">T+ 0.0 YR</div>
-  </div>
-
-  <div id="labels"></div>
-
-  <div id="info">
-    <div class="close mono">ESC</div>
-    <div class="cn"></div>
-    <div class="en mono"></div>
-    <div class="desc"></div>
-    <div class="rows"></div>
-  </div>
-
-  <div id="controls">
-    <div class="btn" id="btnPause">❚❚ 暂停</div>
-    <div class="btn on" data-sp="1">1×</div>
-    <div class="btn" data-sp="4">4×</div>
-    <div class="btn" data-sp="16">16×</div>
-    <div class="btn" data-sp="0">复位视角</div>
-    <div id="speed">时间流速 <b>1.0×</b></div>
-  </div>
-
-  <div id="flash"><div class="w mono"></div></div>
-  <div id="hint" class="mono">点击行星查看资料 · 拖拽旋转视角 · 滚轮缩放 · 空格暂停</div>
-</div>
-
-<div id="loading"><div class="box">
-  <div class="t mono">GENERATING PLANETARY SURFACES</div>
-  <div class="bar"><i></i></div>
-</div></div>
-
-<script type="importmap">
-{ "imports": { "three": "./vendor/three.module.js" } }
-</script>
-
-<script type="module">
-import * as THREE from "three";
-
-// ===========================================================================
-// 0. Deterministic RNG + texture helpers
-// ===========================================================================
-function mulberry32(seed) {
-  return function () {
-    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function makeCanvas(w, h) {
-  const c = document.createElement("canvas");
-  c.width = w; c.height = h;
-  return { c, ctx: c.getContext("2d") };
-}
-
-function toTexture(canvas, repeat = 1) {
-  const t = new THREE.CanvasTexture(canvas);
-  t.colorSpace = THREE.SRGBColorSpace;
-  t.anisotropy = 8;
-  t.wrapS = THREE.RepeatWrapping;
-  t.wrapT = THREE.ClampToEdgeWrapping;
-  t.repeat.set(repeat, 1);
-  return t;
-}
-
-// Horizontal banding used by every gas giant / rocky body.
-function bandedSurface(w, h, seed, palette, opts = {}) {
-  const rnd = mulberry32(seed);
-  const { c, ctx } = makeCanvas(w, h);
-  const bands = opts.bands ?? 22;
-  const wobble = opts.wobble ?? 1;
-
-  // base
-  const g = ctx.createLinearGradient(0, 0, 0, h);
-  palette.forEach((col, i) => g.addColorStop(i / (palette.length - 1), col));
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, w, h);
-
-  // horizontal bands
-  for (let i = 0; i < bands; i++) {
-    const y = (i / bands) * h + (rnd() - 0.5) * (h / bands) * 0.9;
-    const bh = (h / bands) * (0.25 + rnd() * 0.85);
-    const col = palette[Math.floor(rnd() * palette.length)];
-    ctx.globalAlpha = 0.10 + rnd() * 0.26;
-    ctx.fillStyle = col;
-    ctx.beginPath();
-    // Wobble must fade to zero at the poles. A wavy band near y=0 or y=h wraps
-    // around the pole in UV space and renders as concentric rings on the sphere.
-    const poleTaper = Math.min(1, Math.min(y, h - y) / (h * 0.22));
-    // Fix the phase per band. Re-rolling rnd() inside the x loop (the old code)
-    // made the edge a high-frequency jitter rather than a smooth fluid wave.
-    const p1 = rnd() * Math.PI * 2, p2 = rnd() * Math.PI * 2, p3 = rnd() * Math.PI * 2;
-    const f1 = 1 + rnd() * 2.5, f2 = 3 + rnd() * 4, f3 = 7 + rnd() * 6;
-    const amp = (0.8 + rnd() * 1.6) * wobble * poleTaper * (h / bands);
-    const wave = (x) => {
-      const u = x / w;
-      return (Math.sin(u * Math.PI * 2 * f1 + p1) * 0.55
-        + Math.sin(u * Math.PI * 2 * f2 + p2) * 0.30
-        + Math.sin(u * Math.PI * 2 * f3 + p3) * 0.15) * amp;
-    };
-    ctx.moveTo(0, y + wave(0));
-    for (let x = 0; x <= w; x += 8) ctx.lineTo(x, y + wave(x));
-    for (let x = w; x >= 0; x -= 8) ctx.lineTo(x, y + bh + wave(x) * 0.7);
-    ctx.closePath();
-    ctx.fill();
-  }
-
-  // turbulent blobs
-  const blobs = opts.blobs ?? 240;
-  for (let i = 0; i < blobs; i++) {
-    const x = rnd() * w, y = rnd() * h;
-    const r = 4 + rnd() * (opts.blobSize ?? 34);
-    // same pole problem as the bands: squash and dim blobs that reach the caps
-    const poleTaper = Math.min(1, Math.min(y, h - y) / (h * 0.18));
-    ctx.globalAlpha = (0.02 + rnd() * 0.08) * poleTaper;
-    ctx.fillStyle = palette[Math.floor(rnd() * palette.length)];
-    ctx.beginPath();
-    ctx.ellipse(x, y, r * (1 + rnd()), r * (0.25 + rnd() * 0.4) * poleTaper, 0, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  // Pole caps. Every feature above is horizontal, and on a sphere any horizontal
-  // feature at v≈0 or v≈1 collapses into a ring around the pole, which reads as
-  // a fingerprint swirl. Paint a smooth cap over each pole so there is no detail
-  // left there to pinch.
-  const capH = h * 0.11;
-  for (const top of [true, false]) {
-    const y0 = top ? 0 : h - capH;
-    const g2 = ctx.createLinearGradient(0, y0, 0, y0 + capH);
-    const edge = top ? palette[0] : palette[palette.length - 1];
-    g2.addColorStop(0, edge);
-    g2.addColorStop(0.45, edge);
-    g2.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.globalAlpha = 0.92;
-    ctx.fillStyle = g2;
-    ctx.fillRect(0, y0, w, capH);
-  }
-
-  ctx.globalAlpha = 1;
-  return { c, ctx, rnd };
-}
-
-// Impact craters for airless bodies.
-function craterSurface(w, h, seed, base, craters = 260) {
-  const rnd = mulberry32(seed);
-  const { c, ctx } = makeCanvas(w, h);
-  ctx.fillStyle = base;
-  ctx.fillRect(0, 0, w, h);
-  // mottling
-  for (let i = 0; i < 900; i++) {
-    ctx.globalAlpha = 0.02 + rnd() * 0.05;
-    ctx.fillStyle = rnd() > 0.5 ? "#ffffff" : "#000000";
-    const r = 6 + rnd() * 40;
-    ctx.beginPath();
-    ctx.arc(rnd() * w, rnd() * h, r, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  // craters
-  for (let i = 0; i < craters; i++) {
-    const x = rnd() * w, y = rnd() * h;
-    const r = 1.5 + Math.pow(rnd(), 3) * 26;
-    ctx.globalAlpha = 0.30;
-    ctx.fillStyle = "#000";
-    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
-    ctx.globalAlpha = 0.24;
-    ctx.fillStyle = "#fff";
-    ctx.beginPath(); ctx.arc(x - r * 0.22, y - r * 0.22, r * 0.72, 0, Math.PI * 2); ctx.fill();
-    ctx.globalAlpha = 0.16;
-    ctx.fillStyle = "#fff";
-    ctx.beginPath(); ctx.arc(x, y, r * 1.16, 0, Math.PI * 2);
-    ctx.arc(x, y, r * 0.96, 0, Math.PI * 2, true); ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-  return { c, ctx, rnd };
-}
-
-// Earth: ocean + continents + ice caps, plus a separate cloud layer.
-// ---------------------------------------------------------------------------
-// 3D value noise, sampled on the unit sphere so a texture is seamless in
-// longitude and has no polar pinching (a 2D noise would show both).
-// ---------------------------------------------------------------------------
-function hash3(i, j, k) {
-  let n = Math.imul(i, 374761393) + Math.imul(j, 668265263) + Math.imul(k, 1442695041);
-  n = Math.imul(n ^ (n >>> 13), 1274126177);
-  return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
-}
-const smoothstep01 = (t) => t * t * (3 - 2 * t);
-
-function noise3(x, y, z) {
-  const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z);
-  const u = smoothstep01(x - xi), v = smoothstep01(y - yi), w = smoothstep01(z - zi);
-  const c000 = hash3(xi, yi, zi),         c100 = hash3(xi + 1, yi, zi);
-  const c010 = hash3(xi, yi + 1, zi),     c110 = hash3(xi + 1, yi + 1, zi);
-  const c001 = hash3(xi, yi, zi + 1),     c101 = hash3(xi + 1, yi, zi + 1);
-  const c011 = hash3(xi, yi + 1, zi + 1), c111 = hash3(xi + 1, yi + 1, zi + 1);
-  const x00 = c000 + (c100 - c000) * u, x10 = c010 + (c110 - c010) * u;
-  const x01 = c001 + (c101 - c001) * u, x11 = c011 + (c111 - c011) * u;
-  const y0 = x00 + (x10 - x00) * v, y1 = x01 + (x11 - x01) * v;
-  return y0 + (y1 - y0) * w;
-}
-
-function fbm3(x, y, z, octaves = 5, lacunarity = 2.03, gain = 0.5) {
-  let amp = 0.5, freq = 1, sum = 0, norm = 0;
-  for (let o = 0; o < octaves; o++) {
-    sum += noise3(x * freq, y * freq, z * freq) * amp;
-    norm += amp;
-    amp *= gain;
-    freq *= lacunarity;
-  }
-  return sum / norm;
-}
-
-function smoothstep(edge0, edge1, x) {
-  const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
-  return t * t * (3 - 2 * t);
-}
-const mix = (a, b, t) => a + (b - a) * t;
-
-// Earth: fractal continents carved out of an ocean, with latitude-driven
-// biomes, coastal shallows, ice caps and a separate cloud layer.
-function earthSurface(w, h, seed) {
-  // The field is evaluated at half resolution and upscaled: 4x fewer noise
-  // samples for a texture that the sphere mapping blurs anyway.
-  const lw = w >> 1, lh = h >> 1;
-  const { c: lowC, ctx: lowCtx } = makeCanvas(lw, lh);
-  const img = lowCtx.createImageData(lw, lh);
-  const d = img.data;
-  const S = 2.15;          // continent frequency
-  const off = seed * 0.001;
-
-  for (let y = 0; y < lh; y++) {
-    const lat = (0.5 - (y + 0.5) / lh) * Math.PI;   // +pi/2 .. -pi/2
-    const cl = Math.cos(lat), sl = Math.sin(lat);
-    for (let x = 0; x < lw; x++) {
-      const lon = ((x + 0.5) / lw) * Math.PI * 2;
-      const px = cl * Math.cos(lon), py = sl, pz = cl * Math.sin(lon);
-
-      // continents: two overlapping fields so coastlines meander instead of
-      // looking like a single thresholded blob
-      const cont = fbm3(px * S + off, py * S, pz * S, 5, 2.03, 0.52);
-      const ridge = fbm3(px * S * 2.7 + 31.7, py * S * 2.7, pz * S * 2.7, 4, 2.11, 0.5);
-      const e = cont * 0.78 + ridge * 0.22;
-
-      const absLat = Math.abs(lat);
-      let r, g, b;
-
-      if (e > 0.505) {
-        // ---- land
-        const t = smoothstep(0.505, 0.78, e);          // 0 coast .. 1 highland
-        const dry = fbm3(px * 6.1 - 12.4, py * 6.1, pz * 6.1, 3, 2.0, 0.5);
-
-        // biome by latitude
-        let base;
-        if (absLat > 1.24) base = [236, 240, 244];            // polar ice
-        else if (absLat > 1.02) base = [150, 156, 152];       // tundra
-        else if (absLat > 0.82) base = [58, 84, 60];          // boreal
-        else if (absLat > 0.36) base = dry > 0.56 ? [150, 132, 86] : [74, 106, 58];
-        else base = dry > 0.60 ? [186, 158, 100] : [42, 92, 46]; // desert / jungle
-
-        // mountains: rock, then snow above the treeline
-        const rock = [112, 98, 82];
-        const snow = [242, 246, 250];
-        let col = [mix(base[0], rock[0], smoothstep(0.42, 0.86, t)),
-                   mix(base[1], rock[1], smoothstep(0.42, 0.86, t)),
-                   mix(base[2], rock[2], smoothstep(0.42, 0.86, t))];
-        const snowAmt = smoothstep(0.80, 0.97, t) * (absLat > 0.5 ? 1 : 0.55);
-        col = [mix(col[0], snow[0], snowAmt), mix(col[1], snow[1], snowAmt), mix(col[2], snow[2], snowAmt)];
-
-        // coastal beach strip
-        const beach = 1 - smoothstep(0.505, 0.535, e);
-        col = [mix(col[0], 196, beach * 0.55), mix(col[1], 186, beach * 0.55), mix(col[2], 150, beach * 0.55)];
-
-        // per-pixel grain so the surface is not flat-shaded mush
-        const grain = (noise3(px * 90, py * 90, pz * 90) - 0.5) * 16;
-        r = col[0] + grain; g = col[1] + grain; b = col[2] + grain;
-      } else {
-        // ---- ocean: depth ramps from coastal turquoise to abyssal navy
-        const depth = smoothstep(0.505, 0.30, e);
-        r = mix(28, 5, depth);
-        g = mix(104, 26, depth);
-        b = mix(146, 62, depth);
-        // faint sea-floor texture so the open ocean is not a flat gradient
-        const swirl = (noise3(px * 26, py * 26, pz * 26) - 0.5) * 10 * (1 - depth * 0.5);
-        r += swirl; g += swirl * 1.1; b += swirl * 1.2;
+      // ===========================================================================
+      // 0. Deterministic RNG + texture helpers
+      // ===========================================================================
+      function mulberry32(seed) {
+        return function () {
+          seed |= 0;
+          seed = (seed + 0x6d2b79f5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
       }
 
-      const i4 = (y * lw + x) * 4;
-      d[i4] = Math.max(0, Math.min(255, r));
-      d[i4 + 1] = Math.max(0, Math.min(255, g));
-      d[i4 + 2] = Math.max(0, Math.min(255, b));
-      d[i4 + 3] = 255;
-    }
-  }
-  lowCtx.putImageData(img, 0, 0);
-
-  const { c, ctx } = makeCanvas(w, h);
-  ctx.imageSmoothingEnabled = true;
-  ctx.drawImage(lowC, 0, 0, w, h);
-
-  // ice caps drawn on top so they read as sheets rather than noise
-  for (const [y0, y1] of [[0, h * 0.062], [h, h * 0.938]]) {
-    const gg = ctx.createLinearGradient(0, y0, 0, y1);
-    gg.addColorStop(0, "rgba(248,252,255,0.96)");
-    gg.addColorStop(1, "rgba(248,252,255,0)");
-    ctx.fillStyle = gg;
-    ctx.fillRect(0, Math.min(y0, y1), w, Math.abs(y1 - y0));
-  }
-
-  return { c, ctx, rnd: mulberry32(seed) };
-}
-
-// Cloud layer: the same fractal field, thresholded into broken bands that
-// follow the planet's circulation cells instead of scattered blobs.
-function cloudSurface(w, h, seed) {
-  const lw = w >> 1, lh = h >> 1;
-  const { c: lowC, ctx: lowCtx } = makeCanvas(lw, lh);
-  const img = lowCtx.createImageData(lw, lh);
-  const d = img.data;
-  const S = 3.1, off = seed * 0.01;
-
-  for (let y = 0; y < lh; y++) {
-    const lat = (0.5 - (y + 0.5) / lh) * Math.PI;
-    const cl = Math.cos(lat), sl = Math.sin(lat);
-    const absLat = Math.abs(lat);
-    // Hadley cells: wet at the equator and ~60 deg, dry at ~30 deg
-    const cell = 0.55 + 0.45 * Math.cos(absLat * 3.4);
-
-    for (let x = 0; x < lw; x++) {
-      const lon = ((x + 0.5) / lw) * Math.PI * 2;
-      const px = cl * Math.cos(lon), py = sl, pz = cl * Math.sin(lon);
-
-      // Stretch the noise along longitude to get the banded, sheared look.
-      // The threshold is deliberately narrow: a wide one leaves most of the
-      // sphere at partial alpha, which reads as a grey smear over the planet
-      // rather than as distinct cloud tops.
-      const n = fbm3(px * S * 0.62 + off, py * S * 2.2, pz * S * 0.62, 5, 2.07, 0.54);
-      const wisp = fbm3(px * 9.4 - 3.1, py * 15.0, pz * 9.4, 3, 2.0, 0.5);
-
-      let a = smoothstep(0.545, 0.635, n * 0.78 + wisp * 0.22) * cell;
-      a = Math.min(1, a * 1.25);
-
-      const i4 = (y * lw + x) * 4;
-      d[i4] = 255; d[i4 + 1] = 255; d[i4 + 2] = 255;
-      d[i4 + 3] = a * 255;
-    }
-  }
-  lowCtx.putImageData(img, 0, 0);
-
-  const { c, ctx } = makeCanvas(w, h);
-  ctx.imageSmoothingEnabled = true;
-  ctx.drawImage(lowC, 0, 0, w, h);
-  return c;
-}
-
-// Radial glow sprite (same technique as the first demo).
-function radialTexture(stops) {
-  const s = 256;
-  const { c, ctx } = makeCanvas(s, s);
-  const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-  for (const [at, col] of stops) g.addColorStop(at, col);
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, s, s);
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-const GLOW = radialTexture([
-  [0, "rgba(255,255,255,1)"], [0.14, "rgba(255,255,255,0.62)"],
-  [0.34, "rgba(255,255,255,0.24)"], [0.60, "rgba(255,255,255,0.07)"],
-  [1, "rgba(255,255,255,0)"],
-]);
-
-// Limb-only halo: transparent through the middle, bright in a narrow band just
-// outside the disc. A plain radial gradient is brightest at its centre, so
-// using it as an atmosphere paints a haze straight over the planet.
-const LIMB = (() => {
-  const s = 256;
-  const { c, ctx } = makeCanvas(s, s);
-  const g = ctx.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-  g.addColorStop(0.00, "rgba(255,255,255,0)");
-  g.addColorStop(0.30, "rgba(255,255,255,0)");
-  g.addColorStop(0.42, "rgba(255,255,255,0.06)");
-  g.addColorStop(0.47, "rgba(255,255,255,0.55)");
-  g.addColorStop(0.52, "rgba(255,255,255,0.30)");
-  g.addColorStop(0.66, "rgba(255,255,255,0.07)");
-  g.addColorStop(1.00, "rgba(255,255,255,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, s, s);
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-})();
-
-function glowSprite(color, size, opacity, order = 8, map = GLOW) {
-  const sp = new THREE.Sprite(new THREE.SpriteMaterial({
-    map, color, transparent: true, opacity,
-    blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false,
-  }));
-  sp.scale.set(size, size, 1);
-  sp.renderOrder = order;
-  return sp;
-}
-
-// ===========================================================================
-// 1. Renderer / scene / camera
-// ===========================================================================
-const canvas = document.getElementById("scene");
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-renderer.setSize(innerWidth, innerHeight, false);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.06;
-// No shadow maps: a point light needs a cube map covering the whole system, so
-// a 1024 map gives ~0.14 units per texel while the planets are only a few units
-// across — the result is severe self-shadowing acne, not visible eclipses. The
-// day/night terminator already comes from the light's own normal shading.
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color("#01020a");
-
-const camera = new THREE.PerspectiveCamera(48, innerWidth / innerHeight, 0.05, 4000);
-const camState = {
-  yaw: -0.62, pitch: 0.52, radius: 96,
-  targetYaw: -0.62, targetPitch: 0.52, targetRadius: 96,
-};
-const camTarget = new THREE.Vector3(0, 0, 0);      // current look-at (lerped)
-const camTargetGoal = new THREE.Vector3(0, 0, 0);  // where we want to look
-
-// ===========================================================================
-// 2. Starfield + Milky Way band
-// ===========================================================================
-{
-  const N = 7000;
-  const pos = new Float32Array(N * 3);
-  const col = new Float32Array(N * 3);
-  const rnd = mulberry32(7);
-  const tint = new THREE.Color();
-  for (let i = 0; i < N; i++) {
-    // uniform on sphere, radius 900..1400
-    const u = rnd() * 2 - 1, th = rnd() * Math.PI * 2;
-    const s = Math.sqrt(1 - u * u);
-    const r = 900 + rnd() * 500;
-    pos[i * 3] = Math.cos(th) * s * r;
-    pos[i * 3 + 1] = u * r;
-    pos[i * 3 + 2] = Math.sin(th) * s * r;
-    // colour temperature
-    const t = rnd();
-    tint.setHSL(t < 0.6 ? 0.58 : t < 0.85 ? 0.10 : 0.02, 0.55, 0.62 + rnd() * 0.34);
-    col[i * 3] = tint.r; col[i * 3 + 1] = tint.g; col[i * 3 + 2] = tint.b;
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  g.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  const stars = new THREE.Points(g, new THREE.PointsMaterial({
-    size: 2.4, sizeAttenuation: false, vertexColors: true,
-    transparent: true, opacity: 0.92, depthWrite: false,
-    blending: THREE.AdditiveBlending, map: GLOW,
-  }));
-  stars.renderOrder = -10;
-  scene.add(stars);
-
-  // faint milky-way ribbon: a ring of dense faint stars
-  const M = 9000;
-  const mp = new Float32Array(M * 3);
-  const mc = new Float32Array(M * 3);
-  for (let i = 0; i < M; i++) {
-    const a = rnd() * Math.PI * 2;
-    const band = (rnd() + rnd() + rnd() - 1.5) * 0.16; // gaussian-ish
-    const r = 1200;
-    const x = Math.cos(a) * r;
-    const z = Math.sin(a) * r;
-    const y = band * r;
-    mp[i * 3] = x; mp[i * 3 + 1] = y; mp[i * 3 + 2] = z;
-    tint.setHSL(0.6 + rnd() * 0.05, 0.4, 0.45 + rnd() * 0.3);
-    mc[i * 3] = tint.r; mc[i * 3 + 1] = tint.g; mc[i * 3 + 2] = tint.b;
-  }
-  const mg = new THREE.BufferGeometry();
-  mg.setAttribute("position", new THREE.BufferAttribute(mp, 3));
-  mg.setAttribute("color", new THREE.BufferAttribute(mc, 3));
-  const mw = new THREE.Points(mg, new THREE.PointsMaterial({
-    size: 1.5, sizeAttenuation: false, vertexColors: true,
-    transparent: true, opacity: 0.35, depthWrite: false, blending: THREE.AdditiveBlending,
-  }));
-  mw.rotation.set(0.5, 0.3, 0.9);
-  scene.add(mw);
-}
-
-// ===========================================================================
-// 3. The Sun
-// ===========================================================================
-const SUN_RADIUS = 2.35;
-const sunGroup = new THREE.Group();
-scene.add(sunGroup);
-
-const sunTex = (() => {
-  const { c, ctx } = bandedSurface(1024, 512, 42, ["#fff3b0", "#ffd25e", "#ff9d2e", "#ff6a10"], {
-    bands: 46, blobs: 900, blobSize: 60, wobble: 2,
-  });
-  // bright granulation speckle
-  const rnd = mulberry32(99);
-  for (let i = 0; i < 2600; i++) {
-    ctx.globalAlpha = 0.05 + rnd() * 0.16;
-    ctx.fillStyle = rnd() > 0.45 ? "#fff8d0" : "#ff7b12";
-    ctx.beginPath();
-    ctx.arc(rnd() * 1024, rnd() * 512, 2 + rnd() * 12, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-  return toTexture(c);
-})();
-
-const sunMesh = new THREE.Mesh(
-  new THREE.SphereGeometry(SUN_RADIUS, 64, 48),
-  new THREE.MeshBasicMaterial({ map: sunTex }),
-);
-sunGroup.add(sunMesh);
-
-// layered corona. The inner layers used to be nearly opaque, which added up to
-// pure white over the disc and hid the granulation texture underneath.
-const coronaA = glowSprite(0xffcf6a, SUN_RADIUS * 3.4, 0.46, 3);
-const coronaB = glowSprite(0xff9b2f, SUN_RADIUS * 6.2, 0.22, 2);
-const coronaC = glowSprite(0xffe9b0, SUN_RADIUS * 1.9, 0.34, 4);
-sunGroup.add(coronaA, coronaB, coronaC);
-
-// horizontal lens streak
-{
-  const streak = glowSprite(0xffd48a, 1, 0.20, 5);
-  streak.scale.set(SUN_RADIUS * 20, SUN_RADIUS * 0.85, 1);
-  sunGroup.add(streak);
-  const streak2 = glowSprite(0x9fd8ff, 1, 0.07, 5);
-  streak2.scale.set(SUN_RADIUS * 9, SUN_RADIUS * 30, 1);
-  sunGroup.add(streak2);
-}
-
-// thin plasma shell that pulses
-const coronaShell = new THREE.Mesh(
-  new THREE.SphereGeometry(SUN_RADIUS * 1.09, 48, 32),
-  new THREE.MeshBasicMaterial({
-    color: 0xffb347, transparent: true, opacity: 0.20,
-    blending: THREE.AdditiveBlending, side: THREE.BackSide, depthWrite: false,
-  }),
-);
-sunGroup.add(coronaShell);
-
-// decay 0 keeps the sun's illumination flat across the compressed solar system.
-// With the default inverse-square falloff, Saturn at ~30 display units received
-// roughly 1/900th of Mercury's light and rendered as a black disc.
-const sunLight = new THREE.PointLight(0xfff0cf, 2.6, 0, 0);
-sunLight.decay = 0;
-sunGroup.add(sunLight);
-scene.add(new THREE.AmbientLight(0x2a3a5c, 0.55));
-// cool rim fill so night sides are not pitch black
-const fill = new THREE.DirectionalLight(0x6f8cff, 0.30);
-fill.position.set(-1, 0.6, -0.8);
-scene.add(fill);
-// camera-locked fill; position is refreshed each frame in the render loop
-const camFill = new THREE.PointLight(0x8fb4ff, 0.45, 0, 0);
-camFill.decay = 0;
-scene.add(camFill);
-
-// ===========================================================================
-// 4. Planet definitions + display mapping
-// ===========================================================================
-// Real values, then compressed into a viewable model.
-const PLANETS = [
-  {
-    key: "mercury", cn: "水星", en: "MERCURY", color: 0xb9b0a4, accent: "#c8c0b4",
-    a: 0.387, km: 4879, period: 88, rotH: 1407.6, tilt: 0.03, inc: 7.0, node: 0.4,
-    moons: 0, temp: "-173 ~ 427 °C",
-    desc: "离太阳最近的行星，几乎没有大气。表面布满环形山，昼夜温差可达 600 °C。",
-    surface: () => {
-      const { c } = craterSurface(1024, 512, 3, "#8f8579", 420);
-      return toTexture(c);
-    },
-  },
-  {
-    key: "venus", cn: "金星", en: "VENUS", color: 0xe8c27a, accent: "#f0cf94",
-    a: 0.723, km: 12104, period: 225, rotH: -5832, tilt: 0.05, inc: 3.4, node: 1.2,
-    moons: 0, temp: "≈ 465 °C",
-    desc: "浓密的二氧化碳大气造成失控温室效应，表面比水星更热，云层中是硫酸雨。",
-    surface: () => {
-      const { c } = bandedSurface(1024, 512, 17, ["#f6e3b0", "#e8c27a", "#c99b52", "#f3d99a"], {
-        bands: 16, blobs: 700, blobSize: 52, wobble: 2.4,
-      });
-      return toTexture(c);
-    },
-  },
-  {
-    key: "earth", cn: "地球", en: "EARTH", color: 0x3d7fd1, accent: "#5aa9ff",
-    a: 1.0, km: 12742, period: 365.25, rotH: 23.93, tilt: 23.4, inc: 0.0, node: 0,
-    moons: 1, temp: "-88 ~ 58 °C",
-    desc: "已知唯一存在生命的行星，71% 的表面被液态水覆盖，大气以氮和氧为主。",
-    // 月球半径 1737 km ≈ 地球的 0.27，平均距离 384,400 km ≈ 30 个地球半径。
-    // 真实比例在屏幕上会让月球贴脸，这里压到 4.2 倍半径。
-    moonSpec: { cn: "月球", ratio: 0.27, dist: 4.2, speed: 0.85, inc: 5.1, seed: 61, base: "#9a958c" },
-    surface: () => {
-      const { c } = earthSurface(1024, 512, 2024);
-      return toTexture(c);
-    },
-    clouds: () => {
-      const t = toTexture(cloudSurface(1024, 512, 77));
-      return t;
-    },
-  },
-  {
-    key: "mars", cn: "火星", en: "MARS", color: 0xc1502e, accent: "#ff7a4d",
-    a: 1.524, km: 6779, period: 687, rotH: 24.62, tilt: 25.2, inc: 1.85, node: 2.6,
-    moons: 2, temp: "-143 ~ 35 °C",
-    desc: "拥有太阳系最高的火山奥林匹斯山与最长的峡谷水手谷。红色来自表面的氧化铁。",
-    surface: () => {
-      const { c, ctx } = craterSurface(1024, 512, 8, "#a8442a", 300);
-      const rnd = mulberry32(55);
-      for (let i = 0; i < 340; i++) {
-        ctx.globalAlpha = 0.05 + rnd() * 0.12;
-        ctx.fillStyle = rnd() > 0.5 ? "#d97a4a" : "#6e2a17";
-        ctx.beginPath();
-        ctx.ellipse(rnd() * 1024, rnd() * 512, 10 + rnd() * 70, 6 + rnd() * 40, rnd() * 3, 0, Math.PI * 2);
-        ctx.fill();
+      function makeCanvas(w, h) {
+        const c = document.createElement("canvas");
+        c.width = w;
+        c.height = h;
+        return { c, ctx: c.getContext("2d") };
       }
-      // polar caps
-      for (const [y0, y1] of [[0, 42], [512, 470]]) {
-        const g = ctx.createLinearGradient(0, y0, 0, y1);
-        g.addColorStop(0, "rgba(255,255,255,0.95)");
-        g.addColorStop(1, "rgba(255,255,255,0)");
-        ctx.globalAlpha = 1; ctx.fillStyle = g;
-        ctx.fillRect(0, Math.min(y0, y1), 1024, Math.abs(y1 - y0));
+
+      function toTexture(canvas, repeat = 1) {
+        const t = new THREE.CanvasTexture(canvas);
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.anisotropy = 8;
+        t.wrapS = THREE.RepeatWrapping;
+        t.wrapT = THREE.ClampToEdgeWrapping;
+        t.repeat.set(repeat, 1);
+        return t;
       }
-      ctx.globalAlpha = 1;
-      return toTexture(c);
-    },
-  },
-  {
-    key: "jupiter", cn: "木星", en: "JUPITER", color: 0xd8a878, accent: "#f0c896",
-    a: 5.203, km: 139820, period: 4333, rotH: 9.93, tilt: 3.1, inc: 1.3, node: 3.9,
-    moons: 95, temp: "≈ -145 °C",
-    desc: "质量是其余行星总和的 2.5 倍。大红斑是一场已持续数百年的巨型风暴。",
-    surface: () => {
-      const { c, ctx } = bandedSurface(2048, 1024, 23, ["#f2e0c8", "#d8a878", "#b07a4e", "#e8cba8", "#8f5f3a"], {
-        bands: 34, blobs: 1500, blobSize: 70, wobble: 1.6,
-      });
-      // Great Red Spot: a vortex built from a radial gradient. Stacking 30
-      // overlapping ellipses accumulated to ~97% alpha at the centre, which the
-      // sphere's grazing-angle lighting turned into a black disc rather than a
-      // salmon storm.
-      const cx = 1180, cy = 648, spotR = 250;
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.scale(1, 0.62);            // squash the storm into an ellipse
-      const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, spotR);
-      grd.addColorStop(0.00, "rgba(240,158,112,0.92)");   // eye
-      grd.addColorStop(0.34, "rgba(216,112,68,0.86)");
-      grd.addColorStop(0.66, "rgba(178,76,46,0.60)");
-      grd.addColorStop(0.86, "rgba(150,72,46,0.24)");
-      grd.addColorStop(1.00, "rgba(150,72,46,0)");
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(0, 0, spotR, 0, Math.PI * 2);
-      ctx.fill();
-      // swirl filaments so it reads as rotating, not as a painted circle
-      const rnd = mulberry32(31);
-      ctx.lineWidth = 3;
-      for (let i = 0; i < 14; i++) {
-        const rr = spotR * (0.22 + rnd() * 0.62);
-        ctx.globalAlpha = 0.06 + rnd() * 0.10;
-        ctx.strokeStyle = rnd() > 0.5 ? "#f2c9a6" : "#8e3a24";
-        ctx.beginPath();
-        ctx.ellipse(0, 0, rr, rr * 0.62, 0, rnd() * 1.2, Math.PI * 1.1 + rnd() * 0.9);
-        ctx.stroke();
+
+      const surfaceCache = new Map();
+      function artSurface(key) {
+        if (surfaceCache.has(key)) return surfaceCache.get(key);
+        const width = ["jupiter", "saturn"].includes(key) ? 1024 : 512;
+        const data = createSurfaceData(key, width, width / 2);
+        function texture(bytes, color) {
+          const { c, ctx } = makeCanvas(data.width, data.height);
+          ctx.putImageData(new ImageData(bytes, data.width, data.height), 0, 0);
+          const tex = toTexture(c);
+          if (!color) tex.colorSpace = THREE.NoColorSpace;
+          return tex;
+        }
+        const result = {
+          map: texture(data.color, true),
+          bump: texture(data.bump, false),
+        };
+        surfaceCache.set(key, result);
+        return result;
       }
-      ctx.restore();
-      ctx.globalAlpha = 1;
-      return toTexture(c);
-    },
-  },
-  {
-    key: "saturn", cn: "土星", en: "SATURN", color: 0xe4cf9a, accent: "#f2dfae",
-    a: 9.537, km: 116460, period: 10759, rotH: 10.66, tilt: 26.7, inc: 2.5, node: 1.8,
-    moons: 146, temp: "≈ -178 °C",
-    desc: "环系主要由水冰颗粒组成，横跨 28 万公里，平均厚度却只有约 10 米。",
-    ring: { inner: 1.28, outer: 2.02 },
-    surface: () => {
-      const { c } = bandedSurface(2048, 1024, 61, ["#f7ecd0", "#e4cf9a", "#cbae74", "#f0e0bc"], {
-        bands: 26, blobs: 900, blobSize: 60, wobble: 1.2,
-      });
-      return toTexture(c);
-    },
-  },
-  {
-    key: "uranus", cn: "天王星", en: "URANUS", color: 0x8fe3e8, accent: "#a8f0f4",
-    a: 19.19, km: 50724, period: 30687, rotH: -17.24, tilt: 97.8, inc: 0.77, node: 4.4,
-    moons: 28, temp: "≈ -224 °C",
-    desc: "自转轴倾斜 98°，几乎是躺着绕太阳滚动。甲烷让它呈现淡青色。",
-    ring: { inner: 1.6, outer: 1.95, faint: true },
-    surface: () => {
-      const { c } = bandedSurface(1024, 512, 88, ["#c9f4f6", "#8fe3e8", "#7ccfd8", "#a9ecef"], {
-        bands: 10, blobs: 300, blobSize: 40, wobble: 0.6,
-      });
-      return toTexture(c);
-    },
-  },
-  {
-    key: "neptune", cn: "海王星", en: "NEPTUNE", color: 0x3a5fd0, accent: "#6b8bff",
-    a: 30.07, km: 49244, period: 60190, rotH: 16.11, tilt: 28.3, inc: 1.77, node: 2.2,
-    moons: 16, temp: "≈ -214 °C",
-    desc: "太阳系风暴最猛烈的行星，风速可达 2,100 km/h。由数学计算预言后被发现。",
-    surface: () => {
-      const { c, ctx } = bandedSurface(1024, 512, 133, ["#5b86e8", "#3a5fd0", "#2a45a8", "#6b93ef"], {
-        bands: 14, blobs: 500, blobSize: 44, wobble: 1.4,
-      });
-      const rnd = mulberry32(9);
-      for (let i = 0; i < 16; i++) {
-        ctx.globalAlpha = 0.10 + rnd() * 0.16;
-        ctx.fillStyle = "#1b2f7a";
-        ctx.beginPath();
-        ctx.ellipse(700 + (rnd() - 0.5) * 90, 300 + (rnd() - 0.5) * 50,
-          40 + rnd() * 40, 20 + rnd() * 18, 0, 0, Math.PI * 2);
-        ctx.fill();
+
+      let earthMaps;
+      function earthMaterialMaps() {
+        if (earthMaps) return earthMaps;
+        const { c, ctx } = earthSurface(1024, 512, 21);
+        const pixels = ctx.getImageData(0, 0, c.width, c.height),
+          rough = ctx.createImageData(c.width, c.height),
+          relief = ctx.createImageData(c.width, c.height);
+        for (let i = 0; i < pixels.data.length; i += 4) {
+          const [r, g, b] = pixels.data.slice(i, i + 3);
+          const ocean = b > r * 1.3 && b > g * 1.15;
+          const elevation = ocean ? 80 : 110 + (r + g + b) / 8;
+          for (let k = 0; k < 3; k++) {
+              rough.data[i + k] = ocean ? 120 : 225;
+            relief.data[i + k] = elevation;
+          }
+          rough.data[i + 3] = relief.data[i + 3] = 255;
+        }
+        function linear(image) {
+          const out = makeCanvas(c.width, c.height);
+          out.ctx.putImageData(image, 0, 0);
+          const tex = toTexture(out.c);
+          tex.colorSpace = THREE.NoColorSpace;
+          return tex;
+        }
+        earthMaps = {
+          map: toTexture(c),
+          roughness: linear(rough),
+          bump: linear(relief),
+        };
+        return earthMaps;
       }
-      ctx.globalAlpha = 1;
-      return toTexture(c);
-    },
-  },
-];
+      function atmosphere(key, color, radius) {
+        const strength = {
+          mercury: 0,
+          venus: 0.28,
+          earth: 0.55,
+          mars: 0.12,
+          jupiter: 0.09,
+          saturn: 0.08,
+          uranus: 0.2,
+          neptune: 0.22,
+        }[key];
+        const material = new THREE.ShaderMaterial({
+          uniforms: {
+            tint: { value: new THREE.Color(color) },
+            strength: { value: strength },
+          },
+          vertexShader: `varying vec3 vWorld; varying vec3 vNormalW;
+            void main(){vec4 w=modelMatrix*vec4(position,1.);vWorld=w.xyz;vNormalW=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;}`,
+          fragmentShader: `uniform vec3 tint;uniform float strength;varying vec3 vWorld;varying vec3 vNormalW;
+            void main(){vec3 n=normalize(vNormalW);vec3 v=normalize(cameraPosition-vWorld);
+              float rim=pow(1.-abs(dot(n,v)),3.5);
+              float light=.22+.78*max(dot(n,normalize(-vWorld)),0.);
+              gl_FragColor=vec4(tint,rim*strength*light);
+              #include <tonemapping_fragment>
+              #include <colorspace_fragment>
+            }`,
+          transparent: true,
+          depthWrite: false,
+          side: THREE.BackSide,
+          blending: THREE.AdditiveBlending,
+        });
+        const mesh = new THREE.Mesh(
+          new THREE.SphereGeometry(radius * 1.025, 64, 48),
+          material,
+        );
+        mesh.userData.strength = strength;
+        mesh.visible = strength > 0;
+        return mesh;
+      }
 
-// distance & size compression so the whole system fits on screen
-const dispDist = (a) => 6.0 * Math.pow(a, 0.60) + 1.9;
-const dispRadius = (km) => 0.62 * Math.pow(km / 12742, 0.42);
-// angular speed: compressed from real periods so the outer planets still move
-const dispSpeed = (period) => 0.42 * Math.pow(365.25 / period, 0.42);
+      // Horizontal banding used by every gas giant / rocky body.
+      function bandedSurface(w, h, seed, palette, opts = {}) {
+        const rnd = mulberry32(seed);
+        const { c, ctx } = makeCanvas(w, h);
+        const bands = opts.bands ?? 22;
+        const wobble = opts.wobble ?? 1;
 
-// The pure power curve squeezes the inner system hard: Venus and Earth are only
-// 0.277 AU apart, which compressed to a 1.0 gap for two bodies whose radii sum
-// to 1.23 — they overlapped on screen. Push each orbit out until every pair of
-// neighbours keeps a visible gap, leaving the (already roomy) outer system as is.
-const ORBIT_CLEARANCE = 0.75;
-const orbitDists = (() => {
-  const d = PLANETS.map((p) => dispDist(p.a));
-  for (let i = 1; i < d.length; i++) {
-    const need = dispRadius(PLANETS[i - 1].km) + dispRadius(PLANETS[i].km) + ORBIT_CLEARANCE;
-    d[i] = Math.max(d[i], d[i - 1] + need);
-  }
-  return d;
-})();
+        // base
+        const g = ctx.createLinearGradient(0, 0, 0, h);
+        palette.forEach((col, i) =>
+          g.addColorStop(i / (palette.length - 1), col),
+        );
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
 
-const SUN_INFO = {
-  cn: "太阳", en: "THE SUN", accent: "#ffd166",
-  desc: "占太阳系总质量的 99.86%，核心每秒把约 6 亿吨氢聚变成氦。",
-  rows: [
-    ["直径", "1,392,700 km"],
-    ["表面温度", "≈ 5,500 °C"],
-    ["核心温度", "≈ 1,500 万 °C"],
-    ["自转周期", "25.4 天（赤道）"],
-    ["年龄", "约 46 亿年"],
-  ],
-};
+        // horizontal bands
+        for (let i = 0; i < bands; i++) {
+          const y = (i / bands) * h + (rnd() - 0.5) * (h / bands) * 0.9;
+          const bh = (h / bands) * (0.25 + rnd() * 0.85);
+          const col = palette[Math.floor(rnd() * palette.length)];
+          ctx.globalAlpha = 0.1 + rnd() * 0.26;
+          ctx.fillStyle = col;
+          ctx.beginPath();
+          // Wobble must fade to zero at the poles. A wavy band near y=0 or y=h wraps
+          // around the pole in UV space and renders as concentric rings on the sphere.
+          const poleTaper = Math.min(1, Math.min(y, h - y) / (h * 0.22));
+          // Fix the phase per band. Re-rolling rnd() inside the x loop (the old code)
+          // made the edge a high-frequency jitter rather than a smooth fluid wave.
+          const p1 = rnd() * Math.PI * 2,
+            p2 = rnd() * Math.PI * 2,
+            p3 = rnd() * Math.PI * 2;
+          const f1 = 1 + rnd() * 2.5,
+            f2 = 3 + rnd() * 4,
+            f3 = 7 + rnd() * 6;
+          const amp = (0.8 + rnd() * 1.6) * wobble * poleTaper * (h / bands);
+          const wave = (x) => {
+            const u = x / w;
+            return (
+              (Math.sin(u * Math.PI * 2 * f1 + p1) * 0.55 +
+                Math.sin(u * Math.PI * 2 * f2 + p2) * 0.3 +
+                Math.sin(u * Math.PI * 2 * f3 + p3) * 0.15) *
+              amp
+            );
+          };
+          ctx.moveTo(0, y + wave(0));
+          for (let x = 0; x <= w; x += 8) ctx.lineTo(x, y + wave(x));
+          for (let x = w; x >= 0; x -= 8) ctx.lineTo(x, y + bh + wave(x) * 0.7);
+          ctx.closePath();
+          ctx.fill();
+        }
 
-// ===========================================================================
-// 5. Build planets
-// ===========================================================================
-const bodies = [];   // clickable: sun + planets
-const labelLayer = document.getElementById("labels");
-const pickables = [];
+        // turbulent blobs
+        const blobs = opts.blobs ?? 240;
+        for (let i = 0; i < blobs; i++) {
+          const x = rnd() * w,
+            y = rnd() * h;
+          const r = 4 + rnd() * (opts.blobSize ?? 34);
+          // same pole problem as the bands: squash and dim blobs that reach the caps
+          const poleTaper = Math.min(1, Math.min(y, h - y) / (h * 0.18));
+          ctx.globalAlpha = (0.02 + rnd() * 0.08) * poleTaper;
+          ctx.fillStyle = palette[Math.floor(rnd() * palette.length)];
+          ctx.beginPath();
+          ctx.ellipse(
+            x,
+            y,
+            r * (1 + rnd()),
+            r * (0.25 + rnd() * 0.4) * poleTaper,
+            0,
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+        }
 
-function makeRingTexture(seed, faint) {
-  const w = 1024, h = 8;
-  const { c, ctx } = makeCanvas(w, h);
-  ctx.clearRect(0, 0, w, h);
-  const rnd = mulberry32(seed);
-  const stops = faint
-    ? [[0, 0], [0.1, 0.25], [0.45, 0.10], [0.6, 0.35], [0.85, 0.12], [1, 0]]
-    : [[0, 0], [0.04, 0.55], [0.30, 0.85], [0.45, 0.35], [0.52, 0.72], [0.68, 0.95], [0.80, 0.30], [0.88, 0.62], [1, 0]];
-  for (const [x, a] of stops) {
-    ctx.fillStyle = `rgba(255,255,255,${a})`;
-    ctx.fillRect(x * w, 0, 1, h);
-  }
-  // continuous fill by interpolating between stops
-  const grad = ctx.createLinearGradient(0, 0, w, 0);
-  for (const [x, a] of stops) grad.addColorStop(x, `rgba(255,255,255,${a})`);
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, w, h);
-  // fine ringlets
-  for (let i = 0; i < 220; i++) {
-    const x = rnd() * w;
-    ctx.fillStyle = `rgba(255,255,255,${rnd() * 0.22})`;
-    ctx.fillRect(x, 0, 1 + rnd() * 3, h);
-  }
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
+        // Pole caps. Every feature above is horizontal, and on a sphere any horizontal
+        // feature at v≈0 or v≈1 collapses into a ring around the pole, which reads as
+        // a fingerprint swirl. Paint a smooth cap over each pole so there is no detail
+        // left there to pinch.
+        const capH = h * 0.11;
+        for (const top of [true, false]) {
+          const y0 = top ? 0 : h - capH;
+          const g2 = ctx.createLinearGradient(0, y0, 0, y0 + capH);
+          const edge = top ? palette[0] : palette[palette.length - 1];
+          g2.addColorStop(0, edge);
+          g2.addColorStop(0.45, edge);
+          g2.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.globalAlpha = 0.92;
+          ctx.fillStyle = g2;
+          ctx.fillRect(0, y0, w, capH);
+        }
 
-function addRing(planet, def) {
-  const inner = planet.dispR * def.inner;
-  const outer = planet.dispR * def.outer;
-  const geo = new THREE.RingGeometry(inner, outer, 160, 1);
-  // remap UVs radially so the 1-D texture maps across the ring
-  const pos = geo.attributes.position;
-  const uv = geo.attributes.uv;
-  const v = new THREE.Vector3();
-  for (let i = 0; i < pos.count; i++) {
-    v.fromBufferAttribute(pos, i);
-    const t = (v.length() - inner) / (outer - inner);
-    uv.setXY(i, t, 0.5);
-  }
-  const mat = new THREE.MeshBasicMaterial({
-    map: makeRingTexture(planet.key.length * 37 + 5, def.faint),
-    color: def.faint ? 0x9fd8e0 : 0xe8d4a8,
-    transparent: true, opacity: def.faint ? 0.22 : 0.72,
-    side: THREE.DoubleSide, depthWrite: false,
-    blending: THREE.NormalBlending,
-  });
-  const ring = new THREE.Mesh(geo, mat);
-  ring.rotation.x = -Math.PI / 2;
-  ring.renderOrder = 2;
-  return ring;
-}
+        ctx.globalAlpha = 1;
+        return { c, ctx, rnd };
+      }
 
-// ---- Sun as a body --------------------------------------------------------
-{
-  const hit = new THREE.Mesh(
-    new THREE.SphereGeometry(SUN_RADIUS * 1.25, 24, 18),
-    new THREE.MeshBasicMaterial({ visible: false }),
-  );
-  sunGroup.add(hit);
-  const body = {
-    kind: "sun", index: -1, cn: SUN_INFO.cn, en: SUN_INFO.en,
-    accent: SUN_INFO.accent, group: sunGroup, mesh: sunMesh, hit,
-    dispR: SUN_RADIUS, info: SUN_INFO, hoverAt: -99,
-  };
-  hit.userData.body = body;
-  bodies.push(body);
-  pickables.push(hit);
-}
+      // Impact craters for airless bodies.
+      function craterSurface(w, h, seed, base, craters = 260) {
+        const rnd = mulberry32(seed);
+        const { c, ctx } = makeCanvas(w, h);
+        ctx.fillStyle = base;
+        ctx.fillRect(0, 0, w, h);
+        // mottling
+        for (let i = 0; i < 900; i++) {
+          ctx.globalAlpha = 0.02 + rnd() * 0.05;
+          ctx.fillStyle = rnd() > 0.5 ? "#ffffff" : "#000000";
+          const r = 6 + rnd() * 40;
+          ctx.beginPath();
+          ctx.arc(rnd() * w, rnd() * h, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        // craters
+        for (let i = 0; i < craters; i++) {
+          const x = rnd() * w,
+            y = rnd() * h;
+          const r = 1.5 + Math.pow(rnd(), 3) * 26;
+          ctx.globalAlpha = 0.3;
+          ctx.fillStyle = "#000";
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 0.24;
+          ctx.fillStyle = "#fff";
+          ctx.beginPath();
+          ctx.arc(x - r * 0.22, y - r * 0.22, r * 0.72, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 0.16;
+          ctx.fillStyle = "#fff";
+          ctx.beginPath();
+          ctx.arc(x, y, r * 1.16, 0, Math.PI * 2);
+          ctx.arc(x, y, r * 0.96, 0, Math.PI * 2, true);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        return { c, ctx, rnd };
+      }
 
-// ---- Planets --------------------------------------------------------------
-const orbitGroups = [];
-for (let i = 0; i < PLANETS.length; i++) {
-  const p = PLANETS[i];
-  const dist = orbitDists[i];
-  const dispR = dispRadius(p.km);
+      // Earth: ocean + continents + ice caps, plus a separate cloud layer.
+      // ---------------------------------------------------------------------------
+      // 3D value noise, sampled on the unit sphere so a texture is seamless in
+      // longitude and has no polar pinching (a 2D noise would show both).
+      // ---------------------------------------------------------------------------
+      function hash3(i, j, k) {
+        let n =
+          Math.imul(i, 374761393) +
+          Math.imul(j, 668265263) +
+          Math.imul(k, 1442695041);
+        n = Math.imul(n ^ (n >>> 13), 1274126177);
+        return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+      }
+      const smoothstep01 = (t) => t * t * (3 - 2 * t);
 
-  const orbitGroup = new THREE.Group();
-  orbitGroup.rotation.x = THREE.MathUtils.degToRad(p.inc);
-  orbitGroup.rotation.y = p.node;
-  scene.add(orbitGroup);
-  orbitGroups.push(orbitGroup);
+      function noise3(x, y, z) {
+        const xi = Math.floor(x),
+          yi = Math.floor(y),
+          zi = Math.floor(z);
+        const u = smoothstep01(x - xi),
+          v = smoothstep01(y - yi),
+          w = smoothstep01(z - zi);
+        const c000 = hash3(xi, yi, zi),
+          c100 = hash3(xi + 1, yi, zi);
+        const c010 = hash3(xi, yi + 1, zi),
+          c110 = hash3(xi + 1, yi + 1, zi);
+        const c001 = hash3(xi, yi, zi + 1),
+          c101 = hash3(xi + 1, yi, zi + 1);
+        const c011 = hash3(xi, yi + 1, zi + 1),
+          c111 = hash3(xi + 1, yi + 1, zi + 1);
+        const x00 = c000 + (c100 - c000) * u,
+          x10 = c010 + (c110 - c010) * u;
+        const x01 = c001 + (c101 - c001) * u,
+          x11 = c011 + (c111 - c011) * u;
+        const y0 = x00 + (x10 - x00) * v,
+          y1 = x01 + (x11 - x01) * v;
+        return y0 + (y1 - y0) * w;
+      }
 
-  // --- orbit line
-  const segs = 320;
-  const op = new Float32Array((segs + 1) * 3);
-  for (let s = 0; s <= segs; s++) {
-    const a = (s / segs) * Math.PI * 2;
-    op[s * 3] = Math.cos(a) * dist;
-    op[s * 3 + 1] = 0;
-    op[s * 3 + 2] = Math.sin(a) * dist;
-  }
-  const og = new THREE.BufferGeometry();
-  og.setAttribute("position", new THREE.BufferAttribute(op, 3));
-  const orbitLine = new THREE.Line(og, new THREE.LineBasicMaterial({
-    color: p.color, transparent: true, opacity: 0.16,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-  }));
-  orbitGroup.add(orbitLine);
+      function fbm3(x, y, z, octaves = 5, lacunarity = 2.03, gain = 0.5) {
+        let amp = 0.5,
+          freq = 1,
+          sum = 0,
+          norm = 0;
+        for (let o = 0; o < octaves; o++) {
+          sum += noise3(x * freq, y * freq, z * freq) * amp;
+          norm += amp;
+          amp *= gain;
+          freq *= lacunarity;
+        }
+        return sum / norm;
+      }
 
-  // --- planet group (positioned along the orbit each frame)
-  const g = new THREE.Group();
-  orbitGroup.add(g);
+      function smoothstep(edge0, edge1, x) {
+        const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
+        return t * t * (3 - 2 * t);
+      }
+      const mix = (a, b, t) => a + (b - a) * t;
 
-  const mat = new THREE.MeshStandardMaterial({
-    map: p.surface(), roughness: p.key === "earth" ? 0.82 : 0.94, metalness: 0.0,
-  });
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(dispR, 64, 48), mat);
-  mesh.rotation.z = THREE.MathUtils.degToRad(p.tilt);
-  g.add(mesh);
+      // Earth: fractal continents carved out of an ocean, with latitude-driven
+      // biomes, coastal shallows, ice caps and a separate cloud layer.
+      function earthSurface(w, h, seed) {
+        // Full-resolution seamless terrain, retained as an artistic atlas.
+        const lw = w,
+          lh = h;
+        const { c: lowC, ctx: lowCtx } = makeCanvas(lw, lh);
+        const img = lowCtx.createImageData(lw, lh);
+        const d = img.data;
+        const S = 2.15; // continent frequency
+        const off = seed * 0.001;
 
-  if (p.clouds) {
-    const cloudTex = p.clouds();
-    const cloudMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(dispR * 1.015, 48, 32),
-      new THREE.MeshStandardMaterial({
-        map: cloudTex, transparent: true, opacity: 0.62,
-        roughness: 1, metalness: 0, depthWrite: false,
-      }),
-    );
-    cloudMesh.rotation.z = THREE.MathUtils.degToRad(p.tilt);
-    g.add(cloudMesh);
-  }
+        for (let y = 0; y < lh; y++) {
+          const lat = (0.5 - (y + 0.5) / lh) * Math.PI; // +pi/2 .. -pi/2
+          const cl = Math.cos(lat),
+            sl = Math.sin(lat);
+          for (let x = 0; x < lw; x++) {
+            const lon = ((x + 0.5) / lw) * Math.PI * 2;
+            const px = cl * Math.cos(lon),
+              py = sl,
+              pz = cl * Math.sin(lon);
 
-  if (p.ring) {
-    const ring = addRing({ dispR, key: p.key }, p.ring);
-    ring.rotation.z = THREE.MathUtils.degToRad(p.tilt);
-    g.add(ring);
-  }
+            // continents: two overlapping fields so coastlines meander instead of
+            // looking like a single thresholded blob
+            const cont = fbm3(px * S + off, py * S, pz * S, 5, 2.03, 0.52);
+            const ridge = fbm3(
+              px * S * 2.7 + 31.7,
+              py * S * 2.7,
+              pz * S * 2.7,
+              4,
+              2.11,
+              0.5,
+            );
+            const e = cont * 0.78 + ridge * 0.22;
 
-  // Atmosphere halo — a limb-only ring. A sprite's world half-width is size/2,
-  // and LIMB is brightest at 0.47 of that radius, so size must be
-  // 2 * dispR / 0.47 to land the band exactly on the planet's edge.
-  const atmo = glowSprite(p.color, dispR * 4.26, 0.85, 6, LIMB);
-  g.add(atmo);
+            const absLat = Math.abs(lat);
+            let r, g, b;
 
-  // selection ring (hidden until focused); sits just outside the body, and
-  // outside the ring system when the planet has one
-  const selR = p.ring ? dispR * p.ring.outer * 1.08 : dispR * 1.34;
-  const selRing = new THREE.Mesh(
-    new THREE.RingGeometry(selR, selR * 1.03, 96, 1),
-    new THREE.MeshBasicMaterial({
-      color: 0x00e5ff, transparent: true, opacity: 0,
-      side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false,
-    }),
-  );
-  selRing.rotation.x = -Math.PI / 2;
-  g.add(selRing);
+            if (e > 0.505) {
+              // ---- land
+              const t = smoothstep(0.505, 0.78, e); // 0 coast .. 1 highland
+              const dry = fbm3(
+                px * 6.1 - 12.4,
+                py * 6.1,
+                pz * 6.1,
+                3,
+                2.0,
+                0.5,
+              );
 
-  // invisible hit sphere
-  const hit = new THREE.Mesh(
-    new THREE.SphereGeometry(Math.max(dispR * 2.4, 1.15), 16, 12),
-    new THREE.MeshBasicMaterial({ visible: false }),
-  );
-  g.add(hit);
+              // biome by latitude
+              let base;
+              if (absLat > 1.24)
+                base = [236, 240, 244]; // polar ice
+              else if (absLat > 1.02)
+                base = [150, 156, 152]; // tundra
+              else if (absLat > 0.82)
+                base = [58, 84, 60]; // boreal
+              else if (absLat > 0.36)
+                base = dry > 0.56 ? [150, 132, 86] : [91, 111, 77];
+              else base = dry > 0.6 ? [186, 158, 100] : [62, 97, 68]; // desert / jungle
 
-  // --- moons: a single close satellite, drawn to scale against its planet.
-  // Only bodies flagged with moonSpec get one; the rest keep the bare count.
-  let moon = null;
-  if (p.moonSpec) {
-    const m = p.moonSpec;
-    const moonOrbit = new THREE.Group();
-    moonOrbit.rotation.x = THREE.MathUtils.degToRad(m.inc || 0);
-    g.add(moonOrbit);
+              // mountains: rock, then snow above the treeline
+              const rock = [112, 98, 82];
+              const snow = [242, 246, 250];
+              let col = [
+                mix(base[0], rock[0], smoothstep(0.42, 0.86, t)),
+                mix(base[1], rock[1], smoothstep(0.42, 0.86, t)),
+                mix(base[2], rock[2], smoothstep(0.42, 0.86, t)),
+              ];
+              const snowAmt =
+                smoothstep(0.8, 0.97, t) * (absLat > 0.5 ? 1 : 0.55);
+              col = [
+                mix(col[0], snow[0], snowAmt),
+                mix(col[1], snow[1], snowAmt),
+                mix(col[2], snow[2], snowAmt),
+              ];
 
-    const moonR = dispR * m.ratio;
-    const moonDist = dispR * m.dist;
-    const moonMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(moonR, 32, 24),
-      new THREE.MeshStandardMaterial({
-        map: toTexture(craterSurface(512, 256, m.seed, m.base, 160).c),
-        roughness: 1, metalness: 0,
-      }),
-    );
-    // start the moon on the far side so it does not cover the planet at load
-    moonMesh.position.set(-moonDist, 0, 0);
-    moonOrbit.add(moonMesh);
+              // coastal beach strip
+              const beach = 1 - smoothstep(0.505, 0.535, e);
+              col = [
+                mix(col[0], 196, beach * 0.55),
+                mix(col[1], 186, beach * 0.55),
+                mix(col[2], 150, beach * 0.55),
+              ];
 
-    // faint orbit line so the satellite reads as orbiting, not drifting
-    const mSeg = 96;
-    const mPos = new Float32Array((mSeg + 1) * 3);
-    for (let s = 0; s <= mSeg; s++) {
-      const ang = (s / mSeg) * Math.PI * 2;
-      mPos[s * 3] = Math.cos(ang) * moonDist;
-      mPos[s * 3 + 1] = 0;
-      mPos[s * 3 + 2] = Math.sin(ang) * moonDist;
-    }
-    const mGeo = new THREE.BufferGeometry();
-    mGeo.setAttribute("position", new THREE.BufferAttribute(mPos, 3));
-    moonOrbit.add(new THREE.Line(mGeo, new THREE.LineBasicMaterial({
-      color: 0xffffff, transparent: true, opacity: 0.13,
-      blending: THREE.AdditiveBlending, depthWrite: false,
-    })));
+              // per-pixel grain so the surface is not flat-shaded mush
+              const grain = (noise3(px * 90, py * 90, pz * 90) - 0.5) * 16;
+              r = col[0] + grain;
+              g = col[1] + grain;
+              b = col[2] + grain;
+            } else {
+              // ---- ocean: depth ramps from coastal turquoise to abyssal navy
+              const depth = smoothstep(0.505, 0.3, e);
+              r = mix(36, 14, depth);
+              g = mix(104, 47, depth);
+              b = mix(146, 84, depth);
+              // faint sea-floor texture so the open ocean is not a flat gradient
+              const swirl =
+                (noise3(px * 26, py * 26, pz * 26) - 0.5) *
+                10 *
+                (1 - depth * 0.5);
+              r += swirl;
+              g += swirl * 1.1;
+              b += swirl * 1.2;
+            }
 
-    moon = { orbit: moonOrbit, mesh: moonMesh, dist: moonDist, speed: m.speed ?? 0.9 };
-  }
+            const i4 = (y * lw + x) * 4;
+            d[i4] = Math.max(0, Math.min(255, r));
+            d[i4 + 1] = Math.max(0, Math.min(255, g));
+            d[i4 + 2] = Math.max(0, Math.min(255, b));
+            d[i4 + 3] = 255;
+          }
+        }
+        lowCtx.putImageData(img, 0, 0);
 
-  // label
-  const el = document.createElement("div");
-  el.className = "plabel mono";
-  el.style.color = p.accent;
-  el.innerHTML = `${p.cn}<span class="en">${p.en}</span>`;
-  labelLayer.appendChild(el);
+        const { c, ctx } = makeCanvas(w, h);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(lowC, 0, 0, w, h);
 
-  const body = {
-    kind: "planet", index: i, cn: p.cn, en: p.en, accent: p.accent,
-    color: p.color, group: g, mesh, hit, orbitGroup, orbitLine,
-    dist, dispR, period: p.period, rotH: p.rotH,
-    speed: dispSpeed(p.period), angle: (i * 2.4) % (Math.PI * 2),
-    label: el, selRing, hoverAt: -99, atmo, moon,
-    ringOuter: p.ring ? p.ring.outer : 0,
-    info: {
-      cn: p.cn, en: p.en, accent: p.accent, desc: p.desc,
-      rows: [
-        ["直径", `${p.km.toLocaleString("en-US")} km`],
-        ["轨道半长径", `${p.a.toFixed(2)} AU`],
-        ["公转周期", p.period < 365
-          ? `${p.period.toFixed(0)} 天`
-          : `${(p.period / 365.25).toFixed(2)} 年`],
-        ["自转周期", `${Math.abs(p.rotH).toFixed(1)} 小时${p.rotH < 0 ? "（逆向）" : ""}`],
-        ["已知卫星", `${p.moons} 颗`],
-        ["表面温度", p.temp],
-      ],
-    },
-  };
-  hit.userData.body = body;
-  bodies.push(body);
-  pickables.push(hit);
-  p._body = body;
-}
+        // ice caps drawn on top so they read as sheets rather than noise
+        for (const [y0, y1] of [
+          [0, h * 0.062],
+          [h, h * 0.938],
+        ]) {
+          const gg = ctx.createLinearGradient(0, y0, 0, y1);
+          gg.addColorStop(0, "rgba(248,252,255,0.96)");
+          gg.addColorStop(1, "rgba(248,252,255,0)");
+          ctx.fillStyle = gg;
+          ctx.fillRect(0, Math.min(y0, y1), w, Math.abs(y1 - y0));
+        }
 
-// ===========================================================================
-// 6. Asteroid belt + Kuiper belt
-// ===========================================================================
-function makeBelt(count, rMin, rMax, ySpread, seed, size) {
-  const rnd = mulberry32(seed);
-  const pos = new Float32Array(count * 3);
-  const col = new Float32Array(count * 3);
-  const tint = new THREE.Color();
-  for (let i = 0; i < count; i++) {
-    const a = rnd() * Math.PI * 2;
-    // cluster toward the middle of the band instead of spreading uniformly, so
-    // the belt reads as a defined ring rather than a haze
-    const t = (rnd() + rnd() + rnd()) / 3;
-    const r = rMin + t * (rMax - rMin);
-    pos[i * 3] = Math.cos(a) * r;
-    pos[i * 3 + 1] = (rnd() + rnd() - 1) * ySpread;
-    pos[i * 3 + 2] = Math.sin(a) * r;
-    tint.setHSL(0.08 + rnd() * 0.06, 0.20 + rnd() * 0.20, 0.38 + rnd() * 0.30);
-    col[i * 3] = tint.r; col[i * 3 + 1] = tint.g; col[i * 3 + 2] = tint.b;
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  g.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  return new THREE.Points(g, new THREE.PointsMaterial({
-    size, sizeAttenuation: true, vertexColors: true,
-    transparent: true, opacity: 0.26, depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  }));
-}
-const beltMarsJup = makeBelt(2200, dispDist(1.524) + 1.4, dispDist(5.203) - 3.2, 0.16, 12, 0.045);
-const beltKuiper = makeBelt(3400, 48, 62, 1.2, 77, 0.085);
-beltKuiper.material.opacity = 0.20;
-scene.add(beltMarsJup, beltKuiper);
+        return { c, ctx, rnd: mulberry32(seed) };
+      }
 
-// ===========================================================================
-// 7. Interaction state
-// ===========================================================================
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2(-10, -10);
-let hovered = null;
-let focused = null;
-let paused = false;
-let timeScale = 1;
-let simTime = 0;
-let years = 0;
+      // Cloud layer: the same fractal field, thresholded into broken bands that
+      // follow the planet's circulation cells instead of scattered blobs.
+      function cloudSurface(w, h, seed) {
+        const lw = w >> 1,
+          lh = h >> 1;
+        const { c: lowC, ctx: lowCtx } = makeCanvas(lw, lh);
+        const img = lowCtx.createImageData(lw, lh);
+        const d = img.data;
+        const S = 3.1,
+          off = seed * 0.01;
 
-const clock = new THREE.Clock();
-let fpsAcc = 0, fpsFrames = 0;
+        for (let y = 0; y < lh; y++) {
+          const lat = (0.5 - (y + 0.5) / lh) * Math.PI;
+          const cl = Math.cos(lat),
+            sl = Math.sin(lat);
+          const absLat = Math.abs(lat);
+          // Hadley cells: wet at the equator and ~60 deg, dry at ~30 deg
+          const cell = 0.55 + 0.45 * Math.cos(absLat * 3.4);
 
-const tmpV = new THREE.Vector3();
+          for (let x = 0; x < lw; x++) {
+            const lon = ((x + 0.5) / lw) * Math.PI * 2;
+            const px = cl * Math.cos(lon),
+              py = sl,
+              pz = cl * Math.sin(lon);
 
-function setPointer(e) {
-  pointer.x = (e.clientX / innerWidth) * 2 - 1;
-  pointer.y = -(e.clientY / innerHeight) * 2 + 1;
-}
+            // Stretch the noise along longitude to get the banded, sheared look.
+            // The threshold is deliberately narrow: a wide one leaves most of the
+            // sphere at partial alpha, which reads as a grey smear over the planet
+            // rather than as distinct cloud tops.
+            const n = fbm3(
+              px * S * 0.62 + off,
+              py * S * 2.2,
+              pz * S * 0.62,
+              5,
+              2.07,
+              0.54,
+            );
+            const wisp = fbm3(px * 9.4 - 3.1, py * 15.0, pz * 9.4, 3, 2.0, 0.5);
 
-// Current body under the pointer, or null. Shared by hover and click so both
-// always agree about what is being pointed at.
-function pickAt() {
-  raycaster.setFromCamera(pointer, camera);
-  const hits = raycaster.intersectObjects(pickables, false);
-  return hits.length ? hits[0].object.userData.body : null;
-}
-addEventListener("pointermove", setPointer);
+            let a = smoothstep(0.545, 0.635, n * 0.78 + wisp * 0.22) * cell;
+            a = Math.min(1, a * 1.25);
 
-let dragging = false;
-let dragStart = { x: 0, y: 0, yaw: 0, pitch: 0 };
-let downAt = null;
+            const i4 = (y * lw + x) * 4;
+            d[i4] = 255;
+            d[i4 + 1] = 255;
+            d[i4 + 2] = 255;
+            d[i4 + 3] = a * 255;
+          }
+        }
+        lowCtx.putImageData(img, 0, 0);
 
-canvas.addEventListener("pointerdown", (e) => {
-  setPointer(e);
-  dragging = true;
-  dragStart = { x: e.clientX, y: e.clientY, yaw: camState.targetYaw, pitch: camState.targetPitch };
-  // snapshot the body under the cursor *now*: by the time the button is released
-  // an orbiting planet may have already slipped out from under the pointer.
-  // Falling back to `hovered` means "whatever was highlighted when I pressed".
-  downAt = { x: e.clientX, y: e.clientY, t: performance.now(), body: pickAt() || hovered };
-});
-addEventListener("pointerup", (e) => {
-  if (!dragging) return;
-  dragging = false;
-  if (!downAt) return;
-  const moved = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y);
-  const dt = performance.now() - downAt.t;
-  const pressed = downAt.body;
-  downAt = null;
-  if (moved < 6 && dt < 650) handleClick(pressed);
-});
-addEventListener("pointermove", (e) => {
-  if (!dragging) return;
-  camState.targetYaw = dragStart.yaw + (e.clientX - dragStart.x) * 0.005;
-  camState.targetPitch = THREE.MathUtils.clamp(
-    dragStart.pitch - (e.clientY - dragStart.y) * 0.004, 0.05, 1.45,
-  );
-});
-addEventListener("wheel", (e) => {
-  camState.targetRadius = THREE.MathUtils.clamp(
-    camState.targetRadius * (1 + Math.sign(e.deltaY) * 0.09), 3.2, 320,
-  );
-}, { passive: true });
+        const { c, ctx } = makeCanvas(w, h);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(lowC, 0, 0, w, h);
+        return c;
+      }
 
-// ---- HUD refs
-const infoEl = document.getElementById("info");
-const flashEl = document.getElementById("flash");
-const speedEl = document.querySelector("#speed b");
-const clockEl = document.getElementById("clockv");
-const fpsEl = document.getElementById("fps");
+      // Radial glow sprite (same technique as the first demo).
+      function radialTexture(stops) {
+        const s = 256;
+        const { c, ctx } = makeCanvas(s, s);
+        const g = ctx.createRadialGradient(
+          s / 2,
+          s / 2,
+          0,
+          s / 2,
+          s / 2,
+          s / 2,
+        );
+        for (const [at, col] of stops) g.addColorStop(at, col);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, s, s);
+        const t = new THREE.CanvasTexture(c);
+        t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      }
+      const GLOW = radialTexture([
+        [0, "rgba(255,255,255,1)"],
+        [0.14, "rgba(255,255,255,0.62)"],
+        [0.34, "rgba(255,255,255,0.24)"],
+        [0.6, "rgba(255,255,255,0.07)"],
+        [1, "rgba(255,255,255,0)"],
+      ]);
 
-function showInfo(info) {
-  infoEl.querySelector(".cn").textContent = info.cn;
-  infoEl.querySelector(".en").textContent = info.en;
-  infoEl.querySelector(".desc").textContent = info.desc;
-  infoEl.querySelector(".cn").style.color = info.accent;
-  const rows = infoEl.querySelector(".rows");
-  rows.innerHTML = "";
-  for (const [k, v] of info.rows) {
-    const d = document.createElement("div");
-    d.className = "row";
-    d.innerHTML = `<span>${k}</span><b>${v}</b>`;
-    rows.appendChild(d);
-  }
-  infoEl.classList.add("on");
-}
+      // Limb-only halo: transparent through the middle, bright in a narrow band just
+      // outside the disc. A plain radial gradient is brightest at its centre, so
+      // using it as an atmosphere paints a haze straight over the planet.
+      const LIMB = (() => {
+        const s = 256;
+        const { c, ctx } = makeCanvas(s, s);
+        const g = ctx.createRadialGradient(
+          s / 2,
+          s / 2,
+          0,
+          s / 2,
+          s / 2,
+          s / 2,
+        );
+        g.addColorStop(0.0, "rgba(255,255,255,0)");
+        g.addColorStop(0.3, "rgba(255,255,255,0)");
+        g.addColorStop(0.42, "rgba(255,255,255,0.06)");
+        g.addColorStop(0.47, "rgba(255,255,255,0.55)");
+        g.addColorStop(0.52, "rgba(255,255,255,0.30)");
+        g.addColorStop(0.66, "rgba(255,255,255,0.07)");
+        g.addColorStop(1.0, "rgba(255,255,255,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, s, s);
+        const t = new THREE.CanvasTexture(c);
+        t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      })();
 
-function flashWord(text, color) {
-  flashEl.querySelector(".w").textContent = text;
-  flashEl.querySelector(".w").style.color = color;
-  flashEl.style.transition = "none";
-  flashEl.style.opacity = "1";
-  flashEl.style.transform = "scale(1.04)";
-  requestAnimationFrame(() => {
-    flashEl.style.transition = "opacity 1.2s ease, transform 1.2s cubic-bezier(.16,1,.3,1)";
-    flashEl.style.opacity = "0";
-    flashEl.style.transform = "scale(1)";
-  });
-}
+      function glowSprite(color, size, opacity, order = 8, map = GLOW) {
+        const sp = new THREE.Sprite(
+          new THREE.SpriteMaterial({
+            map,
+            color,
+            transparent: true,
+            opacity,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            depthTest: false,
+          }),
+        );
+        sp.scale.set(size, size, 1);
+        sp.renderOrder = order;
+        return sp;
+      }
 
-function selectBody(b) {
-  focused = b;
-  showInfo(b.info);
-  flashWord(b.cn, b.accent);
-  for (const x of bodies) {
-    if (x.selRing) x.selRing.material.opacity = 0;
-    if (x.label) x.label.classList.remove("sel");
-  }
-  if (b.selRing) b.selRing.material.opacity = 0.9;
-  if (b.label) b.label.classList.add("sel");
-  // Frame the body by the screen angle it should subtend, not by a fixed
-  // multiple of its radius: Saturn is huge and needs far more stand-off than
-  // Mercury to sit inside the frame at the same apparent size.
-  const r = b.dispR || SUN_RADIUS;
-  const fov = (camera.fov * Math.PI) / 180;
-  const wantFraction = b.kind === "sun" ? 0.30 : 0.24; // of viewport height
-  camState.targetRadius = Math.max(r / (wantFraction * Math.tan(fov / 2)), 2.2);
-  // keep the dolly from ending inside the planet's own ring system
-  if (b.ringOuter) camState.targetRadius = Math.max(camState.targetRadius, r * b.ringOuter * 1.35);
+      // ===========================================================================
+      // 1. Renderer / scene / camera
+      // ===========================================================================
+      const canvas = document.getElementById("scene");
+      let renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: false,
+        });
+      } catch (error) {
+        window.showSolarError();
+        throw error;
+      }
+      canvas.addEventListener("webglcontextlost", (event) => {
+        event.preventDefault();
+        cancelAnimationFrame(animationFrame);
+        window.showSolarError();
+      });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setSize(innerWidth, innerHeight, false);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.06;
+      // No shadow maps: a point light needs a cube map covering the whole system, so
+      // a 1024 map gives ~0.14 units per texel while the planets are only a few units
+      // across — the result is severe self-shadowing acne, not visible eclipses. The
+      // day/night terminator already comes from the light's own normal shading.
 
-  // Swing round to the lit side. Focusing used to only change the radius, so the
-  // camera kept whatever azimuth the user happened to be at — roughly half the
-  // time that was the night side, and the planet rendered as a black disc with a
-  // thin rim (Jupiter, Mercury and Saturn all showed this).
-  if (b.kind === "planet") {
-    b.group.getWorldPosition(tmpV);
-    const toSun = tmpV.clone().negate().normalize(); // the sun sits at the origin
-    const sunYaw = Math.atan2(toSun.x, toSun.z);
-    const sunPitch = Math.acos(THREE.MathUtils.clamp(toSun.y, -1, 1));
-    // stay ~28 deg off the sun line so a terminator stays in frame
-    camState.targetYaw = sunYaw + 0.50;
-    camState.targetPitch = THREE.MathUtils.clamp(sunPitch + 0.16, 0.12, 1.32);
-  }
-}
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#03060a");
 
-function clearFocus() {
-  focused = null;
-  infoEl.classList.remove("on");
-  for (const x of bodies) {
-    if (x.selRing) x.selRing.material.opacity = 0;
-    if (x.label) x.label.classList.remove("sel");
-  }
-  camState.targetRadius = 96;
-}
+      const camera = new THREE.PerspectiveCamera(
+        48,
+        innerWidth / innerHeight,
+        0.05,
+        4000,
+      );
+      const camState = {
+        yaw: -0.62,
+        pitch: 0.52,
+        radius: 96,
+        targetYaw: -0.62,
+        targetPitch: 0.52,
+        targetRadius: 96,
+      };
+      const camTarget = new THREE.Vector3(0, 0, 0); // current look-at (lerped)
+      const camTargetGoal = new THREE.Vector3(0, 0, 0); // where we want to look
 
-// The bodies orbit continuously, so a raycast taken on one frame can miss on the
-// next. A click therefore counts if the pointer was over a body at press time OR
-// is over one at release time — anything else is a deliberate click on empty space.
-let lastClick = null;
-function handleClick(pressedBody) {
-  const released = pickAt();
-  const b = released || pressedBody || hovered;
-  lastClick = {
-    pressed: pressedBody ? (pressedBody.kind === "sun" ? "sun" : pressedBody.index) : null,
-    released: released ? (released.kind === "sun" ? "sun" : released.index) : null,
-    used: b ? (b.kind === "sun" ? "sun" : b.index) : null,
-  };
-  if (b) selectBody(b);
-  else clearFocus();
-}
+      // ===========================================================================
+      // 2. Starfield + Milky Way band
+      // ===========================================================================
+      {
+        const N = 4200;
+        const pos = new Float32Array(N * 3);
+        const col = new Float32Array(N * 3);
+        const rnd = mulberry32(7);
+        const tint = new THREE.Color();
+        for (let i = 0; i < N; i++) {
+          // uniform on sphere, radius 900..1400
+          const u = rnd() * 2 - 1,
+            th = rnd() * Math.PI * 2;
+          const s = Math.sqrt(1 - u * u);
+          const r = 900 + rnd() * 500;
+          pos[i * 3] = Math.cos(th) * s * r;
+          pos[i * 3 + 1] = u * r;
+          pos[i * 3 + 2] = Math.sin(th) * s * r;
+          // colour temperature
+          const t = rnd();
+          tint.setHSL(
+            t < 0.6 ? 0.58 : t < 0.85 ? 0.1 : 0.02,
+            0.18,
+            0.62 + rnd() * 0.34,
+          );
+          col[i * 3] = tint.r;
+          col[i * 3 + 1] = tint.g;
+          col[i * 3 + 2] = tint.b;
+        }
+        const g = new THREE.BufferGeometry();
+        g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+        g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+        const stars = new THREE.Points(
+          g,
+          new THREE.PointsMaterial({
+            size: 1.25,
+            sizeAttenuation: false,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.68,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            map: GLOW,
+          }),
+        );
+        stars.renderOrder = -10;
+        scene.add(stars);
 
-addEventListener("keydown", (e) => {
-  if (e.code === "Escape") clearFocus();
-  if (e.code === "Space") { e.preventDefault(); togglePause(); }
-  const n = Number(e.key);
-  if (n >= 1 && n <= 3) setSpeed([1, 4, 16][n - 1]);
-});
+        // faint milky-way ribbon: a ring of dense faint stars
+        const M = 5500;
+        const mp = new Float32Array(M * 3);
+        const mc = new Float32Array(M * 3);
+        for (let i = 0; i < M; i++) {
+          const a = rnd() * Math.PI * 2;
+          const band = (rnd() + rnd() + rnd() - 1.5) * 0.16; // gaussian-ish
+          const r = 1200;
+          const x = Math.cos(a) * r;
+          const z = Math.sin(a) * r;
+          const y = band * r;
+          mp[i * 3] = x;
+          mp[i * 3 + 1] = y;
+          mp[i * 3 + 2] = z;
+          tint.setHSL(0.6 + rnd() * 0.05, 0.15, 0.45 + rnd() * 0.3);
+          mc[i * 3] = tint.r;
+          mc[i * 3 + 1] = tint.g;
+          mc[i * 3 + 2] = tint.b;
+        }
+        const mg = new THREE.BufferGeometry();
+        mg.setAttribute("position", new THREE.BufferAttribute(mp, 3));
+        mg.setAttribute("color", new THREE.BufferAttribute(mc, 3));
+        const mw = new THREE.Points(
+          mg,
+          new THREE.PointsMaterial({
+            size: 1.1,
+            sizeAttenuation: false,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.14,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          }),
+        );
+        mw.rotation.set(0.5, 0.3, 0.9);
+        scene.add(mw);
+      }
 
-function togglePause() {
-  paused = !paused;
-  document.getElementById("btnPause").classList.toggle("on", paused);
-  document.getElementById("btnPause").textContent = paused ? "▶ 继续" : "❚❚ 暂停";
-}
-function setSpeed(v) {
-  timeScale = v;
-  paused = false;
-  document.getElementById("btnPause").classList.remove("on");
-  document.getElementById("btnPause").textContent = "❚❚ 暂停";
-  document.querySelectorAll("[data-sp]").forEach((el) => {
-    el.classList.toggle("on", Number(el.dataset.sp) === v);
-  });
-  speedEl.textContent = `${v.toFixed(1)}×`;
-}
+      // ===========================================================================
+      // 3. The Sun
+      // ===========================================================================
+      const SUN_RADIUS = 2.35;
+      const sunGroup = new THREE.Group();
+      scene.add(sunGroup);
 
-document.getElementById("btnPause").addEventListener("click", togglePause);
-document.querySelectorAll("[data-sp]").forEach((el) => {
-  el.addEventListener("click", () => {
-    const v = Number(el.dataset.sp);
-    if (v === 0) { clearFocus(); camState.targetYaw = -0.62; camState.targetPitch = 0.52; camState.targetRadius = 96; }
-    else setSpeed(v);
-  });
-});
+      const sunTex = artSurface("sun").map;
 
-// ===========================================================================
-// 8. Main loop
-// ===========================================================================
-const orbitLocal = (angle, r, out = new THREE.Vector3()) =>
-  out.set(Math.cos(angle) * r, 0, Math.sin(angle) * r);
+      const sunMesh = new THREE.Mesh(
+        new THREE.SphereGeometry(SUN_RADIUS, 64, 48),
+        new THREE.MeshBasicMaterial({ map: sunTex }),
+      );
+      sunGroup.add(sunMesh);
 
-const projected = new THREE.Vector3();
+      // layered corona. The inner layers used to be nearly opaque, which added up to
+      // pure white over the disc and hid the granulation texture underneath.
+      const coronaA = glowSprite(0xffcf6a, SUN_RADIUS * 3.4, 0.18, 3);
+      const coronaB = glowSprite(0xff9b2f, SUN_RADIUS * 6.2, 0.07, 2);
+      const coronaC = glowSprite(0xffe9b0, SUN_RADIUS * 1.9, 0.1, 4);
+      sunGroup.add(coronaA, coronaB, coronaC);
 
-function tick() {
-  const dt = Math.min(clock.getDelta(), 0.05);
-  const simDt = paused ? 0 : dt * timeScale;
-  simTime += simDt;
-  years += (simDt / 6.0) * (1 / 6); // purely cosmetic clock
+      // horizontal lens streak
+      {
+        const streak = glowSprite(0xffd48a, 1, 0.035, 5);
+        streak.scale.set(SUN_RADIUS * 20, SUN_RADIUS * 0.85, 1);
+        sunGroup.add(streak);
+        const streak2 = glowSprite(0xffd48a, 1, 0.01, 5);
+        streak2.scale.set(SUN_RADIUS * 9, SUN_RADIUS * 30, 1);
+        sunGroup.add(streak2);
+      }
 
-  // ---- planets along orbits
-  for (const b of bodies) {
-    if (b.kind !== "planet") continue;
-    b.angle += simDt * b.speed;
-    orbitLocal(b.angle, b.dist, b.group.position);
-    b.mesh.rotation.y += simDt * (0.9 + 6 / Math.abs(b.rotH)) * 0.6;
-    if (b.mesh.children && b.mesh.children.length) { /* noop */ }
-    // clouds rotate a touch faster
-    const cl = b.group.children.find((o) => o.material && o.material.map && o.geometry.type === "SphereGeometry" && o !== b.mesh);
-    if (cl) cl.rotation.y += simDt * 0.05;
-    // selection ring lies in the orbital plane so it reads as a marker around the
-    // body rather than a HUD circle pasted over the screen; it spins slowly
-    if (b.selRing) {
-      b.selRing.rotation.z += simDt * 0.7;
-    }
-    // moon: tidally locked, so one face always points at its planet
-    if (b.moon) {
-      b.moon.orbit.rotation.y += simDt * b.moon.speed;
-      b.moon.mesh.rotation.y = -b.moon.orbit.rotation.y;
-    }
-  }
+      // thin plasma shell that pulses
+      const coronaShell = new THREE.Mesh(
+        new THREE.SphereGeometry(SUN_RADIUS * 1.09, 48, 32),
+        new THREE.MeshBasicMaterial({
+          color: 0xffb347,
+          transparent: true,
+          opacity: 0.055,
+          blending: THREE.AdditiveBlending,
+          side: THREE.BackSide,
+          depthWrite: false,
+        }),
+      );
+      sunGroup.add(coronaShell);
+      // Sprite gradients carry the corona; a flat back-face shell creates a hard rim.
+      coronaShell.visible = false;
 
-  // ---- sun animation
-  sunMesh.rotation.y += simDt * 0.055;
-  const pulse = 1 + Math.sin(simTime * 1.7) * 0.022;
-  coronaA.scale.setScalar(SUN_RADIUS * 3.4 * pulse);
-  coronaB.scale.setScalar(SUN_RADIUS * 6.2 * (2 - pulse));
-  coronaShell.scale.setScalar(1 + Math.sin(simTime * 2.3) * 0.03);
-  sunMesh.material.color.setScalar(1);
+      // decay 0 keeps the sun's illumination flat across the compressed solar system.
+      // With the default inverse-square falloff, Saturn at ~30 display units received
+      // roughly 1/900th of Mercury's light and rendered as a black disc.
+      const sunLight = new THREE.PointLight(0xfff3dc, 2.8, 0, 0);
+      sunLight.decay = 0;
+      sunGroup.add(sunLight);
+      scene.add(new THREE.AmbientLight(0x8794a2, 0.55));
+      // cool rim fill so night sides are not pitch black
+      const fill = new THREE.DirectionalLight(0x8ca9c4, 0.24);
+      fill.position.set(-1, 0.6, -0.8);
+      scene.add(fill);
+      // camera-locked fill; position is refreshed each frame in the render loop
+      const camFill = new THREE.PointLight(0xb8c3ce, 1.05, 0, 0);
+      camFill.decay = 0;
+      scene.add(camFill);
 
-  // ---- belts drift
-  beltMarsJup.rotation.y += simDt * 0.020;
-  beltKuiper.rotation.y += simDt * 0.004;
+      // ===========================================================================
+      // 4. Planet definitions + display mapping
+      // ===========================================================================
+      // Real values, then compressed into a viewable model.
+      const PLANETS = [
+        {
+          key: "mercury",
+          cn: "水星",
+          en: "MERCURY",
+          color: 0xb9b0a4,
+          accent: "#c8c0b4",
+          a: 0.387,
+          km: 4879,
+          period: 88,
+          rotH: 1407.6,
+          tilt: 0.03,
+          inc: 7.0,
+          node: 0.4,
+          moons: 0,
+          temp: "-173 ~ 427 °C",
+          desc: "离太阳最近的行星，几乎没有大气。表面布满环形山，昼夜温差可达 600 °C。",
+          surface: () => {
+            const { c } = craterSurface(1024, 512, 3, "#8f8579", 420);
+            return toTexture(c);
+          },
+        },
+        {
+          key: "venus",
+          cn: "金星",
+          en: "VENUS",
+          color: 0xe8c27a,
+          accent: "#f0cf94",
+          a: 0.723,
+          km: 12104,
+          period: 225,
+          rotH: -5832,
+          tilt: 0.05,
+          inc: 3.4,
+          node: 1.2,
+          moons: 0,
+          temp: "≈ 465 °C",
+          desc: "浓密的二氧化碳大气造成失控温室效应，表面比水星更热，云层中是硫酸雨。",
+          surface: () => {
+            const { c } = bandedSurface(
+              1024,
+              512,
+              17,
+              ["#f6e3b0", "#e8c27a", "#c99b52", "#f3d99a"],
+              {
+                bands: 16,
+                blobs: 700,
+                blobSize: 52,
+                wobble: 2.4,
+              },
+            );
+            return toTexture(c);
+          },
+        },
+        {
+          key: "earth",
+          cn: "地球",
+          en: "EARTH",
+          color: 0x3d7fd1,
+          accent: "#5aa9ff",
+          a: 1.0,
+          km: 12742,
+          period: 365.25,
+          rotH: 23.93,
+          tilt: 23.4,
+          inc: 0.0,
+          node: 0,
+          moons: 1,
+          temp: "-88 ~ 58 °C",
+          desc: "已知唯一存在生命的行星，71% 的表面被液态水覆盖，大气以氮和氧为主。",
+          // 月球半径 1737 km ≈ 地球的 0.27，平均距离 384,400 km ≈ 30 个地球半径。
+          // 真实比例在屏幕上会让月球贴脸，这里压到 4.2 倍半径。
+          moonSpec: {
+            cn: "月球",
+            ratio: 0.27,
+            dist: 4.2,
+            speed: 0.85,
+            inc: 5.1,
+            seed: 61,
+            base: "#9a958c",
+          },
+          surface: () => {
+            const { c } = earthSurface(1024, 512, 2024);
+            return toTexture(c);
+          },
+          clouds: () => {
+            const t = toTexture(cloudSurface(1024, 512, 77));
+            return t;
+          },
+        },
+        {
+          key: "mars",
+          cn: "火星",
+          en: "MARS",
+          color: 0xc1502e,
+          accent: "#ff7a4d",
+          a: 1.524,
+          km: 6779,
+          period: 687,
+          rotH: 24.62,
+          tilt: 25.2,
+          inc: 1.85,
+          node: 2.6,
+          moons: 2,
+          temp: "-143 ~ 35 °C",
+          desc: "拥有太阳系最高的火山奥林匹斯山与最长的峡谷水手谷。红色来自表面的氧化铁。",
+          surface: () => {
+            const { c, ctx } = craterSurface(1024, 512, 8, "#a8442a", 300);
+            const rnd = mulberry32(55);
+            for (let i = 0; i < 340; i++) {
+              ctx.globalAlpha = 0.05 + rnd() * 0.12;
+              ctx.fillStyle = rnd() > 0.5 ? "#d97a4a" : "#6e2a17";
+              ctx.beginPath();
+              ctx.ellipse(
+                rnd() * 1024,
+                rnd() * 512,
+                10 + rnd() * 70,
+                6 + rnd() * 40,
+                rnd() * 3,
+                0,
+                Math.PI * 2,
+              );
+              ctx.fill();
+            }
+            // polar caps
+            for (const [y0, y1] of [
+              [0, 42],
+              [512, 470],
+            ]) {
+              const g = ctx.createLinearGradient(0, y0, 0, y1);
+              g.addColorStop(0, "rgba(255,255,255,0.95)");
+              g.addColorStop(1, "rgba(255,255,255,0)");
+              ctx.globalAlpha = 1;
+              ctx.fillStyle = g;
+              ctx.fillRect(0, Math.min(y0, y1), 1024, Math.abs(y1 - y0));
+            }
+            ctx.globalAlpha = 1;
+            return toTexture(c);
+          },
+        },
+        {
+          key: "jupiter",
+          cn: "木星",
+          en: "JUPITER",
+          color: 0xd8a878,
+          accent: "#f0c896",
+          a: 5.203,
+          km: 139820,
+          period: 4333,
+          rotH: 9.93,
+          tilt: 3.1,
+          inc: 1.3,
+          node: 3.9,
+          moons: 95,
+          temp: "≈ -145 °C",
+          desc: "质量是其余行星总和的 2.5 倍。大红斑是一场已持续数百年的巨型风暴。",
+          surface: () => {
+            const { c, ctx } = bandedSurface(
+              2048,
+              1024,
+              23,
+              ["#f2e0c8", "#d8a878", "#b07a4e", "#e8cba8", "#8f5f3a"],
+              {
+                bands: 34,
+                blobs: 1500,
+                blobSize: 70,
+                wobble: 1.6,
+              },
+            );
+            // Great Red Spot: a vortex built from a radial gradient. Stacking 30
+            // overlapping ellipses accumulated to ~97% alpha at the centre, which the
+            // sphere's grazing-angle lighting turned into a black disc rather than a
+            // salmon storm.
+            const cx = 1180,
+              cy = 648,
+              spotR = 250;
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(1, 0.62); // squash the storm into an ellipse
+            const grd = ctx.createRadialGradient(0, 0, 0, 0, 0, spotR);
+            grd.addColorStop(0.0, "rgba(240,158,112,0.92)"); // eye
+            grd.addColorStop(0.34, "rgba(216,112,68,0.86)");
+            grd.addColorStop(0.66, "rgba(178,76,46,0.60)");
+            grd.addColorStop(0.86, "rgba(150,72,46,0.24)");
+            grd.addColorStop(1.0, "rgba(150,72,46,0)");
+            ctx.fillStyle = grd;
+            ctx.beginPath();
+            ctx.arc(0, 0, spotR, 0, Math.PI * 2);
+            ctx.fill();
+            // swirl filaments so it reads as rotating, not as a painted circle
+            const rnd = mulberry32(31);
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 14; i++) {
+              const rr = spotR * (0.22 + rnd() * 0.62);
+              ctx.globalAlpha = 0.06 + rnd() * 0.1;
+              ctx.strokeStyle = rnd() > 0.5 ? "#f2c9a6" : "#8e3a24";
+              ctx.beginPath();
+              ctx.ellipse(
+                0,
+                0,
+                rr,
+                rr * 0.62,
+                0,
+                rnd() * 1.2,
+                Math.PI * 1.1 + rnd() * 0.9,
+              );
+              ctx.stroke();
+            }
+            ctx.restore();
+            ctx.globalAlpha = 1;
+            return toTexture(c);
+          },
+        },
+        {
+          key: "saturn",
+          cn: "土星",
+          en: "SATURN",
+          color: 0xe4cf9a,
+          accent: "#f2dfae",
+          a: 9.537,
+          km: 116460,
+          period: 10759,
+          rotH: 10.66,
+          tilt: 26.7,
+          inc: 2.5,
+          node: 1.8,
+          moons: 146,
+          temp: "≈ -178 °C",
+          desc: "环系主要由水冰颗粒组成，横跨 28 万公里，平均厚度却只有约 10 米。",
+          ring: { inner: 1.28, outer: 2.02 },
+          surface: () => {
+            const { c } = bandedSurface(
+              2048,
+              1024,
+              61,
+              ["#f7ecd0", "#e4cf9a", "#cbae74", "#f0e0bc"],
+              {
+                bands: 26,
+                blobs: 900,
+                blobSize: 60,
+                wobble: 1.2,
+              },
+            );
+            return toTexture(c);
+          },
+        },
+        {
+          key: "uranus",
+          cn: "天王星",
+          en: "URANUS",
+          color: 0x8fe3e8,
+          accent: "#a8f0f4",
+          a: 19.19,
+          km: 50724,
+          period: 30687,
+          rotH: -17.24,
+          tilt: 97.8,
+          inc: 0.77,
+          node: 4.4,
+          moons: 28,
+          temp: "≈ -224 °C",
+          desc: "自转轴倾斜 98°，几乎是躺着绕太阳滚动。甲烷让它呈现淡青色。",
+          ring: { inner: 1.6, outer: 1.95, faint: true },
+          surface: () => {
+            const { c } = bandedSurface(
+              1024,
+              512,
+              88,
+              ["#c9f4f6", "#8fe3e8", "#7ccfd8", "#a9ecef"],
+              {
+                bands: 10,
+                blobs: 300,
+                blobSize: 40,
+                wobble: 0.6,
+              },
+            );
+            return toTexture(c);
+          },
+        },
+        {
+          key: "neptune",
+          cn: "海王星",
+          en: "NEPTUNE",
+          color: 0x3a5fd0,
+          accent: "#6b8bff",
+          a: 30.07,
+          km: 49244,
+          period: 60190,
+          rotH: 16.11,
+          tilt: 28.3,
+          inc: 1.77,
+          node: 2.2,
+          moons: 16,
+          temp: "≈ -214 °C",
+          desc: "太阳系风暴最猛烈的行星，风速可达 2,100 km/h。由数学计算预言后被发现。",
+          surface: () => {
+            const { c, ctx } = bandedSurface(
+              1024,
+              512,
+              133,
+              ["#5b86e8", "#3a5fd0", "#2a45a8", "#6b93ef"],
+              {
+                bands: 14,
+                blobs: 500,
+                blobSize: 44,
+                wobble: 1.4,
+              },
+            );
+            const rnd = mulberry32(9);
+            for (let i = 0; i < 16; i++) {
+              ctx.globalAlpha = 0.1 + rnd() * 0.16;
+              ctx.fillStyle = "#1b2f7a";
+              ctx.beginPath();
+              ctx.ellipse(
+                700 + (rnd() - 0.5) * 90,
+                300 + (rnd() - 0.5) * 50,
+                40 + rnd() * 40,
+                20 + rnd() * 18,
+                0,
+                0,
+                Math.PI * 2,
+              );
+              ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+            return toTexture(c);
+          },
+        },
+      ];
 
-  // ---- hover raycast
-  const prev = hovered;
-  hovered = pickAt();
-  if (hovered !== prev) {
-    canvas.style.cursor = hovered ? "pointer" : "crosshair";
-    if (prev) {
-      if (prev.kind === "planet") prev.atmo.material.opacity = 0.22;
-      if (prev.label) prev.label.style.opacity = "";
-    }
-    if (hovered) {
-      if (hovered.kind === "planet") hovered.atmo.material.opacity = 0.75;
-      if (hovered.label) hovered.label.style.opacity = "1";
-    }
-  }
+      // distance & size compression so the whole system fits on screen
+      const dispDist = (a) => 6.0 * Math.pow(a, 0.6) + 1.9;
+      const dispRadius = (km) => 0.62 * Math.pow(km / 12742, 0.42);
+      // angular speed: compressed from real periods so the outer planets still move
+      const dispSpeed = (period) => 0.42 * Math.pow(365.25 / period, 0.42);
 
-  // ---- camera target follows the focused body
-  if (focused) {
-    focused.group.getWorldPosition(tmpV);
-    camTargetGoal.copy(tmpV);
-  } else {
-    camTargetGoal.set(0, 0, 0);
-  }
-  camTarget.lerp(camTargetGoal, 0.10);
+      // The pure power curve squeezes the inner system hard: Venus and Earth are only
+      // 0.277 AU apart, which compressed to a 1.0 gap for two bodies whose radii sum
+      // to 1.23 — they overlapped on screen. Push each orbit out until every pair of
+      // neighbours keeps a visible gap, leaving the (already roomy) outer system as is.
+      const ORBIT_CLEARANCE = 0.75;
+      const orbitDists = (() => {
+        const d = PLANETS.map((p) => dispDist(p.a));
+        for (let i = 1; i < d.length; i++) {
+          const need =
+            dispRadius(PLANETS[i - 1].km) +
+            dispRadius(PLANETS[i].km) +
+            ORBIT_CLEARANCE;
+          d[i] = Math.max(d[i], d[i - 1] + need);
+        }
+        return d;
+      })();
 
-  camState.yaw += (camState.targetYaw - camState.yaw) * 0.07;
-  camState.pitch += (camState.targetPitch - camState.pitch) * 0.07;
-  camState.radius += (camState.targetRadius - camState.radius) * 0.055;
+      const SUN_INFO = {
+        cn: "太阳",
+        en: "THE SUN",
+        accent: "#ffd166",
+        desc: "占太阳系总质量的 99.86%，核心每秒把约 6 亿吨氢聚变成氦。",
+        rows: [
+          ["直径", "1,392,700 km"],
+          ["表面温度", "≈ 5,500 °C"],
+          ["核心温度", "≈ 1,500 万 °C"],
+          ["自转周期", "25.4 天（赤道）"],
+          ["年龄", "约 46 亿年"],
+        ],
+      };
 
-  const sp = Math.sin(camState.pitch) * camState.radius;
-  camera.position.set(
-    camTarget.x + Math.sin(camState.yaw) * sp,
-    camTarget.y + Math.cos(camState.pitch) * camState.radius,
-    camTarget.z + Math.cos(camState.yaw) * sp,
-  );
-  camera.lookAt(camTarget);
+      // ===========================================================================
+      // 5. Build planets
+      // ===========================================================================
+      const bodies = []; // clickable: sun + planets
+      const labelLayer = document.getElementById("labels");
+      const visualPickables = [];
 
-  // A weak fill riding just off the camera axis. Without it every body past
-  // Mercury reads as a lit crescent on a pure-black disc, because the only
-  // other light is the sun itself.
-  camFill.position.copy(camera.position)
-    .addScaledVector(camTarget.clone().sub(camera.position).normalize(), camState.radius * 0.15);
-  camFill.position.y += camState.radius * 0.10;
+      function makeRingTexture(seed, faint) {
+        const { c, ctx } = makeCanvas(2048, 8),
+          image = ctx.createImageData(2048, 8),
+          rnd = mulberry32(seed);
+        for (let x = 0; x < 2048; x++) {
+          const t = x / 2047;
+          const edge = smoothstep(0, 0.025, t) * (1 - smoothstep(0.97, 1, t));
+          const gap =
+            1 -
+            0.96 *
+              (smoothstep(0.625, 0.637, t) * (1 - smoothstep(0.662, 0.674, t)));
+          const band =
+            0.65 +
+            0.16 * Math.sin(t * 130) +
+            0.09 * Math.sin(t * 730) +
+            0.08 * rnd();
+          const density =
+            (t < 0.2 ? 0.55 : t < 0.6 ? 0.95 : 0.72) * band * edge * gap;
+          const warmth = 0.5 + 0.5 * Math.sin(t * 29);
+          for (let y = 0; y < 8; y++) {
+            const i = (y * 2048 + x) * 4;
+            image.data[i] = faint ? 158 : 170 + warmth * 38;
+            image.data[i + 1] = faint ? 180 : 156 + warmth * 31;
+            image.data[i + 2] = faint ? 183 : 132 + warmth * 30;
+            image.data[i + 3] = 255 * density;
+          }
+        }
+        ctx.putImageData(image, 0, 0);
+        return toTexture(c);
+      }
 
-  // ---- labels
-  // Labels are anchored up-and-right of their body rather than centred on it, so
-  // the planet stays visible and neighbouring labels stop stacking on top of one
-  // another in the crowded inner system.
-  const labelSlots = [];
-  for (const b of bodies) {
-    if (!b.label) continue;
-    b.group.getWorldPosition(tmpV);
-    projected.copy(tmpV).project(camera);
-    const behind = projected.z > 1;
-    const x = (projected.x * 0.5 + 0.5) * innerWidth;
-    const y = (-projected.y * 0.5 + 0.5) * innerHeight;
-    if (behind || Math.abs(projected.x) > 1.1 || Math.abs(projected.y) > 1.1) {
-      b.label.style.display = "none";
-      continue;
-    }
-    // push each label up and to the right by its own radius on screen so it
-    // clears the disc instead of sitting on top of it
-    const worldR = b.dispR || 1;
-    const edge = worldR * innerHeight / (2 * Math.tan((camera.fov * Math.PI) / 360) * Math.max(camera.position.distanceTo(tmpV), 0.001));
-    const lx = x + Math.min(edge * 0.92 + 10, 120);
-    let ly = y - Math.min(edge * 0.72 + 10, 70);
-    // simple de-overlap against labels already placed this frame
-    for (const s of labelSlots) {
-      if (Math.abs(s.x - lx) < 120 && Math.abs(s.y - ly) < 22) ly = s.y - 24;
-    }
-    labelSlots.push({ x: lx, y: ly });
-    b.label.style.display = "";
-    b.label.style.transform = `translate(${lx}px, ${ly}px)`;
-  }
+      function addRing(planet, def) {
+        const inner = planet.dispR * def.inner;
+        const outer = planet.dispR * def.outer;
+        const geo = new THREE.RingGeometry(inner, outer, 160, 1);
+        // remap UVs radially so the 1-D texture maps across the ring
+        const pos = geo.attributes.position;
+        const uv = geo.attributes.uv;
+        const v = new THREE.Vector3();
+        for (let i = 0; i < pos.count; i++) {
+          v.fromBufferAttribute(pos, i);
+          const t = (v.length() - inner) / (outer - inner);
+          uv.setXY(i, t, 0.5);
+        }
 
-  // ---- HUD
-  fpsFrames++; fpsAcc += dt;
-  if (fpsAcc > 0.5) {
-    fpsEl.textContent = String(Math.round(fpsFrames / fpsAcc));
-    fpsAcc = 0; fpsFrames = 0;
-  }
-  clockEl.textContent = `T+ ${years.toFixed(2)} YR`;
+        const mat = new THREE.ShaderMaterial({
+          uniforms: {
+            ringMap: {
+              value: makeRingTexture(planet.key.length * 37 + 5, def.faint),
+            },
+            radius: { value: planet.dispR },
+            strength: { value: def.faint ? 0.38 : 0.96 },
+          },
+          vertexShader: `varying vec2 vUv; varying vec3 vWorld; varying vec3 vCenter; varying vec3 vNormalW;
+          void main(){vUv=uv;vec4 w=modelMatrix*vec4(position,1.);vWorld=w.xyz;vCenter=(modelMatrix*vec4(0.,0.,0.,1.)).xyz;vNormalW=normalize(mat3(modelMatrix)*normal);gl_Position=projectionMatrix*viewMatrix*w;}`,
+          fragmentShader: `uniform sampler2D ringMap;uniform float radius;uniform float strength;varying vec2 vUv;varying vec3 vWorld;varying vec3 vCenter;varying vec3 vNormalW;
+          void main(){vec4 tex=texture2D(ringMap,vUv);vec3 d=normalize(-vWorld);vec3 p=vWorld-vCenter;float t=-dot(p,d);
+            float shadow=step(0.,t)*(1.-smoothstep(radius*.96,radius*1.04,length(p+t*d)));
+            float light=.72+.28*abs(dot(normalize(vNormalW),d));
+            gl_FragColor=vec4(tex.rgb*light*(1.-.88*shadow),tex.a*strength);
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
+          }`,
+          transparent: true,
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+        const ring = new THREE.Mesh(geo, mat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.renderOrder = 2;
+        return ring;
+      }
 
-  renderer.render(scene, camera);
-  requestAnimationFrame(tick);
-}
+      // ---- Sun as a body --------------------------------------------------------
+      {
+        const hit = new THREE.Mesh(
+          new THREE.SphereGeometry(SUN_RADIUS * 1.25, 24, 18),
+          new THREE.MeshBasicMaterial({ visible: false }),
+        );
+        sunGroup.add(hit);
+        const body = {
+          kind: "sun",
+          index: -1,
+          cn: SUN_INFO.cn,
+          en: SUN_INFO.en,
+          accent: SUN_INFO.accent,
+          group: sunGroup,
+          mesh: sunMesh,
+          hit,
+          dispR: SUN_RADIUS,
+          info: SUN_INFO,
+          hoverAt: -99,
+        };
+        hit.userData.body = body;
+        sunMesh.userData.body = body;
+        bodies.push(body);
+        visualPickables.push(sunMesh);
+      }
 
-addEventListener("resize", () => {
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight, false);
-});
+      // ---- Planets --------------------------------------------------------------
+      const orbitGroups = [];
+      for (let i = 0; i < PLANETS.length; i++) {
+        const p = PLANETS[i];
+        const dist = orbitDists[i];
+        const dispR = dispRadius(p.km);
 
-// ===========================================================================
-// 9. Debug / verification hook
-// ===========================================================================
-window.__SOLAR__ = {
-  scene, camera, renderer, bodies, THREE,
-  camState,
-  get hovered() { return hovered ? hovered.index : null; },
-  get hoveredKey() { return hovered ? (hovered.kind === "sun" ? "sun" : hovered.index) : null; },
-  get focused() { return focused ? (focused.kind === "sun" ? "sun" : focused.index) : null; },
-  get timeScale() { return timeScale; },
-  get paused() { return paused; },
-  get lastClick() { return lastClick; },
-  // what the raycaster sees for the pointer position right now
-  debugPick() {
-    const b = pickAt();
-    return b ? (b.kind === "sun" ? "sun" : b.index) : null;
-  },
-  // camera is only "settled" once the dolly has stopped moving
-  settled() {
-    return Math.abs(camState.radius - camState.targetRadius) < 0.05
-      && Math.abs(camState.yaw - camState.targetYaw) < 0.002
-      && Math.abs(camState.pitch - camState.targetPitch) < 0.002;
-  },
-  select(i) {
-    const b = i === "sun" ? bodies.find((x) => x.kind === "sun") : bodies.find((x) => x.kind === "planet" && x.index === i);
-    if (b) selectBody(b);
-    return !!b;
-  },
-  clear() { clearFocus(); },
-  setSpeed,
-  screenOf(i) {
-    const b = i === "sun" ? bodies.find((x) => x.kind === "sun") : bodies.find((x) => x.kind === "planet" && x.index === i);
-    if (!b) return null;
-    b.group.getWorldPosition(tmpV);
-    tmpV.project(camera);
-    return { x: (tmpV.x * 0.5 + 0.5) * innerWidth, y: (-tmpV.y * 0.5 + 0.5) * innerHeight };
-  },
-  labelText() { return infoEl.classList.contains("on") ? infoEl.querySelector(".cn").textContent : null; },
-};
+        const orbitGroup = new THREE.Group();
+        orbitGroup.rotation.x = THREE.MathUtils.degToRad(p.inc);
+        orbitGroup.rotation.y = p.node;
+        scene.add(orbitGroup);
+        orbitGroups.push(orbitGroup);
 
-// go
-requestAnimationFrame(() => {
-  document.getElementById("loading").classList.add("gone");
-  tick();
-});
-</script>
-</body>
+        // --- orbit line
+        const segs = 320;
+        const op = new Float32Array((segs + 1) * 3);
+        for (let s = 0; s <= segs; s++) {
+          const a = (s / segs) * Math.PI * 2;
+          op[s * 3] = Math.cos(a) * dist;
+          op[s * 3 + 1] = 0;
+          op[s * 3 + 2] = Math.sin(a) * dist;
+        }
+        const og = new THREE.BufferGeometry();
+        og.setAttribute("position", new THREE.BufferAttribute(op, 3));
+        const orbitLine = new THREE.Line(
+          og,
+          new THREE.LineBasicMaterial({
+            color: p.color,
+            transparent: true,
+            opacity: 0.075,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
+        );
+        orbitGroup.add(orbitLine);
+
+        // --- planet group (positioned along the orbit each frame)
+        const g = new THREE.Group();
+        orbitGroup.add(g);
+
+        const mat = new THREE.MeshStandardMaterial({
+          map:
+            p.key === "earth" ? earthMaterialMaps().map : artSurface(p.key).map,
+          bumpMap:
+            p.key === "earth"
+              ? earthMaterialMaps().bump
+              : artSurface(p.key).bump,
+          bumpScale:
+            dispR * (["mercury", "mars"].includes(p.key) ? 0.025 : 0.006),
+          roughness: p.key === "earth" ? 1 : 0.94,
+          roughnessMap:
+            p.key === "earth" ? earthMaterialMaps().roughness : null,
+          metalness: 0.0,
+        });
+        const mesh = new THREE.Mesh(
+          new THREE.SphereGeometry(dispR, 64, 48),
+          mat,
+        );
+        // Spin about the tilted local axis, without making the axis precess.
+        mesh.rotation.order = "ZYX";
+        mesh.rotation.z = THREE.MathUtils.degToRad(p.tilt);
+        g.add(mesh);
+
+        let cloudMesh = null;
+        if (p.clouds) {
+          const cloudTex = p.clouds();
+          cloudMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(dispR * 1.015, 48, 32),
+            new THREE.MeshStandardMaterial({
+              map: cloudTex,
+              transparent: true,
+              opacity: 0.62,
+              roughness: 1,
+              metalness: 0,
+              depthWrite: false,
+            }),
+          );
+          cloudMesh.rotation.order = "ZYX";
+          cloudMesh.rotation.z = THREE.MathUtils.degToRad(p.tilt);
+          g.add(cloudMesh);
+        }
+
+        let ringMesh = null;
+        if (p.ring) {
+          ringMesh = addRing({ dispR, key: p.key }, p.ring);
+          // Tilt in the parent frame after rotating the ring into its equator.
+          ringMesh.quaternion.premultiply(
+            new THREE.Quaternion().setFromAxisAngle(
+              new THREE.Vector3(0, 0, 1),
+              THREE.MathUtils.degToRad(p.tilt),
+            ),
+          );
+          g.add(ringMesh);
+        }
+
+        // A thin view-dependent scattering shell follows the actual spherical limb.
+        const atmo = atmosphere(p.key, p.color, dispR);
+        g.add(atmo);
+
+        // selection ring (hidden until focused); sits just outside the body, and
+        // outside the ring system when the planet has one
+        const selR = p.ring ? dispR * p.ring.outer * 1.08 : dispR * 1.34;
+        const selRing = new THREE.Mesh(
+          new THREE.RingGeometry(selR, selR * 1.03, 96, 1),
+          new THREE.MeshBasicMaterial({
+            color: 0x00e5ff,
+            transparent: true,
+            opacity: 0,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          }),
+        );
+        selRing.rotation.x = -Math.PI / 2;
+        selRing.visible = false;
+        g.add(selRing);
+
+        // invisible hit sphere
+        const hit = new THREE.Mesh(
+          new THREE.SphereGeometry(Math.max(dispR * 2.4, 1.15), 16, 12),
+          new THREE.MeshBasicMaterial({ visible: false }),
+        );
+        g.add(hit);
+
+        // --- moons: a single close satellite, drawn to scale against its planet.
+        // Only bodies flagged with moonSpec get one; the rest keep the bare count.
+        let moon = null;
+        if (p.moonSpec) {
+          const m = p.moonSpec;
+          const moonOrbit = new THREE.Group();
+          moonOrbit.rotation.x = THREE.MathUtils.degToRad(m.inc || 0);
+          g.add(moonOrbit);
+
+          const moonR = dispR * m.ratio;
+          const moonDist = dispR * m.dist;
+          const moonMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(moonR, 32, 24),
+            new THREE.MeshStandardMaterial({
+              map: artSurface("moon").map,
+              bumpMap: artSurface("moon").bump,
+              bumpScale: moonR * 0.025,
+              roughness: 1,
+              metalness: 0,
+            }),
+          );
+          // start the moon on the far side so it does not cover the planet at load
+          moonMesh.position.set(-moonDist, 0, 0);
+          moonOrbit.add(moonMesh);
+
+          // faint orbit line so the satellite reads as orbiting, not drifting
+          const mSeg = 96;
+          const mPos = new Float32Array((mSeg + 1) * 3);
+          for (let s = 0; s <= mSeg; s++) {
+            const ang = (s / mSeg) * Math.PI * 2;
+            mPos[s * 3] = Math.cos(ang) * moonDist;
+            mPos[s * 3 + 1] = 0;
+            mPos[s * 3 + 2] = Math.sin(ang) * moonDist;
+          }
+          const mGeo = new THREE.BufferGeometry();
+          mGeo.setAttribute("position", new THREE.BufferAttribute(mPos, 3));
+          moonOrbit.add(
+            new THREE.Line(
+              mGeo,
+              new THREE.LineBasicMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.13,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+              }),
+            ),
+          );
+
+          moon = {
+            orbit: moonOrbit,
+            mesh: moonMesh,
+            dist: moonDist,
+            speed: m.speed ?? 0.9,
+          };
+        }
+
+        // label
+        const el = document.createElement("div");
+        el.className = "plabel mono";
+        el.style.color = p.accent;
+        el.innerHTML = `${p.cn}<span class="en">${p.en}</span>`;
+        labelLayer.appendChild(el);
+
+        const body = {
+          kind: "planet",
+          index: i,
+          cn: p.cn,
+          en: p.en,
+          accent: p.accent,
+          color: p.color,
+          group: g,
+          mesh,
+          hit,
+          orbitGroup,
+          orbitLine,
+          dist,
+          dispR,
+          period: p.period,
+          rotH: p.rotH,
+          speed: dispSpeed(p.period),
+          angle: (i * 2.4) % (Math.PI * 2),
+          label: el,
+          selRing,
+          hoverAt: -99,
+          atmo,
+          moon,
+          cloudMesh,
+          ringMesh,
+          ringOuter: p.ring ? p.ring.outer : 0,
+          info: {
+            cn: p.cn,
+            en: p.en,
+            accent: p.accent,
+            desc: p.desc,
+            rows: [
+              ["直径", `${p.km.toLocaleString("en-US")} km`],
+              ["轨道半长径", `${p.a.toFixed(2)} AU`],
+              [
+                "公转周期",
+                p.period < 365
+                  ? `${p.period.toFixed(0)} 天`
+                  : `${(p.period / 365.25).toFixed(2)} 年`,
+              ],
+              [
+                "自转周期",
+                `${Math.abs(p.rotH).toFixed(1)} 小时${p.rotH < 0 ? "（逆向）" : ""}`,
+              ],
+              ["已知卫星", `${p.moons} 颗`],
+              ["表面温度", p.temp],
+            ],
+          },
+        };
+        hit.userData.body = body;
+        mesh.userData.body = body;
+        if (ringMesh) ringMesh.userData.body = body;
+        bodies.push(body);
+        visualPickables.push(mesh);
+        if (ringMesh) visualPickables.push(ringMesh);
+        p._body = body;
+      }
+
+      // ===========================================================================
+      // 6. Asteroid belt + Kuiper belt
+      // ===========================================================================
+      function makeBelt(count, rMin, rMax, ySpread, seed, size) {
+        const rnd = mulberry32(seed);
+        const pos = new Float32Array(count * 3);
+        const col = new Float32Array(count * 3);
+        const tint = new THREE.Color();
+        for (let i = 0; i < count; i++) {
+          const a = rnd() * Math.PI * 2;
+          // cluster toward the middle of the band instead of spreading uniformly, so
+          // the belt reads as a defined ring rather than a haze
+          const t = (rnd() + rnd() + rnd()) / 3;
+          const r = rMin + t * (rMax - rMin);
+          pos[i * 3] = Math.cos(a) * r;
+          pos[i * 3 + 1] = (rnd() + rnd() - 1) * ySpread;
+          pos[i * 3 + 2] = Math.sin(a) * r;
+          tint.setHSL(
+            0.08 + rnd() * 0.06,
+            0.2 + rnd() * 0.2,
+            0.38 + rnd() * 0.3,
+          );
+          col[i * 3] = tint.r;
+          col[i * 3 + 1] = tint.g;
+          col[i * 3 + 2] = tint.b;
+        }
+        const g = new THREE.BufferGeometry();
+        g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+        g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+        return new THREE.Points(
+          g,
+          new THREE.PointsMaterial({
+            size,
+            sizeAttenuation: true,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.26,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          }),
+        );
+      }
+      const beltMarsJup = makeBelt(
+        2200,
+        dispDist(1.524) + 1.4,
+        dispDist(5.203) - 3.2,
+        0.16,
+        12,
+        0.045,
+      );
+      const beltKuiper = makeBelt(3400, 48, 62, 1.2, 77, 0.085);
+      beltKuiper.material.opacity = 0.2;
+      scene.add(beltMarsJup, beltKuiper);
+
+      // ===========================================================================
+      // 7. Interaction state
+      // ===========================================================================
+      const raycaster = new THREE.Raycaster();
+      const pointer = new THREE.Vector2(-10, -10);
+      let hovered = null;
+      let focused = null;
+      let paused = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let timeScale = 1;
+      let simTime = 0;
+      let lastFrameTime = performance.now();
+      let fpsAcc = 0,
+        fpsFrames = 0;
+      let animationFrame = 0;
+      let pointerInside = false;
+
+      const tmpV = new THREE.Vector3();
+
+      function setPointer(e) {
+        pointer.x = (e.clientX / innerWidth) * 2 - 1;
+        pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+      }
+
+      // Current body under the pointer, or null. Shared by hover and click so both
+      // always agree about what is being pointed at.
+      function pickAt() {
+        raycaster.setFromCamera(pointer, camera);
+        const hits = raycaster.intersectObjects(
+          focused
+            ? [focused.mesh, ...(focused.ringMesh ? [focused.ringMesh] : [])]
+            : visualPickables,
+          false,
+        );
+        if (hits.length) return hits[0].object.userData.body;
+        // Supplement only tiny visible targets in screen pixels. A large invisible
+        // world-space sphere must not steal clicks from a neighbouring planet.
+        const candidates = [];
+        for (const body of focused ? [focused] : bodies) {
+          body.group.getWorldPosition(tmpV);
+          const distance = camera.position.distanceTo(tmpV);
+          const radius =
+            (body.dispR * innerHeight) /
+            (2 *
+              Math.tan((camera.fov * Math.PI) / 360) *
+              Math.max(distance, 0.001));
+          tmpV.project(camera);
+          candidates.push({
+            key: bodyKey(body),
+            x: (tmpV.x * 0.5 + 0.5) * innerWidth,
+            y: (-tmpV.y * 0.5 + 0.5) * innerHeight,
+            radius,
+            depth: tmpV.z,
+          });
+        }
+        const key = pickScreenTarget(candidates, {
+          x: (pointer.x * 0.5 + 0.5) * innerWidth,
+          y: (-pointer.y * 0.5 + 0.5) * innerHeight,
+        });
+        return key === null
+          ? null
+          : bodies.find((body) => bodyKey(body) === key) || null;
+      }
+      let dragging = false;
+      let activePointer = null;
+      let dragStart = { x: 0, y: 0, yaw: 0, pitch: 0 };
+      let downAt = null;
+      function cancelDrag() {
+        const id = activePointer;
+        activePointer = null;
+        dragging = false;
+        downAt = null;
+        if (id !== null && canvas.hasPointerCapture(id))
+          canvas.releasePointerCapture(id);
+      }
+      canvas.addEventListener("pointerdown", (e) => {
+        if (!e.isPrimary || e.button !== 0 || activePointer !== null) return;
+        setPointer(e);
+        pointerInside = true;
+        activePointer = e.pointerId;
+        canvas.setPointerCapture(e.pointerId);
+        dragging = true;
+        dragStart = {
+          x: e.clientX,
+          y: e.clientY,
+          yaw: camState.targetYaw,
+          pitch: camState.targetPitch,
+        };
+        downAt = {
+          x: e.clientX,
+          y: e.clientY,
+          t: performance.now(),
+          body: pickAt(),
+        };
+      });
+      canvas.addEventListener("pointermove", (e) => {
+        if (
+          !e.isPrimary ||
+          (activePointer !== null && activePointer !== e.pointerId)
+        )
+          return;
+        setPointer(e);
+        pointerInside = true;
+        if (!dragging) return;
+        camState.targetYaw = dragStart.yaw + (e.clientX - dragStart.x) * 0.005;
+        camState.targetPitch = THREE.MathUtils.clamp(
+          dragStart.pitch - (e.clientY - dragStart.y) * 0.004,
+          0.05,
+          1.45,
+        );
+      });
+      canvas.addEventListener("pointerup", (e) => {
+        if (e.pointerId !== activePointer || !downAt) return;
+        setPointer(e);
+        const pressed = downAt;
+        const moved = Math.hypot(e.clientX - pressed.x, e.clientY - pressed.y);
+        const elapsed = performance.now() - pressed.t;
+        cancelDrag();
+        if (moved < 6 && elapsed < 650) handleClick(pressed.body);
+      });
+      canvas.addEventListener("pointercancel", cancelDrag);
+      canvas.addEventListener("lostpointercapture", cancelDrag);
+      canvas.addEventListener("pointerleave", () => {
+        pointerInside = false;
+      });
+      addEventListener("blur", () => {
+        cancelDrag();
+        pointerInside = false;
+      });
+      canvas.addEventListener("contextmenu", (event) => event.preventDefault());
+      canvas.addEventListener(
+        "wheel",
+        (e) => {
+          e.preventDefault();
+          const minimum = focused
+            ? Math.max(focused.dispR * (focused.ringOuter || 1) * 1.12, 0.8)
+            : 8;
+          camState.targetRadius = THREE.MathUtils.clamp(
+            camState.targetRadius * Math.exp(Math.sign(e.deltaY) * 0.09),
+            minimum,
+            500,
+          );
+        },
+        { passive: false },
+      );
+
+      // ---- HUD refs
+      const infoEl = document.getElementById("info");
+      const speedEl = document.querySelector("#speed b");
+      const clockEl = document.getElementById("clockv");
+      const fpsEl = document.getElementById("fps");
+      const bodySelect = document.getElementById("bodySelect");
+      const bodyKey = (body) =>
+        body.kind === "sun" ? "sun" : String(body.index);
+      for (const body of bodies)
+        bodySelect.add(new Option(body.cn, bodyKey(body)));
+      let focusArea = null;
+      function updateFraming() {
+        const width = innerWidth,
+          height = innerHeight;
+        camera.clearViewOffset();
+        const nav = document
+          .getElementById("navigator")
+          .getBoundingClientRect();
+        const controls = document
+          .getElementById("controls")
+          .getBoundingClientRect();
+        let left = 20,
+          right = width - 20,
+          top = nav.bottom + 16,
+          bottom = controls.top - 16;
+        if (focused) {
+          const panel = infoEl.getBoundingClientRect();
+          if (panel.left > width * 0.45 && panel.width < width * 0.6)
+            right = panel.left - 24;
+          else bottom = Math.min(bottom, panel.top - 16);
+        }
+        const areaWidth = Math.max(80, right - left),
+          areaHeight = Math.max(70, bottom - top);
+        focusArea = { left, top, width: areaWidth, height: areaHeight };
+        const cx = left + areaWidth / 2,
+          cy = top + areaHeight / 2;
+        camera.setViewOffset(
+          width,
+          height,
+          width / 2 - cx,
+          height / 2 - cy,
+          width,
+          height,
+        );
+        const outer = focused
+          ? focused.dispR * (focused.ringOuter || 1) * 1.12
+          : orbitDists[orbitDists.length - 1] + 4;
+        camState.targetRadius = frameDistance({
+          radius: outer,
+          verticalFovDegrees: camera.fov,
+          viewportWidth: width,
+          viewportHeight: height,
+          availableWidth: areaWidth,
+          availableHeight: areaHeight,
+          fill: focused ? 0.76 : 0.94,
+        });
+      }
+      bodySelect.addEventListener("change", () => {
+        if (bodySelect.value === "overview") clearFocus();
+        else {
+          const body = bodies.find(
+            (entry) => bodyKey(entry) === bodySelect.value,
+          );
+          if (body) selectBody(body);
+        }
+      });
+      document.getElementById("closeInfo").addEventListener("click", () => {
+        clearFocus();
+        bodySelect.focus();
+      });
+
+      function showInfo(info) {
+        infoEl.querySelector(".cn").textContent = info.cn;
+        infoEl.querySelector(".en").textContent = info.en;
+        infoEl.querySelector(".desc").textContent = info.desc;
+        infoEl.querySelector(".cn").style.color = info.accent;
+        const rows = infoEl.querySelector(".rows");
+        rows.innerHTML = "";
+        for (const [k, v] of info.rows) {
+          const d = document.createElement("div");
+          d.className = "row";
+          d.innerHTML = `<span>${k}</span><b>${v}</b>`;
+          rows.appendChild(d);
+        }
+        infoEl.classList.add("on");
+        infoEl.setAttribute("aria-hidden", "false");
+      }
+
+      function updateBodyVisibility() {
+        for (const body of bodies) {
+          if (body.kind === "planet") {
+            body.group.visible = !focused || body === focused;
+            body.orbitLine.material.opacity = focused ? 0.015 : 0.075;
+          }
+        }
+        for (const child of sunGroup.children) {
+          if (!child.isLight)
+            child.visible = !focused || focused.kind === "sun";
+        }
+        beltMarsJup.material.opacity = focused ? 0.012 : 0.14;
+        beltKuiper.material.opacity = focused ? 0.009 : 0.08;
+      }
+
+      function selectBody(b) {
+        focused = b;
+        updateBodyVisibility();
+        showInfo(b.info);
+        bodySelect.value = bodyKey(b);
+        document.getElementById("hud").classList.add("inspecting");
+        for (const x of bodies) {
+          if (x.selRing) x.selRing.material.opacity = 0;
+          if (x.label) x.label.classList.remove("sel");
+        }
+        if (b.selRing) b.selRing.material.opacity = 0.9;
+        if (b.label) b.label.classList.add("sel");
+        updateFraming();
+        b.group.getWorldPosition(tmpV);
+        followOffset.copy(camTarget).sub(tmpV);
+        // Swing round to the lit side. Focusing used to only change the radius, so the
+        // camera kept whatever azimuth the user happened to be at — roughly half the
+        // time that was the night side, and the planet rendered as a black disc with a
+        // thin rim (Jupiter, Mercury and Saturn all showed this).
+        if (b.kind === "planet") {
+          b.group.getWorldPosition(tmpV);
+          const toSun = tmpV.clone().negate().normalize(); // the sun sits at the origin
+          const sunYaw = Math.atan2(toSun.x, toSun.z);
+          const sunPitch = Math.acos(THREE.MathUtils.clamp(toSun.y, -1, 1));
+          // stay ~28 deg off the sun line so a terminator stays in frame
+          camState.targetYaw = sunYaw + 0.5;
+          camState.targetPitch = THREE.MathUtils.clamp(
+            sunPitch + 0.16,
+            0.12,
+            1.32,
+          );
+        }
+      }
+
+      function clearFocus() {
+        focused = null;
+        updateBodyVisibility();
+        infoEl.classList.remove("on");
+        infoEl.setAttribute("aria-hidden", "true");
+        document.getElementById("hud").classList.remove("inspecting");
+        bodySelect.value = "overview";
+        for (const x of bodies) {
+          if (x.selRing) x.selRing.material.opacity = 0;
+          if (x.label) x.label.classList.remove("sel");
+        }
+        updateFraming();
+      }
+
+      // The bodies orbit continuously, so a raycast taken on one frame can miss on the
+      // next. A click therefore counts if the pointer was over a body at press time OR
+      // is over one at release time — anything else is a deliberate click on empty space.
+      let lastClick = null;
+      function handleClick(pressedBody) {
+        const released = pickAt();
+        const b = pressedBody || released;
+        lastClick = {
+          pressed: pressedBody
+            ? pressedBody.kind === "sun"
+              ? "sun"
+              : pressedBody.index
+            : null,
+          released: released
+            ? released.kind === "sun"
+              ? "sun"
+              : released.index
+            : null,
+          used: b ? (b.kind === "sun" ? "sun" : b.index) : null,
+        };
+        if (b) selectBody(b);
+        else clearFocus();
+      }
+
+      addEventListener("keydown", (e) => {
+        if (e.code === "Escape") {
+          clearFocus();
+          return;
+        }
+        if (
+          e.target instanceof HTMLElement &&
+          e.target.closest("button,select,input,textarea,[contenteditable]")
+        )
+          return;
+        if (e.repeat) return;
+        if (e.code === "Space") {
+          e.preventDefault();
+          togglePause();
+        }
+        const n = Number(e.key);
+        if (n >= 1 && n <= 3) setSpeed([1, 4, 16][n - 1]);
+      });
+
+      function togglePause() {
+        paused = !paused;
+        document.getElementById("btnPause").classList.toggle("on", paused);
+        syncPauseButton();
+      }
+      function setSpeed(v) {
+        timeScale = v;
+        paused = false;
+        syncPauseButton();
+        document.querySelectorAll("[data-sp]").forEach((el) => {
+          el.classList.toggle("on", Number(el.dataset.sp) === v);
+          el.setAttribute("aria-pressed", String(Number(el.dataset.sp) === v));
+        });
+        speedEl.textContent = `${v.toFixed(1)}×`;
+      }
+
+      function syncPauseButton() {
+        const button = document.getElementById("btnPause");
+        button.classList.toggle("on", paused);
+        button.setAttribute("aria-pressed", String(paused));
+        button.textContent = paused ? "继续" : "暂停";
+      }
+      syncPauseButton();
+      document
+        .getElementById("btnPause")
+        .addEventListener("click", togglePause);
+      document.getElementById("btnReset").addEventListener("click", () => {
+        clearFocus();
+        camState.targetYaw = -0.62;
+        camState.targetPitch = 0.52;
+      });
+      document.querySelectorAll("[data-sp]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const v = Number(el.dataset.sp);
+          setSpeed(v);
+        });
+      });
+
+      // ===========================================================================
+      // 8. Main loop
+      // ===========================================================================
+      const orbitLocal = (angle, r, out = new THREE.Vector3()) =>
+        out.set(Math.cos(angle) * r, 0, Math.sin(angle) * r);
+
+      const projected = new THREE.Vector3();
+      const followOffset = new THREE.Vector3();
+      const fillDirection = new THREE.Vector3();
+      const labelSlots = [];
+
+      function tick(now = performance.now()) {
+        if (!window.__SOLAR_READY__) lastFrameTime = now;
+        const elapsed = Math.max((now - lastFrameTime) / 1000, 0);
+        lastFrameTime = now;
+        const dt = Math.min(elapsed, 0.05);
+        const simDt = paused ? 0 : dt * timeScale;
+        simTime += simDt;
+
+        // ---- planets along orbits
+        for (const b of bodies) {
+          if (b.kind !== "planet") continue;
+          b.angle += simDt * b.speed;
+          orbitLocal(b.angle, b.dist, b.group.position);
+          b.mesh.rotation.y += spinDelta(b.rotH, simDt);
+          if (b.cloudMesh)
+            b.cloudMesh.rotation.y += spinDelta(b.rotH, simDt) + simDt * 0.05;
+          // selection ring lies in the orbital plane so it reads as a marker around the
+          // body rather than a HUD circle pasted over the screen; it spins slowly
+          if (b.selRing) {
+            b.selRing.rotation.z += simDt * 0.7;
+          }
+          // moon: tidally locked, so one face always points at its planet
+          if (b.moon) {
+            b.moon.orbit.rotation.y += simDt * b.moon.speed;
+            b.moon.mesh.rotation.y = moonLocalSpin();
+          }
+        }
+
+        // ---- sun animation
+        sunMesh.rotation.y += simDt * 0.055;
+        const pulse = 1 + Math.sin(simTime * 1.7) * 0.022;
+        coronaA.scale.setScalar(SUN_RADIUS * 3.4 * pulse);
+        coronaB.scale.setScalar(SUN_RADIUS * 6.2 * (2 - pulse));
+        coronaShell.scale.setScalar(1 + Math.sin(simTime * 2.3) * 0.03);
+        sunMesh.material.color.setScalar(1);
+
+        // ---- belts drift
+        beltMarsJup.rotation.y += simDt * 0.02;
+        beltKuiper.rotation.y += simDt * 0.004;
+
+        // ---- camera target follows the focused body
+        if (focused) {
+          focused.group.getWorldPosition(tmpV);
+          followOffset.multiplyScalar(1 - dampingFactor(6.3, elapsed));
+          camTarget.copy(tmpV).add(followOffset);
+        } else {
+          camTargetGoal.set(0, 0, 0);
+          camTarget.lerp(camTargetGoal, dampingFactor(6.3, elapsed));
+        }
+        const cameraDamping = dampingFactor(5, elapsed);
+        const yawDelta = Math.atan2(
+          Math.sin(camState.targetYaw - camState.yaw),
+          Math.cos(camState.targetYaw - camState.yaw),
+        );
+        camState.yaw += yawDelta * cameraDamping;
+        camState.pitch +=
+          (camState.targetPitch - camState.pitch) * cameraDamping;
+        camState.radius +=
+          (camState.targetRadius - camState.radius) * dampingFactor(4, elapsed);
+
+        const sp = Math.sin(camState.pitch) * camState.radius;
+        camera.position.set(
+          camTarget.x + Math.sin(camState.yaw) * sp,
+          camTarget.y + Math.cos(camState.pitch) * camState.radius,
+          camTarget.z + Math.cos(camState.yaw) * sp,
+        );
+        camera.lookAt(camTarget);
+
+        // A weak fill riding just off the camera axis. Without it every body past
+        // Mercury reads as a lit crescent on a pure-black disc, because the only
+        // other light is the sun itself.
+        camFill.position
+          .copy(camera.position)
+          .addScaledVector(
+            fillDirection.copy(camTarget).sub(camera.position).normalize(),
+            camState.radius * 0.15,
+          );
+        camFill.position.y += camState.radius * 0.1;
+
+        scene.updateMatrixWorld(true);
+        camera.updateMatrixWorld(true);
+        // ---- hover raycast
+        const prev = hovered;
+        hovered = pointerInside && !dragging ? pickAt() : null;
+        if (hovered !== prev) {
+          canvas.style.cursor = hovered ? "pointer" : "grab";
+          if (prev) {
+            if (prev.kind === "planet")
+              prev.atmo.material.uniforms.strength.value =
+                prev.atmo.userData.strength;
+            if (prev.label) prev.label.style.opacity = "";
+          }
+          if (hovered) {
+            if (hovered.kind === "planet")
+              hovered.atmo.material.uniforms.strength.value =
+                hovered.atmo.userData.strength * 1.15;
+            if (hovered.label) hovered.label.style.opacity = "1";
+          }
+        }
+
+        // ---- labels
+        // Labels are anchored up-and-right of their body rather than centred on it, so
+        // the planet stays visible and neighbouring labels stop stacking on top of one
+        // another in the crowded inner system.
+        labelSlots.length = 0;
+        for (const b of bodies) {
+          if (!b.label) continue;
+          if (focused) {
+            b.label.style.display = "none";
+            continue;
+          }
+          b.group.getWorldPosition(tmpV);
+          projected.copy(tmpV).project(camera);
+          const behind = projected.z > 1;
+          const x = (projected.x * 0.5 + 0.5) * innerWidth;
+          const y = (-projected.y * 0.5 + 0.5) * innerHeight;
+          if (
+            behind ||
+            Math.abs(projected.x) > 1.1 ||
+            Math.abs(projected.y) > 1.1
+          ) {
+            b.label.style.display = "none";
+            continue;
+          }
+          // push each label up and to the right by its own radius on screen so it
+          // clears the disc instead of sitting on top of it
+          const worldR = b.dispR || 1;
+          const edge =
+            (worldR * innerHeight) /
+            (2 *
+              Math.tan((camera.fov * Math.PI) / 360) *
+              Math.max(camera.position.distanceTo(tmpV), 0.001));
+          const lx = x + Math.min(edge * 0.92 + 10, 120);
+          let ly = y - Math.min(edge * 0.72 + 10, 70);
+          // simple de-overlap against labels already placed this frame
+          for (const s of labelSlots) {
+            if (Math.abs(s.x - lx) < 120 && Math.abs(s.y - ly) < 22)
+              ly = s.y - 24;
+          }
+          labelSlots.push({ x: lx, y: ly });
+          b.label.style.display = "";
+          b.label.style.transform = `translate(${lx}px, ${ly}px)`;
+        }
+
+        // ---- HUD
+        fpsFrames++;
+        fpsAcc += elapsed;
+        if (fpsAcc > 0.5) {
+          fpsEl.textContent = String(Math.round(computeFps(fpsFrames, fpsAcc)));
+          fpsAcc = 0;
+          fpsFrames = 0;
+        }
+        clockEl.textContent = `演示 ${simTime.toFixed(1)} s · 比例已压缩`;
+
+        renderer.render(scene, camera);
+        if (!window.__SOLAR_READY__) {
+          window.__SOLAR_READY__ = true;
+          document.getElementById("loading").classList.add("gone");
+        }
+        animationFrame = requestAnimationFrame(tick);
+      }
+
+      addEventListener("resize", () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        updateFraming();
+      });
+      document.addEventListener("visibilitychange", () => {
+        cancelAnimationFrame(animationFrame);
+        cancelDrag();
+        pointerInside = false;
+        if (
+          !document.hidden &&
+          !document.getElementById("loading").classList.contains("error")
+        ) {
+          lastFrameTime = performance.now();
+          fpsAcc = 0;
+          fpsFrames = 0;
+          animationFrame = requestAnimationFrame(tick);
+        }
+      });
+
+      // ===========================================================================
+      // 9. Debug / verification hook
+      // ===========================================================================
+      window.__SOLAR__ = {
+        scene,
+        camera,
+        renderer,
+        bodies,
+        THREE,
+        camState,
+        get focusArea() {
+          return focusArea;
+        },
+        get hovered() {
+          return hovered ? hovered.index : null;
+        },
+        get hoveredKey() {
+          return hovered
+            ? hovered.kind === "sun"
+              ? "sun"
+              : hovered.index
+            : null;
+        },
+        get focused() {
+          return focused
+            ? focused.kind === "sun"
+              ? "sun"
+              : focused.index
+            : null;
+        },
+        get timeScale() {
+          return timeScale;
+        },
+        get paused() {
+          return paused;
+        },
+        get lastClick() {
+          return lastClick;
+        },
+        // what the raycaster sees for the pointer position right now
+        debugPick() {
+          const b = pickAt();
+          return b ? (b.kind === "sun" ? "sun" : b.index) : null;
+        },
+        // camera is only "settled" once the dolly has stopped moving
+        settled() {
+          return (
+            Math.abs(camState.radius - camState.targetRadius) < 0.05 &&
+            Math.abs(
+              Math.atan2(
+                Math.sin(camState.yaw - camState.targetYaw),
+                Math.cos(camState.yaw - camState.targetYaw),
+              ),
+            ) < 0.002 &&
+            Math.abs(camState.pitch - camState.targetPitch) < 0.002
+          );
+        },
+        select(i) {
+          const b =
+            i === "sun"
+              ? bodies.find((x) => x.kind === "sun")
+              : bodies.find((x) => x.kind === "planet" && x.index === i);
+          if (b) selectBody(b);
+          return !!b;
+        },
+        clear() {
+          clearFocus();
+        },
+        setSpeed,
+        screenOf(i) {
+          const b =
+            i === "sun"
+              ? bodies.find((x) => x.kind === "sun")
+              : bodies.find((x) => x.kind === "planet" && x.index === i);
+          if (!b) return null;
+          b.group.getWorldPosition(tmpV);
+          tmpV.project(camera);
+          return {
+            x: (tmpV.x * 0.5 + 0.5) * innerWidth,
+            y: (-tmpV.y * 0.5 + 0.5) * innerHeight,
+          };
+        },
+        labelText() {
+          return infoEl.classList.contains("on")
+            ? infoEl.querySelector(".cn").textContent
+            : null;
+        },
+      };
+
+      // go
+      updateFraming();
+      camState.radius = camState.targetRadius;
+      animationFrame = requestAnimationFrame(tick);
+    </script>
+  </body>
 </html>

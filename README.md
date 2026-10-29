@@ -9,6 +9,7 @@
 
 | 路径 | 内容 |
 | --- | --- |
+| [`resumes`](resumes) | 两份优化简历：Word、PDF 与 Markdown |
 | [`projects/lingjing-archive`](projects/lingjing-archive) | 灵境档案 · 林缘农场（浏览器 2D 农场经营游戏） |
 | [`projects/annoqa`](projects/annoqa) | AnnoQA：标注规范问答服务 |
 | [`projects/3d-solar-system`](projects/3d-solar-system) | 可点击的 three.js 太阳系 / 3D 交互 demo |
@@ -62,6 +63,14 @@ pytest                        # 跑测试
 - 验收不是靠肉眼看截图，是用 CDP 派发真实鼠标事件（`Input.dispatchMouseEvent`）逐点验证命中
 - `web/solar-standalone.html` 直接双击；用 Remotion 渲染的演示视频产物没进仓库（35 MB）
 
+### 太阳系升级记录（2026-10-26）
+
+太阳系已同步为“深空观测图鉴”版本：暖白铜金界面、确定性细节材质、薄大气、细环与环影，修正环面倾角和自转轴；保留九天体选择、镜头跟随及离线单文件。新增模块与测试均在原项目目录。
+
+- 验证于 2026-10-26：38 项 Node 测试、HTTP/file 双模式 70 项浏览器检查通过；本次上传核对文件哈希，未重新进行全套实机验收。
+- [项目说明](projects/3d-solar-system/README.md) · [验证范围](projects/3d-solar-system/VERIFICATION.md) · [画面预览](projects/3d-solar-system/docs/preview-saturn.png)
+- 表面纹理属于程序化艺术表达，地球大陆并非真实地理地图；不是精确天文模拟。
+
 ## 工具
 
 ### tools/data-pipeline
@@ -83,3 +92,4 @@ pytest                        # 跑测试
 - 公司相关的东西一律没放进来：标注平台的操作脚本、内部系统域名、测试用账号口令、以及围绕它们的浏览器验收脚本
 - 大件产物也没放：`node_modules`、`dist`、Remotion 渲染出的 mp4、浏览器用户目录
 - 仓库是私有的，代码仅供自己备份与面试展示，没有加开源许可证
+
