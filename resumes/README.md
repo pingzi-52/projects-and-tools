@@ -15,4 +15,3 @@
 
 - [太阳系交互模型](../projects/3d-solar-system)
 - [AnnoQA](../projects/annoqa)
-- [灵境档案](../projects/lingjing-archive)

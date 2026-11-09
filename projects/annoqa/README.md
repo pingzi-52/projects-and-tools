@@ -53,7 +53,7 @@
 ## 快速开始
 
 ```bash
-cd rag-assistant
+cd projects/annoqa
 pip install -r requirements.txt
 
 # 1. 把示例文档入库
@@ -217,7 +217,7 @@ RESULT: ALL OK
 ## 目录结构
 
 ```
-rag-assistant/
+projects/annoqa/
 ├── annoqa/
 │   ├── __init__.py
 │   ├── __main__.py      # python -m annoqa 入口
